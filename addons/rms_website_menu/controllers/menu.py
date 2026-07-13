@@ -1044,7 +1044,7 @@ class RmsMenuController(WebsiteSale):
 
         return request.redirect('/shop/payment')
 
-
+    def _rms_pop_last_order(self):
         """
         Find the order to show on the confirmation page. Tries the
         session cart first, then falls back to the rms_last_order_id
@@ -1921,7 +1921,11 @@ class RmsMenuController(WebsiteSale):
         ])
         today_count = SaleOrder.search_count([
             ('website_id', '!=', False),
-            ('state', 'in', ('draft', 'sale')),
+            # Only paid/confirmed orders count as "Orders Today" — 'draft'
+            # is an unconfirmed cart (including abandoned checkouts), and
+            # must not be counted here. Matches the state filter used by
+            # the reports controller and everywhere else on this dashboard.
+            ('state', 'in', ('sale', 'done')),
             ('create_date', '>=', midnight_utc),
         ])
         ready_count = len(active_orders.filtered(lambda o: o.rms_kitchen_status == 'ready'))
