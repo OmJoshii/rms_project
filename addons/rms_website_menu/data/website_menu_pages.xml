@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        The "Order Online" nav item is created by post_init_hook (hooks.py).
+        It adds /menu to the main navigation of every installed website,
+        skipping any site that already has the entry.
+    -->
+</odoo>

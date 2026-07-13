@@ -1,0 +1,12 @@
+{
+  "printerMode": "tcp",
+  "printerIp": "10.1.10.118",
+  "printerPort": 9100,
+  "bindHost": "127.0.0.1",
+  "bindPort": 17333,
+  "restaurantName": "Timur Restaurant",
+  "printTimeoutMs": 5000,
+  "printRetries": 2,
+  "odooUrl": "https://demo.bhoj.cloud",
+  "odooPollIntervalMs": 2000
+}

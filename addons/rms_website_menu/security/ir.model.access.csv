@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rms_print_device_admin,rms.print.device admin,model_rms_print_device,base.group_system,1,1,1,1
+access_rms_print_job_admin,rms.print.job admin,model_rms_print_job,base.group_system,1,1,1,1

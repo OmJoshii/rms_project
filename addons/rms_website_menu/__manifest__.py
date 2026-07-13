@@ -1,0 +1,37 @@
+{
+    'name': 'RMS Website Menu - Timur Restaurant',
+    'version': '19.0.4.3.0',
+    'category': 'Website',
+    'summary': 'Public online ordering menu for Timur Indian Restaurant',
+    'depends': [
+        'rms_base',
+        'website',
+        'sale',
+        'account',
+        'website_sale',
+    ],
+    'data': [
+        'security/rms_kitchen_security.xml',
+        'security/ir.model.access.csv',
+        'data/tip_product.xml',
+        'data/website_categories.xml',
+        'data/website_menu_pages.xml',
+        'views/sale_order_views.xml',
+        'views/menu_templates.xml',
+        'views/website_menu_snippets.xml',
+        'views/kitchen_templates.xml',
+        'views/reports_templates.xml',
+    ],
+    'assets': {
+        'web.assets_frontend': [
+            'rms_website_menu/static/src/css/rms_menu.css',
+            'rms_website_menu/static/src/js/menu_accordion.js',
+            'rms_website_menu/static/src/js/menu_modal.js',
+            'rms_website_menu/static/src/js/rms_cart.js',
+        ],
+    },
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+    'post_init_hook': 'post_init_hook',
+}

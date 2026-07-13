@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rms_product_template_form" model="ir.ui.view">
+        <field name="name">rms.product.template.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Restaurant" name="rms_restaurant">
+                    <group>
+                        <group string="Menu Settings">
+                            <field name="rms_is_menu_item"/>
+                            <field name="rms_is_available"
+                                   invisible="not rms_is_menu_item"/>
+                            <field name="rms_is_featured"
+                                   invisible="not rms_is_menu_item"/>
+                            <field name="rms_menu_category"
+                                   invisible="not rms_is_menu_item"/>
+                            <field name="rms_curry_type"
+                                   invisible="rms_menu_category != 'main_entrees'"/>
+                        </group>
+                        <group string="Preparation">
+                            <field name="rms_prep_time"
+                                   invisible="not rms_is_menu_item"/>
+                            <field name="rms_spice_level"
+                                   invisible="not rms_is_menu_item"/>
+                        </group>
+                    </group>
+                    <group string="Protein Grouping"
+                           invisible="not rms_is_menu_item">
+                        <group>
+                            <field name="rms_group_key"
+                                   placeholder="e.g. korma, pakora, momo_steamed"/>
+                            <field name="rms_protein_label"
+                                   placeholder="e.g. Chicken, Lamb, Vegetable"
+                                   invisible="not rms_group_key"/>
+                            <field name="rms_group_sort"
+                                   invisible="not rms_group_key"/>
+                        </group>
+                    </group>
+                    <group string="Dietary Information"
+                           invisible="not rms_is_menu_item">
+                        <group>
+                            <field name="rms_is_vegan"/>
+                            <field name="rms_is_vegetarian"/>
+                        </group>
+                        <group>
+                            <field name="rms_is_gluten_free"/>
+                            <field name="rms_contains_nuts"/>
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <record id="view_rms_product_template_list" model="ir.ui.view">
+        <field name="name">rms.product.template.list</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="rms_menu_category"  optional="show"/>
+                <field name="rms_curry_type"     optional="show"/>
+                <field name="rms_group_key"      optional="show"/>
+                <field name="rms_protein_label"  optional="show"/>
+                <field name="rms_is_available"   optional="show"/>
+                <field name="rms_spice_level"    optional="hide"/>
+                <field name="rms_is_vegetarian"  optional="hide"/>
+                <field name="rms_is_vegan"       optional="hide"/>
+                <field name="rms_is_gluten_free" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="action_rms_menu_items" model="ir.actions.act_window">
+        <field name="name">Menu Items</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('rms_is_menu_item', '=', True)]</field>
+        <field name="context">{'default_rms_is_menu_item': True}</field>
+    </record>
+
+    <menuitem id="menu_rms_root"
+              name="Timur Restaurant"
+              sequence="50"/>
+
+    <menuitem id="menu_rms_menu_items"
+              name="Menu Items"
+              parent="menu_rms_root"
+              action="action_rms_menu_items"
+              sequence="10"/>
+
+    <!-- Server action: Add 'My Orders' nav link -->
+    <record id="action_rms_add_my_orders_menu" model="ir.actions.server">
+        <field name="name">Add My Orders Nav Link</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">env['res.partner'].action_add_my_orders_menu()</field>
+    </record>
+
+    <menuitem id="menu_rms_add_my_orders"
+              name="Add My Orders Nav Link"
+              parent="menu_rms_root"
+              action="action_rms_add_my_orders_menu"
+              sequence="100"/>
+
+    <!-- Server action: Add 'Menu' nav link -->
+    <record id="action_rms_add_menu_link" model="ir.actions.server">
+        <field name="name">Add Menu Nav Link</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">env['res.partner'].action_add_menu_link()</field>
+    </record>
+
+    <menuitem id="menu_rms_add_menu_link"
+              name="Add Menu Nav Link"
+              parent="menu_rms_root"
+              action="action_rms_add_menu_link"
+              sequence="101"/>
+
+</odoo>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="pub_categ_small_plates" model="product.public.category">
+            <field name="name">Small Plates</field>
+            <field name="sequence">10</field>
+        </record>
+        <record id="pub_categ_soups_greens" model="product.public.category">
+            <field name="name">Soups &amp; Greens</field>
+            <field name="sequence">20</field>
+        </record>
+        <record id="pub_categ_tandoor" model="product.public.category">
+            <field name="name">Tandoor Specials</field>
+            <field name="sequence">30</field>
+        </record>
+        <record id="pub_categ_vegan_curry" model="product.public.category">
+            <field name="name">Vegan Curry Selection</field>
+            <field name="sequence">40</field>
+        </record>
+        <record id="pub_categ_main_entrees" model="product.public.category">
+            <field name="name">Main Entrees</field>
+            <field name="sequence">50</field>
+        </record>
+        <record id="pub_categ_bread" model="product.public.category">
+            <field name="name">Bread Selection</field>
+            <field name="sequence">60</field>
+        </record>
+        <record id="pub_categ_gluten_free_bread" model="product.public.category">
+            <field name="name">Gluten-Free Breads</field>
+            <field name="sequence">70</field>
+        </record>
+        <record id="pub_categ_rice" model="product.public.category">
+            <field name="name">Rice</field>
+            <field name="sequence">80</field>
+        </record>
+        <record id="pub_categ_biryani" model="product.public.category">
+            <field name="name">Biryani</field>
+            <field name="sequence">90</field>
+        </record>
+        <record id="pub_categ_accompaniments" model="product.public.category">
+            <field name="name">Accompaniments</field>
+            <field name="sequence">100</field>
+        </record>
+        <record id="pub_categ_sweet_tooth" model="product.public.category">
+            <field name="name">Sweet Tooth</field>
+            <field name="sequence">110</field>
+        </record>
+        <record id="pub_categ_beverages" model="product.public.category">
+            <field name="name">Beverages</field>
+            <field name="sequence">120</field>
+        </record>
+        <record id="pub_categ_beer" model="product.public.category">
+            <field name="name">Beer</field>
+            <field name="sequence">130</field>
+        </record>
+        <record id="pub_categ_white_wine" model="product.public.category">
+            <field name="name">White Wine</field>
+            <field name="sequence">140</field>
+        </record>
+        <record id="pub_categ_red_wine" model="product.public.category">
+            <field name="name">Red Wine</field>
+            <field name="sequence">150</field>
+        </record>
+        <record id="pub_categ_sake" model="product.public.category">
+            <field name="name">Sake</field>
+            <field name="sequence">160</field>
+        </record>
+        <record id="pub_categ_cocktails" model="product.public.category">
+            <field name="name">Cocktails</field>
+            <field name="sequence">170</field>
+        </record>
+
+    </data>
+
+    <!-- Run after categories exist — publishes products and assigns categories. -->
+    <!-- Executes on every install AND upgrade. -->
+    <function model="product.template" name="_rms_setup_ecommerce"/>
+
+</odoo>

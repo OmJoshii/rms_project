@@ -1,0 +1,2650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- MAIN MENU PAGE                                               -->
+    <!-- ============================================================ -->
+    <template id="menu_page" name="Timur Restaurant - Online Menu">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Menu — Timur Indian Restaurant</t>
+            <div id="rms-wrap">
+                <!-- Hero -->
+                <div class="rms-hero">
+                    <div class="rms-hero-inner">
+                        <p class="rms-hero-sub">Authentic Indian Cuisine</p>
+                        <h1 class="rms-hero-title">Our Menu</h1>
+                        <p class="rms-hero-tagline">Order online for pickup or dine-in</p>
+                    </div>
+                </div>
+                <!-- Closed banner (informational only — cart still works) -->
+                <t t-if="not is_open">
+                    <div class="alert alert-warning text-center mb-0 rounded-0 fw-semibold">
+                        🕐
+                        <t t-esc="closed_msg"/> You can still browse — checkout will open when we reopen.
+                    </div>
+                </t>
+                <!-- Mobile: horizontal category strip -->
+                <div class="rms-cat-mobile">
+                    <div class="rms-cat-mobile-inner">
+                        <a class="rms-cat-pill active" data-cat="all" href="#rms-items">All</a>
+                        <t t-foreach="grouped_products" t-as="group">
+                            <a class="rms-cat-pill"
+                               t-att-data-cat="group['key']"
+                               t-att-href="'#cat-' + group['key']">
+                                <t t-esc="group['label']"/>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+                <!-- Dietary filter bar -->
+                <div class="rms-diet-bar">
+                    <div class="rms-diet-inner">
+                        <span class="rms-diet-label">Dietary:</span>
+                        <button class="rms-diet-btn active" data-diet="all">All</button>
+                        <button class="rms-diet-btn" data-diet="vegetarian">
+                            <span class="rms-badge rms-badge-v">V</span> Vegetarian
+                        </button>
+                        <button class="rms-diet-btn" data-diet="vegan">
+                            <span class="rms-badge rms-badge-vg">VG</span> Vegan
+                        </button>
+                        <button class="rms-diet-btn" data-diet="gluten_free">
+                            <span class="rms-badge rms-badge-gf">GF</span> Gluten-Free
+                        </button>
+                    </div>
+                </div>
+                <div class="rms-layout">
+                    <!-- Left: Category sidebar -->
+                    <aside class="rms-cat-sidebar">
+                        <span class="rms-cat-sidebar-title">Categories</span>
+                        <a class="rms-cat-pill active" data-cat="all" href="#rms-items">All</a>
+                        <t t-foreach="grouped_products" t-as="group">
+                            <a class="rms-cat-pill"
+                               t-att-data-cat="group['key']"
+                               t-att-href="'#cat-' + group['key']">
+                                <t t-esc="group['label']"/>
+                            </a>
+                        </t>
+                    </aside>
+                    <!-- Center: Items -->
+                    <main class="rms-items" id="rms-items">
+                        <t t-foreach="grouped_products" t-as="group">
+                            <section class="rms-section"
+                                     t-att-id="'cat-' + group['key']"
+                                     t-att-data-cat="group['key']">
+                                <div class="rms-accordion-toggle"
+                                    t-att-data-target="'acc-' + group['key']">
+                                    <h2 class="rms-section-title">
+                                        <t t-esc="group['label']"/>
+                                    </h2>
+                                    <div class="rms-cat-jump">
+                                        <button type="button" class="rms-cat-jump-btn" aria-label="Jump to category">
+                                            <span>Jump to</span>
+                                            <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                                                <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5"/>
+                                            </svg>
+                                        </button>
+                                        <div class="rms-cat-jump-menu">
+                                            <a t-foreach="grouped_products" t-as="jump"
+                                                class="rms-cat-jump-item"
+                                                t-att-href="'#cat-' + jump['key']"
+                                                t-att-data-cat="jump['key']">
+                                                <t t-esc="jump['label']"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <span class="rms-accordion-icon">&#9660;</span>
+                                </div>
+                                <div class="rms-accordion-content"
+                                     t-att-id="'acc-' + group['key']">
+                                    <!-- MAIN ENTREES: all curry types share one grid -->
+                                    <t t-if="group['type'] == 'main_entrees'">
+                                        <div class="rms-grid">
+                                            <t t-foreach="group['subcategories']" t-as="sub">
+                                                <t t-foreach="sub['cards']" t-as="card">
+                                                    <t t-call="rms_website_menu.menu_card">
+                                                        <t t-set="card" t-value="card"/>
+                                                        <t t-set="spice_categories" t-value="spice_categories"/>
+                                                        <t t-set="cat_key" t-value="group['key']"/>
+                                                    </t>
+                                                </t>
+                                            </t>
+                                        </div>
+                                    </t>
+                                    <!-- ALL OTHER CATEGORIES -->
+                                    <t t-else="">
+                                        <div class="rms-grid">
+                                            <t t-foreach="group['cards']" t-as="card">
+                                                <t t-call="rms_website_menu.menu_card">
+                                                    <t t-set="card" t-value="card"/>
+                                                    <t t-set="spice_categories" t-value="spice_categories"/>
+                                                    <t t-set="cat_key" t-value="group['key']"/>
+                                                </t>
+                                            </t>
+                                        </div>
+                                    </t>
+                                </div>
+                                <!-- /.rms-accordion-content -->
+                            </section>
+                        </t>
+                    </main>
+                    <!-- Cart Sidebar -->
+                    <aside class="rms-cart-sidebar" id="rms-cart-sidebar">
+                        <div class="rms-cart-header">
+                            <h3>Your Order</h3>
+                            <span class="rms-cart-count" id="rms-cart-count">0</span>
+                        </div>
+                        <div class="rms-cart-items" id="rms-cart-items">
+                            <p class="rms-cart-empty">Your cart is empty.</p>
+                        </div>
+                        <div class="rms-cart-footer" id="rms-cart-footer" style="display:none">
+                            <div class="rms-cart-total">
+                                <span>Total</span>
+                                <span id="rms-cart-total">$0.00</span>
+                            </div>
+                            <a href="/rms/checkout" class="rms-checkout-btn d-block text-center text-decoration-none">
+                                Checkout →
+                            </a>
+                        </div>
+                    </aside>
+                </div>
+                <!-- /.rms-layout -->
+                <!-- Mobile FAB -->
+                <button class="rms-fab" id="rms-fab" style="display:none">
+                    <span>🛒</span>
+                    <span class="rms-fab-count" id="rms-fab-count">0</span>
+                    <span class="rms-fab-total" id="rms-fab-total"></span>
+                </button>
+                <!-- Mobile drawer -->
+                <div class="rms-drawer-overlay" id="rms-drawer-overlay"></div>
+                <div class="rms-drawer" id="rms-drawer">
+                    <div class="rms-drawer-header">
+                        <h3>Your Order</h3>
+                        <button class="rms-drawer-close" id="rms-drawer-close">&#10005;</button>
+                    </div>
+                    <div class="rms-cart-items" id="rms-drawer-items">
+                        <p class="rms-cart-empty">Your cart is empty.</p>
+                    </div>
+                    <div class="rms-cart-footer" id="rms-drawer-footer" style="display:none">
+                        <div class="rms-cart-total">
+                            <span>Total</span>
+                            <span id="rms-drawer-total">$0.00</span>
+                        </div>
+                        <a href="/rms/checkout" class="rms-checkout-btn d-block text-center text-decoration-none">
+                            Checkout →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /#rms-wrap -->
+            <script type="text/javascript">
+                (function() {
+                    function setFilterTop() {
+                        var hdr  = document.querySelector('header#top, .o_header_standard, nav.navbar');
+                        var h    = hdr ? hdr.offsetHeight : 0;
+                        var cat  = document.querySelector('.rms-cat-mobile');
+                        var diet = document.querySelector('.rms-diet-bar');
+                        if (cat)  cat.style.top  = h + 'px';
+                        if (diet) diet.style.top = (h + (cat ? cat.offsetHeight : 0)) + 'px';
+                    }
+                    window.addEventListener('load',   setFilterTop);
+                    window.addEventListener('resize', setFilterTop);
+                    setFilterTop();
+                })();
+            </script>
+        </t>
+    </template>
+    <!-- ============================================================ -->
+    <!-- SIMPLE MENU PAGE — flat grid, no categories                  -->
+    <!-- Same hero/cart/dietary-filter shell as the main menu page,   -->
+    <!-- but every item in one grid instead of sectioned by category. -->
+    <!-- ============================================================ -->
+    <template id="simple_menu_page" name="Timur Restaurant - Full Menu">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Menu — Timur Indian Restaurant</t>
+            <div id="rms-wrap">
+                <!-- Hero -->
+                <div class="rms-hero">
+                    <div class="rms-hero-inner">
+                        <p class="rms-hero-sub">Authentic Indian Cuisine</p>
+                        <h1 class="rms-hero-title">Our Menu</h1>
+                        <p class="rms-hero-tagline">Every dish, in one place</p>
+                    </div>
+                </div>
+                <!-- Closed banner (informational only — cart still works) -->
+                <t t-if="not is_open">
+                    <div class="alert alert-warning text-center mb-0 rounded-0 fw-semibold">
+                        🕐
+                        <t t-esc="closed_msg"/> You can still browse — checkout will open when we reopen.
+                    </div>
+                </t>
+                <!-- Search bar -->
+                <div class="rms-search-bar">
+                    <div class="rms-search-inner">
+                        <input type="search" id="rms-menu-search" class="rms-search-input"
+                               placeholder="Search the menu…" autocomplete="off"/>
+                        <span class="rms-search-count" id="rms-search-count"></span>
+                    </div>
+                </div>
+                <!-- Dietary filter bar -->
+                <div class="rms-diet-bar">
+                    <div class="rms-diet-inner">
+                        <span class="rms-diet-label">Dietary:</span>
+                        <button class="rms-diet-btn active" data-diet="all">All</button>
+                        <button class="rms-diet-btn" data-diet="vegetarian">
+                            <span class="rms-badge rms-badge-v">V</span> Vegetarian
+                        </button>
+                        <button class="rms-diet-btn" data-diet="vegan">
+                            <span class="rms-badge rms-badge-vg">VG</span> Vegan
+                        </button>
+                        <button class="rms-diet-btn" data-diet="gluten_free">
+                            <span class="rms-badge rms-badge-gf">GF</span> Gluten-Free
+                        </button>
+                    </div>
+                </div>
+                <div class="rms-layout">
+                    <!-- Center: Items — one flat list, no category sidebar -->
+                    <main class="rms-items" id="rms-items" style="margin-left:0">
+                        <div class="rms-grid rms-list-mode" id="rms-simple-grid">
+                            <t t-foreach="cards" t-as="card">
+                                <t t-call="rms_website_menu.menu_card">
+                                    <t t-set="card" t-value="card"/>
+                                    <t t-set="spice_categories" t-value="spice_categories"/>
+                                    <t t-set="cat_key" t-value="card['cat_key']"/>
+                                </t>
+                            </t>
+                            <p class="rms-search-empty d-none" id="rms-search-empty">
+                                No dishes match your search.
+                            </p>
+                        </div>
+                    </main>
+                    <!-- Cart Sidebar -->
+                    <aside class="rms-cart-sidebar" id="rms-cart-sidebar">
+                        <div class="rms-cart-header">
+                            <h3>Your Order</h3>
+                            <span class="rms-cart-count" id="rms-cart-count">0</span>
+                        </div>
+                        <div class="rms-cart-items" id="rms-cart-items">
+                            <p class="rms-cart-empty">Your cart is empty.</p>
+                        </div>
+                        <div class="rms-cart-footer" id="rms-cart-footer" style="display:none">
+                            <div class="rms-cart-total">
+                                <span>Total</span>
+                                <span id="rms-cart-total">$0.00</span>
+                            </div>
+                            <a href="/rms/checkout" class="rms-checkout-btn d-block text-center text-decoration-none">
+                                Checkout →
+                            </a>
+                        </div>
+                    </aside>
+                </div>
+                <!-- /.rms-layout -->
+                <!-- Mobile FAB -->
+                <button class="rms-fab" id="rms-fab" style="display:none">
+                    <span>🛒</span>
+                    <span class="rms-fab-count" id="rms-fab-count">0</span>
+                    <span class="rms-fab-total" id="rms-fab-total"></span>
+                </button>
+                <!-- Mobile drawer -->
+                <div class="rms-drawer-overlay" id="rms-drawer-overlay"></div>
+                <div class="rms-drawer" id="rms-drawer">
+                    <div class="rms-drawer-header">
+                        <h3>Your Order</h3>
+                        <button class="rms-drawer-close" id="rms-drawer-close">&#10005;</button>
+                    </div>
+                    <div class="rms-cart-items" id="rms-drawer-items">
+                        <p class="rms-cart-empty">Your cart is empty.</p>
+                    </div>
+                    <div class="rms-cart-footer" id="rms-drawer-footer" style="display:none">
+                        <div class="rms-cart-total">
+                            <span>Total</span>
+                            <span id="rms-drawer-total">$0.00</span>
+                        </div>
+                        <a href="/rms/checkout" class="rms-checkout-btn d-block text-center text-decoration-none">
+                            Checkout →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /#rms-wrap -->
+            <script type="text/javascript">
+                (function() {
+
+                    // ---------------------------------------------- //
+                    // Live search — filters by visible dish name,   //
+                    // works alongside the existing dietary filter   //
+                    // (a card only shows if BOTH match).            //
+                    // ---------------------------------------------- //
+                    var searchInput = document.getElementById('rms-menu-search');
+                    var countEl     = document.getElementById('rms-search-count');
+                    var emptyMsg    = document.getElementById('rms-search-empty');
+                    if (!searchInput) return;
+
+                    function applySearch() {
+                        var query = searchInput.value.trim().toLowerCase();
+                        var cards = document.querySelectorAll('#rms-simple-grid .rms-card');
+                        var visibleCount = 0;
+
+                        cards.forEach(function (card) {
+                            var nameEl = card.querySelector('.rms-card-name');
+                            var name   = nameEl ? nameEl.textContent.trim().toLowerCase() : '';
+                            var descEl = card.querySelector('.rms-card-desc');
+                            var desc   = descEl ? descEl.textContent.trim().toLowerCase() : '';
+                            var matchesSearch = !query || name.indexOf(query) !== -1 || desc.indexOf(query) !== -1;
+
+                            if (matchesSearch) {
+                                card.classList.remove('rms-search-hidden');
+                            } else {
+                                card.classList.add('rms-search-hidden');
+                            }
+                            // Visible only if search matches AND the dietary
+                            // filter (which sets inline display:none) hasn't
+                            // already hidden it — the two filters combine.
+                            var isVisible = matchesSearch &amp;&amp; card.style.display !== 'none';
+                            if (isVisible) visibleCount++;
+                        });
+
+                        if (countEl) {
+                            countEl.textContent = query ? (visibleCount + (visibleCount === 1 ? ' dish' : ' dishes')) : '';
+                        }
+                        if (emptyMsg) {
+                            emptyMsg.classList.toggle('d-none', visibleCount !== 0);
+                        }
+                    }
+
+                    searchInput.addEventListener('input', applySearch);
+
+                    // Re-apply search after the dietary filter button runs (it
+                    // rewrites card.style.display), so the two filters combine
+                    // instead of one undoing the other.
+                    document.addEventListener('click', function (e) {
+                        if (e.target.closest('.rms-diet-btn')) {
+                            setTimeout(applySearch, 0);
+                        }
+                    });
+                })();
+            </script>
+            <style>
+                .rms-search-bar {
+                    position: sticky;
+                    top: 0;
+                    z-index: 40;
+                    background: #fff;
+                    border-bottom: 1px solid #eee;
+                    padding: 10px 24px;
+                }
+                .rms-search-inner {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+                .rms-search-input {
+                    flex: 1;
+                    max-width: 420px;
+                    padding: 8px 14px;
+                    border: 1px solid #ddd;
+                    border-radius: 20px;
+                    font-size: 14px;
+                }
+                .rms-search-input:focus {
+                    outline: none;
+                    border-color: var(--rms-primary, #9c1f3c);
+                }
+                .rms-search-count {
+                    font-size: 13px;
+                    color: #888;
+                }
+                .rms-search-empty {
+                    width: 100%;
+                    text-align: center;
+                    color: #888;
+                    padding: 40px 0;
+                }
+                .rms-search-hidden {
+                    display: none !important;
+                }
+                /* List mode: one dish per row instead of a grid of cards */
+                .rms-list-mode {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0;
+                }
+                .rms-list-mode .rms-card {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: stretch;
+                    width: 100%;
+                    border-bottom: 1px solid #eee;
+                    border-radius: 0;
+                    box-shadow: none;
+                }
+                .rms-list-mode .rms-card-img {
+                    width: 90px;
+                    min-width: 90px;
+                    height: 90px;
+                }
+                .rms-list-mode .rms-card-img img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+                .rms-list-mode .rms-card-body {
+                    flex: 1;
+                    padding: 12px 16px;
+                }
+                @media (max-width: 600px) {
+                    .rms-list-mode .rms-card { flex-direction: row; }
+                    .rms-list-mode .rms-card-img { width: 64px; min-width: 64px; height: 64px; }
+                    .rms-search-input { max-width: none; }
+                }
+                /* Stack search bar + dietary bar with simple fixed offsets.
+                   The site header on this theme scrolls away normally
+                   (it's not fixed/sticky), so both bars can stick to
+                   the very top of the viewport once scrolled to. The
+                   diet bar's offset is just the search bar's own fixed
+                   height (predictable since its padding/font-size never
+                   change) — no JS measurement needed.
+                   This also overrides rms_menu.css's mobile rule that
+                   hardcodes .rms-diet-bar { top: 60px !important; },
+                   which assumed a category strip this page doesn't have. */
+                #rms-wrap .rms-search-bar {
+                    position: sticky !important;
+                    top: 0 !important;
+                    z-index: 50 !important;
+                }
+                #rms-wrap .rms-diet-bar {
+                    position: sticky !important;
+                    top: 58px !important;
+                    z-index: 49 !important;
+                }
+            </style>
+        </t>
+    </template>
+    <!-- ============================================================ -->
+    <!-- REUSABLE CARD TEMPLATE                                        -->
+    <!-- Add to cart always works. Only checkout blocks off-hours.    -->
+    <!-- ============================================================ -->
+    <template id="menu_card" name="RMS Menu Card">
+        <!-- SOLO CARD -->
+        <t t-if="card['type'] == 'solo'">
+            <t t-set="product" t-value="card['product']"/>
+            <div class="rms-card"
+                 t-att-data-id="product.id"
+                 t-att-data-variant-id="product.product_variant_id.id"
+                 t-att-data-name="product.name"
+                 t-att-data-price="product.list_price"
+                 t-att-data-veg="'1' if product.rms_is_vegetarian else '0'"
+                 t-att-data-vegan="'1' if product.rms_is_vegan else '0'"
+                 t-att-data-gf="'1' if product.rms_is_gluten_free else '0'"
+                 t-att-data-available="'1' if product.rms_is_available else '0'"
+                 data-grouped="0">
+                <div class="rms-card-img" style="position:relative">
+                    <img t-att-src="'/web/image/product.template/%d/image_512' % product.id"
+                         class="img img-fluid" t-att-alt="product.name" loading="lazy"/>
+                    <t t-if="not product.rms_is_available">
+                        <div class="rms-oos-overlay">
+                            <span class="rms-oos-badge">Out of Stock</span>
+                        </div>
+                    </t>
+                </div>
+                <div class="rms-card-body">
+                    <div class="rms-card-top">
+                        <h3 class="rms-card-name">
+                            <t t-esc="product.name"/>
+                        </h3>
+                        <span class="rms-card-price">$
+                            <t t-esc="'%.2f' % product.list_price"/>
+                        </span>
+                    </div>
+                    <p class="rms-card-desc" t-if="product.description_sale">
+                        <t t-esc="product.description_sale"/>
+                    </p>
+                    <!-- Spice picker -->
+                    <t t-if="cat_key in spice_categories and product.rms_is_available">
+                        <div class="rms-spice-picker">
+                            <span class="rms-spice-label">Spice level
+                                <span class="text-danger">*</span>
+                            </span>
+                            <div class="rms-spice-opts">
+                                <label class="rms-spice-opt">
+                                    <input type="radio" t-att-name="'spice_' + str(product.id)" value="mild"/>
+                                    <span>Mild</span>
+                                </label>
+                                <label class="rms-spice-opt">
+                                    <input type="radio" t-att-name="'spice_' + str(product.id)" value="medium"/>
+                                    <span>Med</span>
+                                </label>
+                                <label class="rms-spice-opt">
+                                    <input type="radio" t-att-name="'spice_' + str(product.id)" value="hot"/>
+                                    <span>Hot</span>
+                                </label>
+                                <label class="rms-spice-opt">
+                                    <input type="radio" t-att-name="'spice_' + str(product.id)" value="extra_hot"/>
+                                    <span>🔥 X-Hot</span>
+                                </label>
+                            </div>
+                            <p class="rms-spice-error d-none">Please select a spice level</p>
+                        </div>
+                    </t>
+                    <div class="rms-card-footer">
+                        <div class="rms-badges">
+                            <span t-if="product.rms_is_vegan"       class="rms-badge rms-badge-vg" title="Vegan">VG</span>
+                            <span t-elif="product.rms_is_vegetarian" class="rms-badge rms-badge-v"  title="Vegetarian">V</span>
+                            <span t-if="product.rms_is_gluten_free"  class="rms-badge rms-badge-gf" title="Gluten-Free">GF</span>
+                            <span t-if="product.rms_contains_nuts"   class="rms-badge rms-badge-nut" title="Contains Nuts">⚠ Nuts</span>
+                        </div>
+                        <t t-if="product.rms_is_available">
+                            <button type="button" class="rms-add-btn btn btn-primary btn-sm"
+                                    t-att-data-template-id="product.id"
+                                    t-att-data-variant-id="product.product_variant_id.id"
+                                    t-att-data-price="product.list_price"
+                                    t-att-data-requires-spice="'1' if cat_key in spice_categories else '0'">
+                                + Add
+                            </button>
+                        </t>
+                        <t t-else="">
+                            <button type="button" class="btn btn-secondary btn-sm" disabled="disabled">Out of Stock</button>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+        <!-- GROUPED CARD (protein variants) -->
+        <t t-if="card['type'] == 'group'">
+            <t t-set="first_v" t-value="card['first_variant']"/>
+            <div class="rms-card rms-card-grouped"
+                 t-att-data-group-key="card['group_key']"
+                 t-att-data-veg="'1' if card['is_vegetarian'] else '0'"
+                 t-att-data-vegan="'1' if card['is_vegan'] else '0'"
+                 t-att-data-gf="'1' if card['is_gluten_free'] else '0'"
+                 t-att-data-available="'1' if card['is_available'] else '0'"
+                 data-grouped="1">
+                <div class="rms-card-img" style="position:relative">
+                    <img t-att-src="'/web/image/product.template/%d/image_512' % first_v.id"
+                         class="img img-fluid" t-att-alt="card['label']" loading="lazy"/>
+                    <t t-if="not card['is_available']">
+                        <div class="rms-oos-overlay">
+                            <span class="rms-oos-badge">Out of Stock</span>
+                        </div>
+                    </t>
+                </div>
+                <div class="rms-card-body">
+                    <div class="rms-card-top">
+                        <h3 class="rms-card-name">
+                            <t t-esc="card['label']"/>
+                        </h3>
+                        <span class="rms-card-price">from $
+                            <t t-esc="'%.2f' % min(v.list_price for v in card['variants'])"/>
+                        </span>
+                    </div>
+                    <p class="rms-card-desc" t-if="card['description']">
+                        <t t-esc="card['description']"/>
+                    </p>
+                    <!-- Protein buttons -->
+                    <div class="rms-protein-picker">
+                        <span class="rms-protein-label">Choose protein
+                            <span class="text-danger">*</span>
+                        </span>
+                        <div class="rms-protein-opts">
+                            <t t-foreach="card['variants']" t-as="variant">
+                                <button type="button"
+                                        class="rms-protein-btn"
+                                        t-att-data-template-id="variant.id"
+                                        t-att-data-variant-id="variant.product_variant_id.id"
+                                        t-att-data-price="variant.list_price"
+                                        t-att-data-label="variant.rms_protein_label or variant.name"
+                                        t-att-data-vegan="'1' if variant.rms_is_vegan else '0'"
+                                        t-att-data-veg="'1' if variant.rms_is_vegetarian else '0'"
+                                        t-att-data-gf="'1' if variant.rms_is_gluten_free else '0'"
+                                        t-att-data-nuts="'1' if variant.rms_contains_nuts else '0'"
+                                        t-att-disabled="'disabled' if not variant.rms_is_available else False">
+                                    <span class="rms-protein-name">
+                                        <t t-esc="variant.rms_protein_label or variant.name"/>
+                                    </span>
+                                    <span class="rms-protein-price">
+                                        $
+                                        <t t-esc="'%.2f' % variant.list_price"/>
+                                    </span>
+                                </button>
+                            </t>
+                        </div>
+                        <p class="rms-protein-error d-none text-danger small mt-1">Please choose a protein option</p>
+                    </div>
+                    <!-- Spice picker -->
+                    <t t-if="cat_key in spice_categories and card['is_available']">
+                        <div class="rms-spice-picker">
+                            <span class="rms-spice-label">Spice level
+                                <span class="text-danger">*</span>
+                            </span>
+                            <div class="rms-spice-opts">
+                                <label class="rms-spice-opt">
+                                    <input type="radio" t-att-name="'spice_' + card['group_key']" value="mild"/>
+                                    <span>Mild</span>
+                                </label>
+                                <label class="rms-spice-opt">
+                                    <input type="radio" t-att-name="'spice_' + card['group_key']" value="medium"/>
+                                    <span>Med</span>
+                                </label>
+                                <label class="rms-spice-opt">
+                                    <input type="radio" t-att-name="'spice_' + card['group_key']" value="hot"/>
+                                    <span>Hot</span>
+                                </label>
+                                <label class="rms-spice-opt">
+                                    <input type="radio" t-att-name="'spice_' + card['group_key']" value="extra_hot"/>
+                                    <span>🔥 X-Hot</span>
+                                </label>
+                            </div>
+                            <p class="rms-spice-error d-none">Please select a spice level</p>
+                        </div>
+                    </t>
+                    <div class="rms-card-footer">
+                        <div class="rms-badges">
+                            <span t-if="card['is_vegan']"       class="rms-badge rms-badge-vg" title="Vegan">VG</span>
+                            <span t-elif="card['is_vegetarian']" class="rms-badge rms-badge-v"  title="Vegetarian">V</span>
+                            <span t-if="card['is_gluten_free']"  class="rms-badge rms-badge-gf" title="Gluten-Free">GF</span>
+                            <span t-if="card['contains_nuts']"   class="rms-badge rms-badge-nut" title="Contains Nuts">⚠ Nuts</span>
+                        </div>
+                        <t t-if="card['is_available']">
+                            <button type="button" class="rms-add-btn btn btn-primary btn-sm"
+                                    data-template-id=""
+                                    data-variant-id=""
+                                    data-price=""
+                                    t-att-data-requires-spice="'1' if cat_key in spice_categories else '0'">
+                                + Add
+                            </button>
+                        </t>
+                        <t t-else="">
+                            <button type="button" class="btn btn-secondary btn-sm" disabled="disabled">Out of Stock</button>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <!-- ============================================================ -->
+    <!-- RESERVATION PAGE                                             -->
+    <!-- ============================================================ -->
+    <template id="reservation_page" name="Timur Restaurant - Reservation">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Reserve the Hall — Timur Indian Restaurant</t>
+            <section class="o_colored_level o_cc o_cc2 pt80 pb80 text-center">
+                <div class="container">
+                    <h1 class="display-4 fw-bold">Reserve the Hall</h1>
+                    <p class="lead">Birthdays · Corporate Events · Seminars · Private Dining</p>
+                </div>
+            </section>
+            <div id="wrap">
+                <section class="pt48 pb80">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8 col-xl-7">
+                                <t t-if="error">
+                                    <div class="alert alert-danger" role="alert">
+                                        <t t-esc="error"/>
+                                    </div>
+                                </t>
+                                <form action="/reservation/submit" method="post" class="o_website_form rms-reservation-form">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <!-- Occasion -->
+                                    <div class="rms-reservation-section">
+                                        <label class="rms-reservation-label">Occasion
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="rms-reservation-occasion">
+                                            <input class="btn-check" type="radio" name="occasion" value="birthday" id="occ_birthday" required="required" autocomplete="off"/>
+                                            <label class="btn btn-outline-primary" for="occ_birthday">🎂 Birthday / Party</label>
+                                            <input class="btn-check" type="radio" name="occasion" value="corporate" id="occ_corporate" autocomplete="off"/>
+                                            <label class="btn btn-outline-primary" for="occ_corporate">💼 Corporate Meeting</label>
+                                            <input class="btn-check" type="radio" name="occasion" value="seminar" id="occ_seminar" autocomplete="off"/>
+                                            <label class="btn btn-outline-primary" for="occ_seminar">🎓 Seminar</label>
+                                            <input class="btn-check" type="radio" name="occasion" value="private" id="occ_private" autocomplete="off"/>
+                                            <label class="btn btn-outline-primary" for="occ_private">🍽 Private Dining</label>
+                                            <input class="btn-check" type="radio" name="occasion" value="other" id="occ_other" autocomplete="off"/>
+                                            <label class="btn btn-outline-primary" for="occ_other">✨ Other</label>
+                                        </div>
+                                    </div>
+                                    <!-- Date / Time / Guests -->
+                                    <div class="rms-reservation-datetime">
+                                        <div class="rms-reservation-field rms-reservation-date">
+                                            <label class="rms-reservation-label" for="res_date">Date
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="date" id="res_date" name="date" class="form-control"
+                                                   required="required" t-att-value="(form or {}).get('date','')"/>
+                                        </div>
+                                        <div class="rms-reservation-field">
+                                            <label class="rms-reservation-label" for="res_time">
+                                                Start Time
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="time" id="res_time" name="time" class="form-control"
+                                                   step="900"
+                                                   required="required" t-att-value="(form or {}).get('time','')"/>
+                                            <div id="res_time_note" class="form-text text-muted"
+                                                 t-att-data-hours="business_hours_json"></div>
+                                        </div>
+                                        <div class="rms-reservation-field">
+                                            <label class="rms-reservation-label" for="res_end_time">
+                                                End Time
+                                                <span class="rms-reservation-optional">Optional</span>
+                                            </label>
+                                            <input type="time" id="res_end_time" name="end_time" class="form-control"
+                                                   step="900" t-att-value="(form or {}).get('end_time','')"/>
+                                        </div>
+                                        <div class="rms-reservation-field rms-reservation-guests">
+                                            <label class="rms-reservation-label" for="res_headcount">Guests
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="number" id="res_headcount" name="headcount" class="form-control"
+                                                   min="1" max="500" placeholder="20" required="required"
+                                                   t-att-value="(form or {}).get('headcount','')"/>
+                                        </div>
+                                    </div>
+                                    <hr class="rms-reservation-divider"/>
+                                    <!-- Contact details -->
+                                    <h5 class="rms-reservation-subtitle">Your Details</h5>
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-sm-6">
+                                            <label class="rms-reservation-label" for="res_name">Full Name
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" id="res_name" name="name" class="form-control"
+                                                   placeholder="Your name" required="required"
+                                                   t-att-value="(form or {}).get('name','')"/>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="rms-reservation-label" for="res_phone">Phone
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="tel" id="res_phone" name="phone" class="form-control"
+                                                   placeholder="+1 (555) 000-0000" required="required"
+                                                   t-att-value="(form or {}).get('phone','')"/>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="rms-reservation-label" for="res_email">Email
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="email" id="res_email" name="email" class="form-control"
+                                               placeholder="you@example.com" required="required"
+                                               t-att-value="(form or {}).get('email','')"/>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="rms-reservation-label" for="res_details">Special Requests / Details</label>
+                                        <textarea id="res_details" name="details" class="form-control" rows="3"
+                                                  placeholder="Dietary needs, AV equipment, seating arrangement…">
+                                            <t t-esc="(form or {}).get('details','')"/>
+                                        </textarea>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary btn-lg">
+                                            Request Reservation
+                                        </button>
+                                    </div>
+                                    <p class="text-muted text-center mt-3 small">
+                                        We'll confirm your reservation within 24 hours.
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!-- JS: restrict time picker to business hours based on selected day -->
+            <script type="text/javascript">
+                (function () {
+                    var dateInput = document.getElementById('res_date');
+                    var timeInput = document.getElementById('res_time');
+                    var endTimeInput = document.getElementById('res_end_time');
+                    var timeNote  = document.getElementById('res_time_note');
+                    var HOURS = JSON.parse((timeNote &amp;&amp; timeNote.dataset.hours) || '{}');
+
+                    function previousQuarterHour(value) {
+                        var parts = value.split(':').map(Number);
+                        var minutes = parts[0] * 60 + parts[1] - 15;
+                        return String(Math.floor(minutes / 60)).padStart(2, '0') + ':' +
+                               String(minutes % 60).padStart(2, '0');
+                    }
+
+                    if (dateInput &amp;&amp; timeInput) {
+                        function applyHoursForDate() {
+                            var d   = new Date(dateInput.value + 'T00:00:00');
+                            var day = d.getDay(); // JS: 0=Sun, 1=Mon, ..., 6=Sat
+                            // Remap JS day to our HOURS keys (Mon=0 ... Sun=6)
+                            var remap = { 0:6, 1:0, 2:1, 3:2, 4:3, 5:4, 6:5 };
+                            var h = HOURS[remap[day]];
+                            if (!h) {
+                                timeInput.value    = '';
+                                timeInput.min      = '';
+                                timeInput.max      = '';
+                                timeInput.disabled = true;
+                                if (endTimeInput) {
+                                    endTimeInput.value = '';
+                                    endTimeInput.min = '';
+                                    endTimeInput.max = '';
+                                    endTimeInput.disabled = true;
+                                }
+                                timeNote.textContent = 'We are closed on the selected day.';
+                            } else {
+                                timeInput.disabled   = false;
+                                timeInput.min        = h[0];
+                                timeInput.max        = previousQuarterHour(h[1]);
+                                if (endTimeInput) {
+                                    endTimeInput.disabled = false;
+                                    endTimeInput.min = h[0];
+                                    endTimeInput.max = h[1];
+                                }
+                                timeNote.textContent = 'Open ' + h[0] + ' – ' + h[1];
+                                // Clear value if outside new range
+                                if (timeInput.value &amp;&amp; (timeInput.value &lt; h[0] || timeInput.value &gt;= h[1])) {
+                                    timeInput.value = '';
+                                }
+                                if (endTimeInput &amp;&amp; endTimeInput.value &amp;&amp;
+                                        (endTimeInput.value &lt;= timeInput.value || endTimeInput.value &gt; h[1])) {
+                                    endTimeInput.value = '';
+                                }
+                            }
+                        }
+                        dateInput.addEventListener('change', applyHoursForDate);
+                        timeInput.addEventListener('change', function () {
+                            if (endTimeInput) endTimeInput.min = timeInput.value || timeInput.min;
+                            applyHoursForDate();
+                        });
+                        if (dateInput.value) applyHoursForDate();
+                    }
+                })();
+            </script>
+        </t>
+    </template>
+    <!-- ============================================================ -->
+    <!-- RESERVATION CONFIRMED                                        -->
+    <!-- ============================================================ -->
+    <template id="reservation_confirmed" name="Timur Restaurant - Reservation Confirmed">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Reservation Received — Timur Indian Restaurant</t>
+            <div id="wrap">
+                <section class="pt80 pb80">
+                    <div class="container text-center" style="max-width:580px">
+                        <p style="font-size:3.5rem">🎉</p>
+                        <h1 class="fw-bold mb-2">Thank you,
+                            <t t-esc="name"/>!
+                        </h1>
+                        <p class="lead text-muted mb-4">
+                            Your reservation request has been received. We'll confirm within 24 hours.
+                        </p>
+                        <table class="table table-bordered text-start mb-4">
+                            <tbody>
+                                <tr>
+                                    <th class="bg-light" style="width:130px">Occasion</th>
+                                    <td>
+                                        <t t-esc="occasion_label"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Date</th>
+                                    <td>
+                                        <t t-esc="date_str"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Time</th>
+                                    <td>
+                                        <t t-esc="time_str"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="end_time_str">
+                                    <th class="bg-light">End Time</th>
+                                    <td>
+                                        <t t-esc="end_time_str"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Guests</th>
+                                    <td>
+                                        <t t-esc="headcount"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="d-flex gap-3 justify-content-center">
+                            <a href="/" class="btn btn-outline-secondary">Back to Home</a>
+                            <a href="/menu" class="btn btn-primary">Order Food</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+    <!-- ============================================================ -->
+    <!-- CHECKOUT PAGE                                                -->
+    <!-- ============================================================ -->
+    <template id="order_summary" name="Timur Restaurant - Checkout">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Checkout — Timur Indian Restaurant</t>
+            <div id="wrap">
+                <section class="pt48 pb80">
+                    <div class="container" style="max-width:640px">
+                        <!-- Closed state -->
+                        <t t-if="is_closed">
+                            <div class="text-center py-5">
+                                <p style="font-size:3rem">🕐</p>
+                                <h2 class="fw-bold">We're currently closed</h2>
+                                <p class="text-muted mb-4">
+                                    <t t-esc="error"/>
+                                </p>
+                                <a href="/menu" class="btn btn-primary">Browse Menu</a>
+                            </div>
+                        </t>
+                        <!-- Empty cart -->
+                        <t t-elif="not order or not order.id">
+                            <div class="text-center py-5">
+                                <p class="lead text-muted">Your cart is empty.</p>
+                                <a href="/menu" class="btn btn-primary me-2">Menu</a>
+                                <a href="/catering" class="btn btn-outline-primary">Catering</a>
+                            </div>
+                        </t>
+                        <!-- Normal checkout -->
+                        <t t-else="">
+                            <h2 class="fw-bold mb-1">Almost there!</h2>
+                            <p class="text-muted mb-4">Choose how you'd like your order, then proceed to payment.</p>
+                            <t t-if="off_hours">
+                                <div class="alert alert-info mb-4 d-flex align-items-start gap-2">
+                                    <span style="font-size:1.2rem">🕐</span>
+                                    <span>We're currently closed (
+                                        <t t-esc="closed_msg"/>). You can still place your order now — just pick a future time below and we'll have it ready for you!
+                                    </span>
+                                </div>
+                            </t>
+                            <t t-if="error">
+                                <div class="alert alert-danger mb-4">
+                                    <t t-esc="error"/>
+                                </div>
+                            </t>
+                            <!-- Order summary -->
+                            <div class="card mb-4 border-0 shadow-sm">
+                                <div class="card-header bg-white fw-bold border-bottom d-flex justify-content-between">
+                                    <span>Your Order</span>
+                                    <a href="javascript:history.back()" class="text-muted small fw-normal">← Edit</a>
+                                </div>
+                                <table class="table table-sm mb-0">
+                                    <tbody>
+                                        <t t-foreach="order.order_line" t-as="line">
+                                            <tr t-if="line.product_id and not line.is_delivery">
+                                                <td>
+                                                    <span class="fw-semibold">
+                                                        <t t-esc="line.product_id.name"/>
+                                                    </span>
+                                                    <t t-if="line.name and 'Spice:' in line.name">
+                                                        <br/>
+                                                        <small class="text-muted">
+                                                            <t t-foreach="line.name.splitlines()" t-as="ln">
+                                                                <t t-if="'Spice:' in ln">
+                                                                    <t t-esc="ln.strip()"/></t>
+                                                            </t>
+                                                        </small>
+                                                    </t>
+                                                </td>
+                                                <td class="text-center text-muted" style="width:50px">×
+                                                    <t t-esc="int(line.product_uom_qty)"/>
+                                                </td>
+                                                <td class="text-end fw-semibold" style="width:80px">$
+                                                    <t t-esc="'%.2f' % line.price_subtotal"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                    <tfoot class="table-light">
+                                        <tr>
+                                            <td colspan="2" class="fw-bold text-end">Total</td>
+                                            <td class="fw-bold text-end">$
+                                                <t t-esc="'%.2f' % order.amount_total"/>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- Fulfillment form -->
+                            <form action="/rms/checkout/save" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="card mb-4 border-0 shadow-sm">
+                                    <div class="card-header bg-white fw-bold border-bottom">
+                                        How would you like your order?
+                                        <span class="text-danger">*</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex gap-3 mb-3">
+                                            <input class="btn-check" type="radio" name="delivery_type" value="pickup"
+                                                   id="co-pickup" required="required" autocomplete="off"
+                                                   t-att-checked="'checked' if prefill_pickup else None"/>
+                                            <label class="btn btn-outline-primary flex-fill py-3" for="co-pickup">
+                                                🏃 Pickup
+                                            </label>
+                                            <input class="btn-check" type="radio" name="delivery_type" value="delivery"
+                                                   id="co-delivery" autocomplete="off"/>
+                                            <label class="btn btn-outline-primary flex-fill py-3" for="co-delivery">
+                                                🛵 Delivery
+                                            </label>
+                                        </div>
+                                        <!-- Pickup contact fields — shown when Pickup is selected -->
+                                        <div id="co-pickup-wrap" style="display:none">
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold" for="co-pickup-name">
+                                                    Name <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" name="pickup_name" id="co-pickup-name"
+                                                       class="form-control" placeholder="Your full name"
+                                                       t-att-value="order.partner_id.name or ''"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold" for="co-pickup-phone">
+                                                    Phone <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="tel" name="pickup_phone" id="co-pickup-phone"
+                                                       class="form-control" placeholder="+1 (555) 000-0000"
+                                                       t-att-value="order.partner_id.phone or ''"/>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="form-label fw-semibold" for="co-pickup-email">
+                                                    Email <span class="text-muted fw-normal small">(optional)</span>
+                                                </label>
+                                                <input type="email" name="pickup_email" id="co-pickup-email"
+                                                       class="form-control" placeholder="you@example.com"
+                                                       t-att-value="order.partner_id.email or ''"/>
+                                            </div>
+                                        </div>
+                                        <div id="co-addr-wrap" style="display:none">
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold" for="co-addr-name">
+                                                    Name <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" name="addr_name" id="co-addr-name"
+                                                       class="form-control" placeholder="Your full name"
+                                                       t-att-value="order.partner_id.name or ''"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold" for="co-addr-phone">
+                                                    Phone <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="tel" name="addr_phone" id="co-addr-phone"
+                                                       class="form-control" placeholder="+1 (555) 000-0000"
+                                                       t-att-value="order.partner_id.phone or ''"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold" for="co-addr-email">
+                                                    Email <span class="text-muted fw-normal small">(optional)</span>
+                                                </label>
+                                                <input type="email" name="addr_email" id="co-addr-email"
+                                                       class="form-control" placeholder="you@example.com"
+                                                       t-att-value="order.partner_id.email or ''"/>
+                                            </div>
+                                            <label class="form-label fw-semibold">Delivery Address
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="mb-2">
+                                                <label class="form-label small text-muted mb-1" for="co-addr-street">Street Address</label>
+                                                <input type="text" name="addr_street" id="co-addr-street" class="form-control"
+                                                       placeholder="123 Main St"/>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="form-label small text-muted mb-1" for="co-addr-apt">Apartment, Suite, etc. <span class="text-muted">(optional)</span></label>
+                                                <input type="text" name="addr_apt" id="co-addr-apt" class="form-control"
+                                                       placeholder="Apt, suite, unit, floor"/>
+                                            </div>
+                                            <div class="row g-2 mb-2">
+                                                <div class="col-7">
+                                                    <label class="form-label small text-muted mb-1" for="co-addr-city">City</label>
+                                                    <input type="text" name="addr_city" id="co-addr-city" class="form-control"
+                                                           placeholder="City"/>
+                                                </div>
+                                                <div class="col-5">
+                                                    <label class="form-label small text-muted mb-1" for="co-addr-zip">Zip Code</label>
+                                                    <input type="text" name="addr_zip" id="co-addr-zip" class="form-control"
+                                                           placeholder="Zip code"/>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2 mb-2">
+                                                <div class="col-7">
+                                                    <label class="form-label small text-muted mb-1" for="co-addr-state">State</label>
+                                                    <select name="addr_state" id="co-addr-state" class="form-select">
+                                                        <option value="California" selected="selected">California</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-5">
+                                                    <label class="form-label small text-muted mb-1" for="co-addr-country">Country</label>
+                                                    <select id="co-addr-country" class="form-select" disabled="disabled">
+                                                        <option value="United States" selected="selected">United States</option>
+                                                    </select>
+                                                    <!-- disabled selects don't submit — mirror value via hidden input -->
+                                                    <input type="hidden" name="addr_country" value="United States"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-text text-muted mb-2">
+                                                We currently deliver only within California, USA.
+                                            </div>
+                                            <!-- Hidden field — combined address string, used for geocoding/display -->
+                                            <textarea name="delivery_address" id="co-addr" class="form-control d-none" rows="2"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Schedule card — hidden until pickup/delivery chosen -->
+                                <div id="co-when-card" class="card mb-4 border-0 shadow-sm"
+                                     t-att-style="'display:block' if (prefill_pickup or off_hours) else 'display:none'">
+                                    <div class="card-header bg-white fw-bold border-bottom">
+                                        When would you like it?
+                                        <span class="text-muted fw-normal small">(optional)</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- ASAP vs Schedule -->
+                                        <div class="d-flex gap-3 mb-3">
+                                            <t t-if="not off_hours">
+                                                <input class="btn-check" type="radio" name="schedule_type"
+                                                       value="asap" id="co-sched-asap" checked="checked" autocomplete="off"/>
+                                                <label class="btn btn-outline-secondary flex-fill py-3" for="co-sched-asap">
+                                                    ⚡ ASAP
+                                                </label>
+                                            </t>
+                                            <input class="btn-check" type="radio" name="schedule_type"
+                                                   value="schedule" id="co-sched-later" autocomplete="off"
+                                                   t-att-checked="'checked' if off_hours else None"/>
+                                            <label class="btn btn-outline-secondary flex-fill py-3" for="co-sched-later">
+                                                🗓 Schedule
+                                            </label>
+                                        </div>
+                                        <!-- Date + time pickers, shown only when Schedule is selected -->
+                                        <div id="co-sched-wrap" style="display:none">
+                                            <!-- Step 1: date -->
+                                            <label class="form-label fw-semibold" for="co-sched-date">
+                                                Pick a date
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <select id="co-sched-date" name="scheduled_date" class="form-select mb-3">
+                                                <option value="">— choose a date —</option>
+                                                <t t-foreach="schedule_slots" t-as="day">
+                                                    <option t-att-value="day['date_value']">
+                                                        <t t-esc="day['date_label']"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                            <!-- Step 2: time (populated by JS) -->
+                                            <label class="form-label fw-semibold" for="co-sched-time">
+                                                Pick a time
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <select id="co-sched-time" name="scheduled_time" class="form-select" disabled="disabled">
+                                                <option value="">— choose a date first —</option>
+                                            </select>
+                                            <div class="form-text text-muted mt-1">
+                                                Available up to 1 week ahead · 30-minute slots during business hours
+                                            </div>
+                                            <!-- Slot data embedded as JSON for JS to read -->
+                                            <script type="application/json" id="co-sched-data">[<t t-foreach="schedule_slots" t-as="day"><t t-if="not day_first">,</t>{"date":"<t t-esc="day['date_value']"/>","times":[<t t-foreach="day['times']" t-as="t_slot"><t t-if="not t_slot_first">,</t>{"v":"<t t-esc="t_slot['value']"/>","l":"<t t-esc="t_slot['label']"/>"}</t>]}</t>]</script>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Optional gratuity; server recomputes percentages to prevent tampering. -->
+                                <div class="card mb-4 border-0 shadow-sm">
+                                    <div class="card-header bg-white fw-bold border-bottom">
+                                        Add a Tip <span class="text-muted fw-normal small">(optional)</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <input class="btn-check" type="radio" name="tip_choice" value="0"
+                                                   id="co-tip-0" checked="checked" autocomplete="off"/>
+                                            <label class="btn btn-outline-secondary flex-fill" for="co-tip-0">No tip</label>
+                                            <t t-foreach="(10, 15, 20)" t-as="tip_percent">
+                                                <input class="btn-check" type="radio" name="tip_choice"
+                                                       t-att-value="tip_percent" t-att-id="'co-tip-%s' % tip_percent"
+                                                       autocomplete="off"/>
+                                                <label class="btn btn-outline-primary flex-fill"
+                                                       t-att-for="'co-tip-%s' % tip_percent">
+                                                    <t t-esc="tip_percent"/>%
+                                                </label>
+                                            </t>
+                                            <input class="btn-check" type="radio" name="tip_choice" value="custom"
+                                                   id="co-tip-custom" autocomplete="off"/>
+                                            <label class="btn btn-outline-primary flex-fill" for="co-tip-custom">Custom</label>
+                                        </div>
+                                        <div id="co-custom-tip-wrap" class="input-group mt-3" style="display:none">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" name="custom_tip" id="co-custom-tip"
+                                                   class="form-control" min="0" max="500" step="0.01"
+                                                   inputmode="decimal" placeholder="0.00"/>
+                                        </div>
+                                        <div class="form-text mt-2">The tip will be included in your payment total.</div>
+                                    </div>
+                                </div>
+
+                                <!-- Special request / dietary notes -->
+                                <div class="card mb-4 border-0 shadow-sm">
+                                    <div class="card-header bg-white fw-bold border-bottom">
+                                        Special Request <span class="text-muted fw-normal small">(optional)</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <textarea name="special_request" id="co-special-request"
+                                                  class="form-control" rows="3" maxlength="60"
+                                                  placeholder="Add notes for your order (e.g., less salt, sugar-free, allergies)..."></textarea>
+                                        <div class="form-text text-muted text-end mt-1">
+                                            <span id="co-special-request-count">0</span>/60
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg fw-bold">
+                                        Continue to Payment →
+                                    </button>
+                                </div>
+                            </form>
+                            <script type="text/javascript">
+                                (function () {
+                                    var whenCard   = document.getElementById('co-when-card');
+                                    var pickupWrap = document.getElementById('co-pickup-wrap');
+                                    var addrWrap   = document.getElementById('co-addr-wrap');
+                                    var addrField  = document.getElementById('co-addr');
+                                    var schedWrap  = document.getElementById('co-sched-wrap');
+                                    var schedDate  = document.getElementById('co-sched-date');
+                                    var schedTime  = document.getElementById('co-sched-time');
+                                    var customTipWrap = document.getElementById('co-custom-tip-wrap');
+                                    var customTip = document.getElementById('co-custom-tip');
+
+                                    document.querySelectorAll('input[name="tip_choice"]').forEach(function(radio) {
+                                        radio.addEventListener('change', function() {
+                                            var isCustom = this.value === 'custom';
+                                            customTipWrap.style.display = isCustom ? 'flex' : 'none';
+                                            customTip.required = isCustom;
+                                            if (!isCustom) customTip.value = '';
+                                        });
+                                    });
+
+                                    // Address sub-fields (combined into addrField before submit)
+                                    var addrStreet  = document.getElementById('co-addr-street');
+                                    var addrApt     = document.getElementById('co-addr-apt');
+                                    var addrCity    = document.getElementById('co-addr-city');
+                                    var addrZip     = document.getElementById('co-addr-zip');
+                                    var addrState   = document.getElementById('co-addr-state');
+                                    var addrCountry = document.getElementById('co-addr-country');
+
+                                    // Parse slot data embedded in the page
+                                    var slotData = [];
+                                    try {
+                                        slotData = JSON.parse(document.getElementById('co-sched-data').textContent);
+                                    } catch(e) {}
+
+                                    // Combine street/apt/city/zip into the single hidden field
+                                    // submitted to the server — keeps the controller unchanged
+                                    // and still gives one clean string for the map/geocoder.
+                                    function combineAddress() {
+                                        var parts   = [];
+                                        var street  = addrStreet.value.trim();
+                                        var apt     = addrApt.value.trim();
+                                        var city    = addrCity.value.trim();
+                                        var zip     = addrZip.value.trim();
+                                        var state   = addrState.value;
+                                        var country = addrCountry.value;
+                                        if (street) parts.push(apt ? (street + ', ' + apt) : street);
+                                        if (city)   parts.push(city);
+                                        if (state)  parts.push(state);
+                                        if (zip)    parts.push(zip);
+                                        if (country) parts.push(country);
+                                        addrField.value = parts.join(', ');
+                                    }
+                                    [addrStreet, addrApt, addrCity, addrZip, addrState].forEach(function(el) {
+                                        el.addEventListener('input', combineAddress);
+                                        el.addEventListener('change', combineAddress);
+                                    });
+                                    combineAddress();   // pre-fill hidden field with State/Country defaults on load
+
+                                    // Show schedule card when pickup or delivery is chosen
+                                    document.querySelectorAll('input[name="delivery_type"]').forEach(function(r) {
+                                        r.addEventListener('change', function() {
+                                            var isDelivery = this.value === 'delivery';
+                                            var isPickup   = this.value === 'pickup';
+                                            addrWrap.style.display   = isDelivery ? 'block' : 'none';
+                                            pickupWrap.style.display = isPickup   ? 'block' : 'none';
+                                            addrStreet.required      = isDelivery;
+                                            addrCity.required        = isDelivery;
+                                            addrZip.required         = isDelivery;
+                                            var pickupName  = document.getElementById('co-pickup-name');
+                                            var pickupPhone = document.getElementById('co-pickup-phone');
+                                            var pickupEmail = document.getElementById('co-pickup-email');
+                                            if (pickupName)  pickupName.required  = isPickup;
+                                            if (pickupPhone) pickupPhone.required = isPickup;
+                                            if (pickupEmail) pickupEmail.required = false; // always optional
+                                            var addrName  = document.getElementById('co-addr-name');
+                                            var addrPhone = document.getElementById('co-addr-phone');
+                                            var addrEmail = document.getElementById('co-addr-email');
+                                            if (addrName)  addrName.required  = isDelivery;
+                                            if (addrPhone) addrPhone.required = isDelivery;
+                                            if (addrEmail) addrEmail.required = false; // always optional
+                                            whenCard.style.display   = 'block';
+                                        });
+                                    });
+
+                                    // Show date+time pickers when Schedule is chosen
+                                    function applyScheduleState(isSched) {
+                                        schedWrap.style.display = isSched ? 'block' : 'none';
+                                        schedDate.required      = isSched;
+                                        schedTime.required      = isSched;
+                                        if (!isSched) {
+                                            schedDate.value = '';
+                                            schedTime.innerHTML = '<option value="">— choose a date first —</option>';
+                                            schedTime.disabled = true;
+                                        }
+                                    }
+                                    document.querySelectorAll('input[name="schedule_type"]').forEach(function(r) {
+                                        r.addEventListener('change', function() {
+                                            applyScheduleState(this.value === 'schedule');
+                                        });
+                                    });
+                                    // Auto-trigger if Schedule is already checked (off-hours pre-select)
+                                    var preChecked = document.querySelector('#co-sched-later');
+                                    if (preChecked &amp;&amp; preChecked.checked) {
+                                        applyScheduleState(true);
+                                    }
+
+                                    // Populate times when a date is selected
+                                    schedDate.addEventListener('change', function() {
+                                        var chosen = this.value;
+                                        schedTime.innerHTML = '';
+                                        schedTime.disabled  = true;
+                                        if (!chosen) {
+                                            schedTime.innerHTML = '<option value="">— choose a date first —</option>';
+                                            return;
+                                        }
+                                        var day = slotData.find(function(d) { return d.date === chosen; });
+                                        if (!day || !day.times.length) {
+                                            schedTime.innerHTML = '<option value="">No slots available</option>';
+                                            return;
+                                        }
+                                        schedTime.innerHTML = '<option value="">— choose a time —</option>';
+                                        day.times.forEach(function(t) {
+                                            var opt = document.createElement('option');
+                                            opt.value       = t.v;
+                                            opt.textContent = t.l;
+                                            schedTime.appendChild(opt);
+                                        });
+                                        schedTime.disabled = false;
+                                    });
+
+                                    // Combine address fields right before the form submits
+                                    // (covers cases like browser autofill that skip 'input' events)
+                                    var coForm = addrField.closest('form');
+                                    if (coForm) {
+                                        coForm.addEventListener('submit', combineAddress);
+                                    }
+
+                                    // Special request character counter (max 60)
+                                    var specialReq   = document.getElementById('co-special-request');
+                                    var specialCount = document.getElementById('co-special-request-count');
+                                    if (specialReq &amp;&amp; specialCount) {
+                                        specialReq.addEventListener('input', function() {
+                                            specialCount.textContent = specialReq.value.length;
+                                        });
+                                    }
+                                })();
+                            </script>
+                        </t>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- ORDER CONFIRMATION                                           -->
+    <!-- Shown right after payment so the customer has proof their    -->
+    <!-- order was placed, with items, total, fulfillment & schedule. -->
+    <!-- ============================================================ -->
+    <template id="order_confirmation" name="Timur Restaurant - Order Confirmation">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Track Order — Timur Indian Restaurant</t>
+            <t t-set="head">
+                <meta name="theme-color" content="#9d2525"/>
+                <meta name="apple-mobile-web-app-capable" content="yes"/>
+                <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+                <link rel="manifest" t-att-href="tracking_manifest_url"/>
+                <link rel="apple-touch-icon" href="/rms_website_menu/static/src/img/order-tracking-192.png"/>
+                <link rel="stylesheet" href="/rms_website_menu/static/src/css/rms_order_tracking.css?v=1"/>
+            </t>
+            <div id="wrap">
+                <section class="pt48 pb80">
+                    <div class="container" style="max-width:760px">
+
+                        <section class="rms-tracking"
+                                 id="rms-order-tracking"
+                                 t-att-data-status-url="tracking_status_url"
+                                 t-att-data-tracking-url="tracking_url"
+                                 t-att-data-initial-state="tracking_payload['state']">
+                            <div class="rms-tracking-header">
+                                <img src="/rms_website_menu/static/src/img/order-tracking-192.png"
+                                     width="64" height="64" alt="Order tracking" class="rms-tracking-icon"/>
+                                <div class="rms-tracking-title">
+                                    <p>Order <strong><t t-esc="order.name"/></strong></p>
+                                    <h1 id="rms-tracking-heading">
+                                        <t t-esc="tracking_payload['message']"/>
+                                    </h1>
+                                    <span class="rms-tracking-updated" id="rms-tracking-updated">Live status</span>
+                                </div>
+                                <span t-attf-class="rms-tracking-state state-#{tracking_payload['state']}"
+                                      id="rms-tracking-state">
+                                    <t t-esc="tracking_payload['state'].replace('_', ' ').title()"/>
+                                </span>
+                            </div>
+
+                            <ol class="rms-tracking-steps" id="rms-tracking-steps">
+                                <t t-foreach="tracking_payload['steps']" t-as="step">
+                                    <li t-att-data-step="step['key']"
+                                        t-att-data-timestamp="step['timestamp'] or ''"
+                                        t-attf-class="rms-tracking-step#{' complete' if step['complete'] else ''}#{' active' if step['active'] else ''}">
+                                        <span class="rms-step-marker">
+                                            <span class="rms-step-check">&#10003;</span>
+                                            <span class="rms-step-number"><t t-esc="step_index + 1"/></span>
+                                        </span>
+                                        <span class="rms-step-copy">
+                                            <strong><t t-esc="step['label']"/></strong>
+                                            <small class="rms-step-time"/>
+                                        </span>
+                                    </li>
+                                </t>
+                            </ol>
+
+                            <div class="rms-tracking-actions">
+                                <button type="button" class="rms-track-btn rms-track-btn-primary" id="rms-copy-tracking">
+                                    Copy tracking link
+                                </button>
+                                <button type="button" class="rms-track-btn" id="rms-share-tracking" style="display:none">
+                                    Share
+                                </button>
+                                <button type="button" class="rms-track-btn" id="rms-install-tracking" style="display:none">
+                                    Add to phone
+                                </button>
+                                <span class="rms-copy-feedback" id="rms-copy-feedback" role="status"/>
+                            </div>
+                            <div class="rms-install-help" id="rms-install-help" style="display:none">
+                                In the Share sheet, choose <strong>Add to Home Screen</strong>. If it is not listed,
+                                use Safari's Share button and choose <strong>Add to Home Screen</strong> there.
+                            </div>
+                        </section>
+
+                        <div class="rms-receipt-heading">
+                            <div>
+                                <h2>Order receipt</h2>
+                                <p>
+                                    Thanks<t t-if="order.partner_id.name">, <t t-esc="order.partner_id.name.split()[0]"/></t>.
+                                    Payment confirmed.
+                                </p>
+                            </div>
+                            <strong><t t-esc="order.name"/></strong>
+                        </div>
+
+                        <!-- Fulfillment / schedule banner -->
+                        <div class="alert alert-success d-flex align-items-start gap-2 mb-4">
+                            <span style="font-size:1.2rem">
+                                <t t-if="order.rms_delivery_type == 'delivery'">🛵</t>
+                                <t t-else="">🏃</t>
+                            </span>
+                            <span>
+                                <t t-if="order.rms_delivery_type == 'delivery'">
+                                    <strong>Delivery</strong> to
+                                    <t t-esc="order.rms_delivery_address or order.partner_shipping_id.contact_address"/>
+                                </t>
+                                <t t-else="">
+                                    <strong>Pickup</strong> in-store
+                                </t>
+                                <br/>
+                                <t t-if="scheduled_time_local">
+                                    Scheduled for
+                                    <strong><t t-esc="scheduled_time_local"/></strong>
+                                    (restaurant time)
+                                </t>
+                                <t t-else="">
+                                    We'll have it ready <strong>as soon as possible</strong>.
+                                </t>
+                            </span>
+                        </div>
+
+                        <!-- Special request -->
+                        <t t-if="order.rms_special_request">
+                            <div class="alert alert-warning d-flex align-items-start gap-2 mb-4">
+                                <span style="font-size:1.2rem">📝</span>
+                                <span>
+                                    <strong>Special Request:</strong><br/>
+                                    <t t-esc="order.rms_special_request"/>
+                                </span>
+                            </div>
+                        </t>
+
+                        <!-- Order items -->
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-header bg-white fw-bold border-bottom">
+                                Order Summary
+                            </div>
+                            <table class="table table-sm mb-0">
+                                <tbody>
+                                    <t t-foreach="order.order_line" t-as="line">
+                                        <tr t-if="line.product_id and not line.is_delivery">
+                                            <td>
+                                                <span class="fw-semibold">
+                                                    <t t-esc="line.product_id.name"/>
+                                                </span>
+                                                <t t-if="line.name and 'Spice:' in line.name">
+                                                    <br/>
+                                                    <small class="text-muted">
+                                                        <t t-foreach="line.name.splitlines()" t-as="ln">
+                                                            <t t-if="'Spice:' in ln">
+                                                                <t t-esc="ln.strip()"/></t>
+                                                        </t>
+                                                    </small>
+                                                </t>
+                                            </td>
+                                            <td class="text-center text-muted" style="width:50px">×
+                                                <t t-esc="int(line.product_uom_qty)"/>
+                                            </td>
+                                            <td class="text-end fw-semibold" style="width:80px">$
+                                                <t t-esc="'%.2f' % line.price_subtotal"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot class="table-light">
+                                    <tr>
+                                        <td colspan="2" class="text-end text-muted">Subtotal</td>
+                                        <td class="text-end text-muted">$
+                                            <t t-esc="'%.2f' % order.amount_untaxed"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-end text-muted">Taxes</td>
+                                        <td class="text-end text-muted">$
+                                            <t t-esc="'%.2f' % order.amount_tax"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="fw-bold text-end">Total Paid</td>
+                                        <td class="fw-bold text-end">$
+                                            <t t-esc="'%.2f' % order.amount_total"/>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <!-- Reference / contact -->
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="text-muted small">Order Reference</div>
+                                    <div class="fw-bold"><t t-esc="order.name"/></div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-muted small">Questions?</div>
+                                    <a href="tel:+14155718293" class="fw-bold text-decoration-none">+1 (415) 571-8293</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <a href="/menu" class="btn btn-outline-primary flex-fill">Order More</a>
+                            <a href="/" class="btn btn-primary flex-fill">Back to Home</a>
+                        </div>
+
+                        <t t-if="is_logged_in">
+                            <p class="text-center mt-3 mb-0">
+                                <a href="/rms/my-orders" class="text-muted small text-decoration-none">
+                                    View all my orders →
+                                </a>
+                            </p>
+                        </t>
+
+                    </div>
+                </section>
+            </div>
+            <script src="/rms_website_menu/static/src/js/rms_order_tracking.js?v=2"/>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- MY ORDERS — customer order history / "profile" page          -->
+    <!-- ============================================================ -->
+    <template id="my_orders_page" name="Timur Restaurant - My Orders">
+        <t t-call="website.layout">
+            <t t-set="additional_title">My Orders — Timur Indian Restaurant</t>
+            <div id="wrap">
+                <section class="pt48 pb80">
+                    <div class="container" style="max-width:720px">
+
+                        <div class="mb-4">
+                            <h2 class="fw-bold mb-1">My Orders</h2>
+                            <p class="text-muted">Your past orders with Timur Indian Restaurant.</p>
+                        </div>
+
+                        <t t-if="not orders">
+                            <div class="text-center py-5">
+                                <p style="font-size:2.5rem" class="mb-2">🍽️</p>
+                                <p class="text-muted mb-3">You haven't placed any orders yet.</p>
+                                <a href="/menu" class="btn btn-primary">Browse the Menu</a>
+                            </div>
+                        </t>
+
+                        <t t-foreach="orders" t-as="o">
+                            <a t-attf-href="/rms/order/#{o.id}" class="text-decoration-none">
+                                <div class="card mb-3 border-0 shadow-sm">
+                                    <div class="card-body d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="fw-bold text-dark"><t t-esc="o.name"/></div>
+                                            <div class="text-muted small">
+                                                <t t-esc="o.date_order.strftime('%b %-d, %Y · %-I:%M %p')"/>
+                                                ·
+                                                <t t-if="o.rms_delivery_type == 'delivery'">🛵 Delivery</t>
+                                                <t t-else="">🏃 Pickup</t>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="fw-bold text-dark">$<t t-esc="'%.2f' % o.amount_total"/></div>
+                                            <span class="badge"
+                                                  t-attf-class="bg-#{'success' if o.rms_kitchen_status == 'ready' else 'secondary'}">
+                                                <t t-esc="(o.rms_kitchen_status or 'placed').replace('_', ' ').title()"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </t>
+
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- STOCK ADMIN PAGE                                             -->
+    <!-- ============================================================ -->
+    <template id="stock_access_denied" name="Stock Management Access Denied">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Stock Access Restricted</t>
+            <div id="wrap">
+                <section class="py-5">
+                    <div class="container" style="max-width:640px">
+                        <div class="border rounded bg-white p-5 text-center shadow-sm">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded bg-danger text-white fw-bold mb-3"
+                                 style="width:40px;height:40px">S</div>
+                            <h1 class="h4 fw-bold">Stock management access restricted</h1>
+                            <p class="text-muted mb-4">Your account needs the Restaurant Stock Manager permission.</p>
+                            <a href="/web/login?redirect=/rms/admin/stock" class="btn btn-outline-secondary">Switch account</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="stock_admin_page" name="RMS Stock Management">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Stock Management — Timur Restaurant</t>
+            <div id="wrap">
+                <section class="pt48 pb80">
+                    <div class="container">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div>
+                                <h1 class="h3 fw-bold mb-1">Menu Stock Management</h1>
+                                <p class="text-muted mb-0">Toggle items on/off, fix prices, or add new dishes. Changes apply instantly.</p>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-primary btn-sm" id="rms-add-item-btn">+ Add New Item</button>
+                                <a href="/menu" class="btn btn-outline-secondary btn-sm">View Menu →</a>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 mb-4">
+                            <span class="badge bg-success fs-6 px-3 py-2">
+                                <t t-esc="len([p for p in products if p.rms_is_available])"/> Available
+                            </span>
+                            <span class="badge bg-danger fs-6 px-3 py-2">
+                                <t t-esc="len([p for p in products if not p.rms_is_available])"/> Out of Stock
+                            </span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle bg-white rounded shadow-sm overflow-hidden">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th style="width:60px"></th>
+                                        <th>Item</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rms-stock-tbody">
+                                    <t t-foreach="products" t-as="product">
+                                        <tr t-att-id="'row-%d' % product.id"
+                                            t-att-class="'' if product.rms_is_available else 'table-secondary text-muted'">
+                                            <td>
+                                                <img t-att-src="'/web/image/product.template/%d/image_128' % product.id"
+                                                     class="rms-row-thumb"
+                                                     t-att-data-product-id="product.id"
+                                                     style="width:44px;height:44px;object-fit:cover;border-radius:6px;display:block;"
+                                                     t-att-alt="product.name"/>
+                                            </td>
+                                            <td class="fw-semibold rms-row-name" t-att-data-product-id="product.id">
+                                                <t t-esc="product.name"/>
+                                            </td>
+                                            <td class="text-muted small rms-row-category" t-att-data-product-id="product.id">
+                                                <t t-esc="cat_labels.get(product.rms_menu_category, product.rms_menu_category or '—')"/>
+                                            </td>
+                                            <td class="rms-row-price" t-att-data-product-id="product.id">
+                                                $<t t-esc="'%.2f' % product.list_price"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <t t-if="product.rms_is_available">
+                                                    <span class="badge bg-success">Available</span>
+                                                </t>
+                                                <t t-else="">
+                                                    <span class="badge bg-danger">Out of Stock</span>
+                                                </t>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="d-flex gap-1 justify-content-center flex-wrap">
+                                                    <button type="button"
+                                                            t-att-class="'btn btn-sm rms-stock-toggle ' + ('btn-outline-danger' if product.rms_is_available else 'btn-outline-success')"
+                                                            t-att-data-product-id="product.id"
+                                                            t-att-data-available="'1' if product.rms_is_available else '0'">
+                                                        <t t-if="product.rms_is_available">Mark Out of Stock</t>
+                                                        <t t-else="">Mark Available</t>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-primary rms-edit-item-btn"
+                                                            t-att-data-product-id="product.id"
+                                                            t-att-data-name="product.name"
+                                                            t-att-data-price="'%.2f' % product.list_price"
+                                                            t-att-data-description="product.description_sale or ''"
+                                                            t-att-data-category="product.rms_menu_category or ''"
+                                                            t-att-data-is-vegetarian="'1' if product.rms_is_vegetarian else '0'"
+                                                            t-att-data-is-vegan="'1' if product.rms_is_vegan else '0'"
+                                                            t-att-data-is-gluten-free="'1' if product.rms_is_gluten_free else '0'"
+                                                            t-att-data-contains-nuts="'1' if product.rms_contains_nuts else '0'"
+                                                            t-att-data-image-url="'/web/image/product.template/%d/image_128' % product.id">
+                                                        ✏️ Edit
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger rms-delete-item-btn"
+                                                            t-att-data-product-id="product.id"
+                                                            t-att-data-name="product.name">
+                                                        🗑️ Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Add New Item modal -->
+            <div class="rms-modal-backdrop d-none" id="rms-add-item-backdrop">
+                <div class="rms-modal-box">
+                    <div class="rms-modal-header">
+                        <span class="fw-bold">Add New Menu Item</span>
+                        <button type="button" class="btn-close" id="rms-add-item-close"></button>
+                    </div>
+                    <div class="rms-modal-body">
+                        <div id="rms-add-item-error" class="alert alert-danger d-none"></div>
+
+                        <label class="form-label fw-semibold">Item Name <span class="text-danger">*</span></label>
+                        <input type="text" id="rms-new-name" class="form-control mb-3" maxlength="100" placeholder="e.g. Chicken Tikka Masala"/>
+
+                        <label class="form-label fw-semibold">Description</label>
+                        <textarea id="rms-new-description" class="form-control mb-3" rows="2" maxlength="300"
+                                  placeholder="Short description shown on the menu"></textarea>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">Price <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" step="0.01" min="0" max="10000" id="rms-new-price" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">Category</label>
+                                <select id="rms-new-category" class="form-select">
+                                    <option value="">— Select category —</option>
+                                    <t t-foreach="cat_options" t-as="opt">
+                                        <option t-att-value="opt[0]"><t t-esc="opt[1]"/></option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3 flex-wrap mb-3">
+                            <label class="form-check-label">
+                                <input type="checkbox" id="rms-new-vegetarian" class="form-check-input me-1"/> Vegetarian
+                            </label>
+                            <label class="form-check-label">
+                                <input type="checkbox" id="rms-new-vegan" class="form-check-input me-1"/> Vegan
+                            </label>
+                            <label class="form-check-label">
+                                <input type="checkbox" id="rms-new-gluten-free" class="form-check-input me-1"/> Gluten Free
+                            </label>
+                            <label class="form-check-label">
+                                <input type="checkbox" id="rms-new-nuts" class="form-check-input me-1"/> Contains Nuts
+                            </label>
+                        </div>
+
+                        <label class="form-label fw-semibold">Photo</label>
+                        <input type="file" id="rms-new-image" class="form-control mb-2" accept="image/*"/>
+                        <img id="rms-new-image-preview" class="d-none mb-2" style="max-width:120px;max-height:120px;border-radius:6px;"/>
+                    </div>
+                    <div class="rms-modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" id="rms-add-item-cancel">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="rms-add-item-save">Add Item</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Item modal — single place to edit everything: name,
+                 price, photo, category, description, dietary flags -->
+            <div class="rms-modal-backdrop d-none" id="rms-edit-item-backdrop">
+                <div class="rms-modal-box">
+                    <div class="rms-modal-header">
+                        <span class="fw-bold">Edit Menu Item</span>
+                        <button type="button" class="btn-close" id="rms-edit-item-close"></button>
+                    </div>
+                    <div class="rms-modal-body">
+                        <div id="rms-edit-item-error" class="alert alert-danger d-none"></div>
+                        <input type="hidden" id="rms-edit-product-id"/>
+
+                        <label class="form-label fw-semibold">Item Name <span class="text-danger">*</span></label>
+                        <input type="text" id="rms-edit-name" class="form-control mb-3" maxlength="100"/>
+
+                        <label class="form-label fw-semibold">Description</label>
+                        <textarea id="rms-edit-description" class="form-control mb-3" rows="2" maxlength="300"></textarea>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">Price <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" step="0.01" min="0" max="10000" id="rms-edit-price" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">Category</label>
+                                <select id="rms-edit-category" class="form-select">
+                                    <option value="">— Select category —</option>
+                                    <t t-foreach="cat_options" t-as="opt">
+                                        <option t-att-value="opt[0]"><t t-esc="opt[1]"/></option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3 flex-wrap mb-3">
+                            <label class="form-check-label">
+                                <input type="checkbox" id="rms-edit-vegetarian" class="form-check-input me-1"/> Vegetarian
+                            </label>
+                            <label class="form-check-label">
+                                <input type="checkbox" id="rms-edit-vegan" class="form-check-input me-1"/> Vegan
+                            </label>
+                            <label class="form-check-label">
+                                <input type="checkbox" id="rms-edit-gluten-free" class="form-check-input me-1"/> Gluten Free
+                            </label>
+                            <label class="form-check-label">
+                                <input type="checkbox" id="rms-edit-nuts" class="form-check-input me-1"/> Contains Nuts
+                            </label>
+                        </div>
+
+                        <label class="form-label fw-semibold">Photo</label>
+                        <div class="mb-2">
+                            <img id="rms-edit-image-preview" style="max-width:120px;max-height:120px;border-radius:6px;display:block;"/>
+                        </div>
+                        <input type="file" id="rms-edit-image" class="form-control" accept="image/*"/>
+                        <div class="form-text text-muted">Leave blank to keep the current photo.</div>
+                    </div>
+                    <div class="rms-modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" id="rms-edit-item-cancel">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="rms-edit-item-save">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete confirmation modal -->
+            <div class="rms-modal-backdrop d-none" id="rms-delete-item-backdrop">
+                <div class="rms-modal-box" style="max-width:420px;">
+                    <div class="rms-modal-header">
+                        <span class="fw-bold">Delete Menu Item</span>
+                        <button type="button" class="btn-close" id="rms-delete-item-close"></button>
+                    </div>
+                    <div class="rms-modal-body">
+                        <p>
+                            Are you sure you want to delete
+                            <strong id="rms-delete-item-name"></strong>?
+                        </p>
+                        <p class="text-muted small mb-0">
+                            If this item has past orders attached to it, it will be archived
+                            (hidden from the menu) instead of fully removed, so old receipts
+                            stay accurate.
+                        </p>
+                    </div>
+                    <div class="rms-modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" id="rms-delete-item-cancel">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="rms-delete-item-confirm">Delete</button>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .rms-modal-backdrop {
+                    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+                    display: flex; align-items: center; justify-content: center;
+                    z-index: 1050; padding: 20px;
+                }
+                .rms-modal-box {
+                    background: #fff; border-radius: 10px; max-width: 520px; width: 100%;
+                    max-height: 90vh; overflow-y: auto;
+                }
+                .rms-modal-header {
+                    display: flex; justify-content: space-between; align-items: center;
+                    padding: 16px 20px; border-bottom: 1px solid #eee;
+                }
+                .rms-modal-body { padding: 20px; }
+                .rms-modal-footer {
+                    display: flex; justify-content: flex-end; gap: 8px;
+                    padding: 16px 20px; border-top: 1px solid #eee;
+                }
+            </style>
+            <script type="text/javascript">
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('.rms-stock-toggle').forEach(function (btn) {
+                        btn.addEventListener('click', async function () {
+                            const productId = parseInt(btn.dataset.productId);
+                            btn.disabled = true;
+                            btn.textContent = 'Saving…';
+                            const resp = await fetch('/rms/admin/stock/toggle', {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({product_id: productId}),
+                            });
+                            const data = await resp.json();
+                            const row  = document.getElementById('row-' + productId);
+                            const badge = row.querySelector('.badge');
+                            if (data.available) {
+                                row.className   = '';
+                                badge.className = 'badge bg-success';
+                                badge.textContent = 'Available';
+                                btn.className   = 'btn btn-sm rms-stock-toggle btn-outline-danger';
+                                btn.textContent = 'Mark Out of Stock';
+                            } else {
+                                row.className   = 'table-secondary text-muted';
+                                badge.className = 'badge bg-danger';
+                                badge.textContent = 'Out of Stock';
+                                btn.className   = 'btn btn-sm rms-stock-toggle btn-outline-success';
+                                btn.textContent = 'Mark Available';
+                            }
+                            btn.disabled = false;
+                            btn.dataset.available = data.available ? '1' : '0';
+                        });
+                    });
+
+                    // ---------------------------------------------- //
+                    // Edit Item modal — one form for everything      //
+                    // ---------------------------------------------- //
+                    const editBackdrop  = document.getElementById('rms-edit-item-backdrop');
+                    const editClose     = document.getElementById('rms-edit-item-close');
+                    const editCancel    = document.getElementById('rms-edit-item-cancel');
+                    const editSave      = document.getElementById('rms-edit-item-save');
+                    const editError     = document.getElementById('rms-edit-item-error');
+                    const editImageIn   = document.getElementById('rms-edit-image');
+                    const editImagePrev = document.getElementById('rms-edit-image-preview');
+                    let   editImageBase64 = '';
+
+                    function closeEditModal() {
+                        editBackdrop.classList.add('d-none');
+                        editImageIn.value = '';
+                        editImageBase64 = '';
+                        editError.classList.add('d-none');
+                    }
+
+                    document.querySelectorAll('.rms-edit-item-btn').forEach(function (btn) {
+                        btn.addEventListener('click', function () {
+                            document.getElementById('rms-edit-product-id').value      = btn.dataset.productId;
+                            document.getElementById('rms-edit-name').value            = btn.dataset.name || '';
+                            document.getElementById('rms-edit-price').value           = btn.dataset.price || '';
+                            document.getElementById('rms-edit-description').value     = btn.dataset.description || '';
+                            document.getElementById('rms-edit-category').value        = btn.dataset.category || '';
+                            document.getElementById('rms-edit-vegetarian').checked    = btn.dataset.isVegetarian === '1';
+                            document.getElementById('rms-edit-vegan').checked         = btn.dataset.isVegan === '1';
+                            document.getElementById('rms-edit-gluten-free').checked   = btn.dataset.isGlutenFree === '1';
+                            document.getElementById('rms-edit-nuts').checked          = btn.dataset.containsNuts === '1';
+                            editImagePrev.src = btn.dataset.imageUrl || '';
+                            editImageIn.value = '';
+                            editImageBase64 = '';
+                            editError.classList.add('d-none');
+                            editBackdrop.classList.remove('d-none');
+                        });
+                    });
+
+                    if (editClose)  editClose.addEventListener('click', closeEditModal);
+                    if (editCancel) editCancel.addEventListener('click', closeEditModal);
+                    if (editBackdrop) {
+                        editBackdrop.addEventListener('click', function (e) {
+                            if (e.target === editBackdrop) closeEditModal();
+                        });
+                    }
+
+                    if (editImageIn) {
+                        editImageIn.addEventListener('change', function () {
+                            const file = editImageIn.files[0];
+                            if (!file) return;
+                            if (file.size &gt; 8 * 1024 * 1024) {
+                                alert('That image is too large — please pick one under 8MB.');
+                                editImageIn.value = '';
+                                return;
+                            }
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                editImageBase64 = e.target.result;
+                                editImagePrev.src = editImageBase64;
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    }
+
+                    if (editSave) {
+                        editSave.addEventListener('click', async function () {
+                            const productId = document.getElementById('rms-edit-product-id').value;
+                            const name  = document.getElementById('rms-edit-name').value.trim();
+                            const price = parseFloat(document.getElementById('rms-edit-price').value);
+
+                            if (!name) {
+                                editError.textContent = 'Item name is required.';
+                                editError.classList.remove('d-none');
+                                return;
+                            }
+                            if (isNaN(price) || price &lt; 0) {
+                                editError.textContent = 'Please enter a valid price.';
+                                editError.classList.remove('d-none');
+                                return;
+                            }
+
+                            editError.classList.add('d-none');
+                            editSave.disabled = true;
+                            editSave.textContent = 'Saving…';
+
+                            try {
+                                const resp = await fetch('/rms/admin/stock/update', {
+                                    method: 'POST',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({
+                                        product_id:      parseInt(productId),
+                                        name:            name,
+                                        price:           price,
+                                        description:     document.getElementById('rms-edit-description').value.trim(),
+                                        category:        document.getElementById('rms-edit-category').value,
+                                        is_vegetarian:   document.getElementById('rms-edit-vegetarian').checked,
+                                        is_vegan:        document.getElementById('rms-edit-vegan').checked,
+                                        is_gluten_free:  document.getElementById('rms-edit-gluten-free').checked,
+                                        contains_nuts:   document.getElementById('rms-edit-nuts').checked,
+                                        image_base64:    editImageBase64,
+                                    }),
+                                });
+                                const data = await resp.json();
+                                if (data.error) {
+                                    editError.textContent = data.error;
+                                    editError.classList.remove('d-none');
+                                } else {
+                                    // Reload so every column (name, category label, price,
+                                    // thumbnail, and the Edit button's own data-* attributes
+                                    // used to prefill next time) all stay in sync with the
+                                    // server — simpler and safer than patching each piece by hand.
+                                    window.location.reload();
+                                }
+                            } catch (err) {
+                                editError.textContent = 'Something went wrong. Please try again.';
+                                editError.classList.remove('d-none');
+                            } finally {
+                                editSave.disabled = false;
+                                editSave.textContent = 'Save Changes';
+                            }
+                        });
+                    }
+
+                    // ---------------------------------------------- //
+                    // Delete Item modal                              //
+                    // ---------------------------------------------- //
+                    const deleteBackdrop = document.getElementById('rms-delete-item-backdrop');
+                    const deleteClose    = document.getElementById('rms-delete-item-close');
+                    const deleteCancel   = document.getElementById('rms-delete-item-cancel');
+                    const deleteConfirm  = document.getElementById('rms-delete-item-confirm');
+                    const deleteNameEl   = document.getElementById('rms-delete-item-name');
+                    let   pendingDeleteId = null;
+
+                    function closeDeleteModal() {
+                        deleteBackdrop.classList.add('d-none');
+                        pendingDeleteId = null;
+                    }
+
+                    document.querySelectorAll('.rms-delete-item-btn').forEach(function (btn) {
+                        btn.addEventListener('click', function () {
+                            pendingDeleteId = btn.dataset.productId;
+                            deleteNameEl.textContent = btn.dataset.name || 'this item';
+                            deleteBackdrop.classList.remove('d-none');
+                        });
+                    });
+
+                    if (deleteClose)  deleteClose.addEventListener('click', closeDeleteModal);
+                    if (deleteCancel) deleteCancel.addEventListener('click', closeDeleteModal);
+                    if (deleteBackdrop) {
+                        deleteBackdrop.addEventListener('click', function (e) {
+                            if (e.target === deleteBackdrop) closeDeleteModal();
+                        });
+                    }
+
+                    if (deleteConfirm) {
+                        deleteConfirm.addEventListener('click', async function () {
+                            if (!pendingDeleteId) return;
+                            deleteConfirm.disabled = true;
+                            deleteConfirm.textContent = 'Deleting…';
+                            try {
+                                const resp = await fetch('/rms/admin/stock/delete', {
+                                    method: 'POST',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({product_id: parseInt(pendingDeleteId)}),
+                                });
+                                const data = await resp.json();
+                                if (data.error) {
+                                    alert('Could not delete: ' + data.error);
+                                    deleteConfirm.disabled = false;
+                                    deleteConfirm.textContent = 'Delete';
+                                } else {
+                                    const row = document.getElementById('row-' + pendingDeleteId);
+                                    if (row) row.remove();
+                                    closeDeleteModal();
+                                    deleteConfirm.disabled = false;
+                                    deleteConfirm.textContent = 'Delete';
+                                }
+                            } catch (err) {
+                                alert('Something went wrong. Please try again.');
+                                deleteConfirm.disabled = false;
+                                deleteConfirm.textContent = 'Delete';
+                            }
+                        });
+                    }
+
+                    // ---------------------------------------------- //
+                    // Add New Item modal                            //
+                    // ---------------------------------------------- //
+                    const addBackdrop   = document.getElementById('rms-add-item-backdrop');
+                    const addBtn        = document.getElementById('rms-add-item-btn');
+                    const closeBtn      = document.getElementById('rms-add-item-close');
+                    const cancelBtn     = document.getElementById('rms-add-item-cancel');
+                    const saveBtn       = document.getElementById('rms-add-item-save');
+                    const errorBox      = document.getElementById('rms-add-item-error');
+                    const imageInput    = document.getElementById('rms-new-image');
+                    const imagePreview  = document.getElementById('rms-new-image-preview');
+                    let   newImageBase64 = '';
+
+                    function openModal() {
+                        errorBox.classList.add('d-none');
+                        addBackdrop.classList.remove('d-none');
+                    }
+                    function closeModal() {
+                        addBackdrop.classList.add('d-none');
+                        document.getElementById('rms-new-name').value = '';
+                        document.getElementById('rms-new-description').value = '';
+                        document.getElementById('rms-new-price').value = '';
+                        document.getElementById('rms-new-category').value = '';
+                        document.getElementById('rms-new-vegetarian').checked = false;
+                        document.getElementById('rms-new-vegan').checked = false;
+                        document.getElementById('rms-new-gluten-free').checked = false;
+                        document.getElementById('rms-new-nuts').checked = false;
+                        imageInput.value = '';
+                        imagePreview.classList.add('d-none');
+                        newImageBase64 = '';
+                    }
+
+                    if (addBtn)    addBtn.addEventListener('click', openModal);
+                    if (closeBtn)  closeBtn.addEventListener('click', closeModal);
+                    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+                    if (addBackdrop) {
+                        addBackdrop.addEventListener('click', function (e) {
+                            if (e.target === addBackdrop) closeModal();
+                        });
+                    }
+
+                    if (imageInput) {
+                        imageInput.addEventListener('change', function () {
+                            const file = imageInput.files[0];
+                            if (!file) return;
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                newImageBase64 = e.target.result;
+                                imagePreview.src = newImageBase64;
+                                imagePreview.classList.remove('d-none');
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    }
+
+                    if (saveBtn) {
+                        saveBtn.addEventListener('click', async function () {
+                            const name  = document.getElementById('rms-new-name').value.trim();
+                            const price = parseFloat(document.getElementById('rms-new-price').value);
+
+                            if (!name) {
+                                errorBox.textContent = 'Item name is required.';
+                                errorBox.classList.remove('d-none');
+                                return;
+                            }
+                            if (isNaN(price) || price &lt; 0) {
+                                errorBox.textContent = 'Please enter a valid price.';
+                                errorBox.classList.remove('d-none');
+                                return;
+                            }
+
+                            errorBox.classList.add('d-none');
+                            saveBtn.disabled = true;
+                            saveBtn.textContent = 'Adding…';
+
+                            try {
+                                const resp = await fetch('/rms/admin/stock/create', {
+                                    method: 'POST',
+                                    headers: {'Content-Type': 'application/json'},
+                                    body: JSON.stringify({
+                                        name:            name,
+                                        price:           price,
+                                        description:     document.getElementById('rms-new-description').value.trim(),
+                                        category:        document.getElementById('rms-new-category').value,
+                                        is_vegetarian:   document.getElementById('rms-new-vegetarian').checked,
+                                        is_vegan:        document.getElementById('rms-new-vegan').checked,
+                                        is_gluten_free:  document.getElementById('rms-new-gluten-free').checked,
+                                        contains_nuts:   document.getElementById('rms-new-nuts').checked,
+                                        image_base64:    newImageBase64,
+                                    }),
+                                });
+                                const data = await resp.json();
+                                if (data.error) {
+                                    errorBox.textContent = data.error;
+                                    errorBox.classList.remove('d-none');
+                                } else {
+                                    // Reload so the new row renders with full server-side
+                                    // markup (price editing, toggle button, etc.) — simpler
+                                    // and more reliable than hand-building the table row in JS.
+                                    window.location.reload();
+                                }
+                            } catch (err) {
+                                errorBox.textContent = 'Something went wrong. Please try again.';
+                                errorBox.classList.remove('d-none');
+                            } finally {
+                                saveBtn.disabled = false;
+                                saveBtn.textContent = 'Add Item';
+                            }
+                        });
+                    }
+                });
+            </script>
+        </t>
+    </template>
+    <!-- ============================================================ -->
+    <!-- CATERING PAGE                                                -->
+    <!-- ============================================================ -->
+    <template id="catering_page" name="Timur Restaurant - Catering">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Catering — Timur Indian Restaurant</t>
+            <div id="rms-wrap">
+                <!-- Hero -->
+                <div class="rms-hero">
+                    <div class="rms-hero-inner">
+                        <p class="rms-hero-sub">Event &amp; Party Catering</p>
+                        <h1 class="rms-hero-title">Catering Menu</h1>
+                        <p class="rms-hero-tagline">Perfect for your next gathering</p>
+                    </div>
+                </div>
+                <!-- Closed banner (informational only) -->
+                <t t-if="not is_open">
+                    <div class="alert alert-warning text-center mb-0 rounded-0 fw-semibold">
+                        🕐
+                        <t t-esc="closed_msg"/> You can still browse — checkout will open when we reopen.
+                    </div>
+                </t>
+                <!-- Mobile: horizontal category strip -->
+                <div class="rms-cat-mobile">
+                    <div class="rms-cat-mobile-inner">
+                        <a class="rms-cat-pill active" data-cat="all" href="#rms-items">All</a>
+                        <t t-foreach="grouped_products" t-as="group">
+                            <a class="rms-cat-pill"
+                               t-att-data-cat="group['key']"
+                               t-att-href="'#cat-' + group['key']">
+                                <t t-esc="group['label']"/>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+                <div class="rms-layout">
+                    <!-- Left: Category sidebar -->
+                    <aside class="rms-cat-sidebar">
+                        <span class="rms-cat-sidebar-title">Categories</span>
+                        <a class="rms-cat-pill active" data-cat="all" href="#rms-items">All</a>
+                        <t t-foreach="grouped_products" t-as="group">
+                            <a class="rms-cat-pill"
+                               t-att-data-cat="group['key']"
+                               t-att-href="'#cat-' + group['key']">
+                                <t t-esc="group['label']"/>
+                            </a>
+                        </t>
+                    </aside>
+                    <!-- Center: Items -->
+                    <main class="rms-items" id="rms-items">
+                        <t t-foreach="grouped_products" t-as="group">
+                            <section class="rms-section"
+                                     t-att-id="'cat-' + group['key']"
+                                     t-att-data-cat="group['key']">
+                                <div class="rms-accordion-toggle"
+                                     t-att-data-target="'acc-' + group['key']">
+                                    <h2 class="rms-section-title">
+                                        <t t-esc="group['label']"/>
+                                    </h2>
+                                    <span class="rms-accordion-icon">&#9660;</span>
+                                </div>
+                                <div class="rms-accordion-content"
+                                     t-att-id="'acc-' + group['key']">
+                                    <div class="rms-grid">
+                                        <t t-foreach="group['items']" t-as="product">
+                                            <div class="rms-card"
+                                                 t-att-data-id="product.id"
+                                                 t-att-data-variant-id="product.product_variant_id.id"
+                                                 t-att-data-name="product.name"
+                                                 t-att-data-price="product.list_price"
+                                                 t-att-data-desc="product.description_sale or ''"
+                                                 t-att-data-available="'1' if product.rms_is_available else '0'">
+                                                <div class="rms-card-img" style="position:relative">
+                                                    <img t-att-src="'/web/image/product.template/%d/image_512' % product.id"
+                                                         class="img img-fluid"
+                                                         t-att-alt="product.name"
+                                                         loading="lazy"/>
+                                                    <t t-if="not product.rms_is_available">
+                                                        <div class="rms-oos-overlay">
+                                                            <span class="rms-oos-badge">Out of Stock</span>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                                <div class="rms-card-body">
+                                                    <div class="rms-card-top">
+                                                        <h3 class="rms-card-name">
+                                                            <t t-esc="product.name"/>
+                                                        </h3>
+                                                        <span class="rms-card-price">$
+                                                            <t t-esc="'%.2f' % product.list_price"/>
+                                                        </span>
+                                                    </div>
+                                                    <p class="rms-card-desc" t-if="product.description_sale">
+                                                        <t t-esc="product.description_sale"/>
+                                                    </p>
+                                                    <!-- Spice picker -->
+                                                    <t t-if="group['key'] in spice_categories and product.rms_is_available">
+                                                        <div class="rms-spice-picker">
+                                                            <span class="rms-spice-label">Spice level
+                                                                <span class="text-danger">*</span>
+                                                            </span>
+                                                            <div class="rms-spice-opts">
+                                                                <label class="rms-spice-opt">
+                                                                    <input type="radio" t-att-name="'spice_' + str(product.id)" value="mild"/>
+                                                                    <span>Mild</span>
+                                                                </label>
+                                                                <label class="rms-spice-opt">
+                                                                    <input type="radio" t-att-name="'spice_' + str(product.id)" value="medium"/>
+                                                                    <span>Med</span>
+                                                                </label>
+                                                                <label class="rms-spice-opt">
+                                                                    <input type="radio" t-att-name="'spice_' + str(product.id)" value="hot"/>
+                                                                    <span>Hot</span>
+                                                                </label>
+                                                                <label class="rms-spice-opt">
+                                                                    <input type="radio" t-att-name="'spice_' + str(product.id)" value="extra_hot"/>
+                                                                    <span>🔥 X-Hot</span>
+                                                                </label>
+                                                            </div>
+                                                            <p class="rms-spice-error d-none">Please select a spice level</p>
+                                                        </div>
+                                                    </t>
+                                                    <div class="rms-card-footer">
+                                                        <!-- Add to cart always works — checkout blocks off-hours -->
+                                                        <t t-if="product.rms_is_available">
+                                                            <button type="button"
+                                                                    class="rms-add-btn btn btn-primary btn-sm"
+                                                                    t-att-data-template-id="product.id"
+                                                                    t-att-data-variant-id="product.product_variant_id.id"
+                                                                    t-att-data-name="product.name"
+                                                                    t-att-data-price="product.list_price"
+                                                                    t-att-data-requires-spice="'1' if group['key'] in spice_categories else '0'">
+                                                                + Add
+                                                            </button>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <button type="button" class="btn btn-secondary btn-sm" disabled="disabled">
+                                                                Out of Stock
+                                                            </button>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                            </section>
+                        </t>
+                    </main>
+                    <!-- Cart Sidebar -->
+                    <aside class="rms-cart-sidebar" id="rms-cart-sidebar">
+                        <div class="rms-cart-header">
+                            <h3>Your Catering Order</h3>
+                            <span class="rms-cart-count" id="rms-cart-count">0</span>
+                        </div>
+                        <div class="rms-cart-items" id="rms-cart-items">
+                            <p class="rms-cart-empty">Your cart is empty.</p>
+                        </div>
+                        <div class="rms-cart-footer" id="rms-cart-footer" style="display:none">
+                            <div class="rms-cart-total">
+                                <span>Total</span>
+                                <span id="rms-cart-total">$0.00</span>
+                            </div>
+                            <a href="/rms/checkout" class="rms-checkout-btn d-block text-center text-decoration-none">
+                                Checkout →
+                            </a>
+                        </div>
+                    </aside>
+                </div>
+                <!-- /.rms-layout -->
+                <!-- Mobile FAB -->
+                <button class="rms-fab" id="rms-fab" style="display:none">
+                    <span>🛒</span>
+                    <span class="rms-fab-count" id="rms-fab-count">0</span>
+                    <span class="rms-fab-total" id="rms-fab-total"></span>
+                </button>
+                <!-- Mobile drawer -->
+                <div class="rms-drawer-overlay" id="rms-drawer-overlay"></div>
+                <div class="rms-drawer" id="rms-drawer">
+                    <div class="rms-drawer-header">
+                        <h3>Your Catering Order</h3>
+                        <button class="rms-drawer-close" id="rms-drawer-close">&#10005;</button>
+                    </div>
+                    <div class="rms-cart-items" id="rms-drawer-items">
+                        <p class="rms-cart-empty">Your cart is empty.</p>
+                    </div>
+                    <div class="rms-cart-footer" id="rms-drawer-footer" style="display:none">
+                        <div class="rms-cart-total">
+                            <span>Total</span>
+                            <span id="rms-drawer-total">$0.00</span>
+                        </div>
+                        <a href="/rms/checkout" class="rms-checkout-btn d-block text-center text-decoration-none">
+                            Checkout →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /#rms-wrap -->
+            <script type="text/javascript">
+                (function() {
+                    function setFilterTop() {
+                        var hdr  = document.querySelector('header#top, .o_header_standard, nav.navbar');
+                        var h    = hdr ? hdr.offsetHeight : 0;
+                        var cat  = document.querySelector('.rms-cat-mobile');
+                        if (cat) cat.style.top = h + 'px';
+                    }
+                    window.addEventListener('load',   setFilterTop);
+                    window.addEventListener('resize', setFilterTop);
+                    setFilterTop();
+                })();
+            </script>
+        </t>
+    </template>
+
+    <!-- ================================================================
+         Hide the Billing address block on the payment page and make the
+         Edit button go back to /rms/checkout instead of /shop/address.
+         Inherits address_on_checkout which is the shared partial rendered
+         inside website_sale.payment.
+         ================================================================ -->
+    <template id="rms_payment_hide_billing"
+              inherit_id="website_sale.address_on_checkout"
+              name="RMS: Hide billing, fix Edit link">
+
+        <!-- Remove the standalone Billing column (shown when billing != delivery) -->
+        <xpath expr="//div[@id='delivery_and_billing']/div[hasclass('d-flex')]/div[last()]" position="replace"/>
+
+        <!-- Make the Edit button go to our focused edit-address page -->
+        <xpath expr="//t[@t-call='website_sale.address_edit_button']" position="replace">
+            <a href="/rms/checkout/edit-address" class="btn btn-sm btn-outline-secondary float-end">← Edit</a>
+        </xpath>
+
+    </template>
+
+    <!-- Hide only the "Address" step from the Order > Address > Payment
+         breadcrumb, and hide the "Back to address" sidebar link.
+         Injected via address_on_checkout which is only on the payment page. -->
+    <template id="rms_payment_hide_wizard"
+              inherit_id="website_sale.address_on_checkout"
+              name="RMS: Hide address step and back button">
+        <xpath expr="//div[@id='delivery_and_billing']" position="before">
+            <style>
+                /* Hide only the "Address" middle step in Order > Address > Payment */
+                .o_wsale_breadcrumb .breadcrumb-item:nth-child(2) {
+                    display: none !important;
+                }
+                /* Hide separator after Order step */
+                .o_wsale_breadcrumb .breadcrumb-item:nth-child(1)::after {
+                    display: none !important;
+                }
+            </style>
+            <script>
+            (function() {
+                function rmsHideBackBtn() {
+                    /* Hide any link whose href contains /shop/address — this is the
+                       "Back to address" previous-step link rendered by Odoo */
+                    document.querySelectorAll('a').forEach(function(a) {
+                        var href = a.getAttribute('href') || '';
+                        if (href.indexOf('/shop/address') !== -1) {
+                            var parent = a.parentElement;
+                            if (parent) parent.style.display = 'none';
+                            a.style.display = 'none';
+                        }
+                    });
+                }
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', rmsHideBackBtn);
+                } else {
+                    rmsHideBackBtn();
+                }
+            })();
+            </script>
+        </xpath>
+    </template>
+
+    <!-- ================================================================
+         Focused edit-address page — shown when customer clicks Edit
+         on the payment page. Only shows fields relevant to their order.
+         ================================================================ -->
+    <template id="edit_address" name="RMS Edit Address">
+        <t t-call="website.layout">
+            <div id="wrap" class="container py-5" style="max-width:600px">
+                <h3 class="mb-1">Edit your details</h3>
+                <p class="text-muted mb-4">
+                    <t t-if="delivery_type == 'pickup'">Update your contact info for pickup.</t>
+                    <t t-else="">Update your contact info and delivery address.</t>
+                </p>
+
+                <form action="/rms/checkout/save-address" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <!-- Contact fields (same for both pickup and delivery) -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white fw-bold border-bottom">Contact</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Name <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control" required="required"
+                                       t-att-value="partner.name or ''"/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Phone <span class="text-danger">*</span></label>
+                                <input type="tel" name="phone" class="form-control" required="required"
+                                       t-att-value="partner.phone or ''"/>
+                            </div>
+                            <div class="mb-1">
+                                <label class="form-label fw-semibold">Email <span class="text-muted fw-normal small">(optional)</span></label>
+                                <input type="email" name="email" class="form-control"
+                                       t-att-value="partner.email or ''"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery address fields (delivery only) -->
+                    <t t-if="delivery_type == 'delivery'">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white fw-bold border-bottom">Delivery Address</div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Street Address <span class="text-danger">*</span></label>
+                                    <input type="text" name="addr_street" class="form-control" required="required"
+                                           t-att-value="shipping.street or ''"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Apartment, Suite, etc. <span class="text-muted fw-normal small">(optional)</span></label>
+                                    <input type="text" name="addr_apt" class="form-control" placeholder="Apt, suite, unit, floor"/>
+                                </div>
+                                <div class="row g-2 mb-3">
+                                    <div class="col-7">
+                                        <label class="form-label fw-semibold">City <span class="text-danger">*</span></label>
+                                        <input type="text" name="addr_city" class="form-control" required="required"
+                                               t-att-value="shipping.city or ''"/>
+                                    </div>
+                                    <div class="col-5">
+                                        <label class="form-label fw-semibold">Zip Code</label>
+                                        <input type="text" name="addr_zip" class="form-control"
+                                               t-att-value="shipping.zip or ''"/>
+                                    </div>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label fw-semibold">State</label>
+                                    <select name="addr_state" class="form-select">
+                                        <option value="California" selected="selected">California</option>
+                                    </select>
+                                </div>
+                                <div class="form-text text-muted mt-1">We currently deliver only within California, USA.</div>
+                            </div>
+                        </div>
+                    </t>
+
+                    <div class="d-flex gap-3">
+                        <a href="/shop/payment" class="btn btn-outline-secondary flex-fill">Cancel</a>
+                        <button type="submit" class="btn btn-primary flex-fill" style="background:#7c1c2e;border-color:#7c1c2e">
+                            Save &amp; Continue →
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rms_product_template_user,rms.product.template.user,product.model_product_template,base.group_user,1,0,0,0
+access_rms_product_template_manager,rms.product.template.manager,product.model_product_template,base.group_system,1,1,1,1

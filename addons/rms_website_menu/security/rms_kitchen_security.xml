@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Kitchen Staff group.
+        Only users explicitly added to this group (Settings > Users,
+        or via this group's "Users" tab) can access /rms/kitchen.
+        Being a generic Odoo "Internal User" is NOT enough on its own —
+        this is a deliberate, separate permission so random employees
+        with backend access can't see the kitchen display by default.
+    -->
+    <record id="group_rms_kitchen_staff" model="res.groups">
+        <field name="name">Kitchen Staff</field>
+        <field name="comment">Can access the Timur Kitchen Display (/rms/kitchen) and update order status.</field>
+    </record>
+
+    <record id="group_rms_reporting_manager" model="res.groups">
+        <field name="name">Restaurant Reporting Manager</field>
+        <field name="comment">Can access online sales reports and export website-order data.</field>
+    </record>
+
+    <record id="group_rms_stock_manager" model="res.groups">
+        <field name="name">Restaurant Stock Manager</field>
+        <field name="comment">Can manage menu availability, pricing, products, and images from the stock page.</field>
+    </record>
+</odoo>

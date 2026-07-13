@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- KITCHEN ACCESS DENIED                                        -->
+    <!-- Shown to logged-in users who lack Kitchen Staff permission.  -->
+    <!-- Unauthenticated visitors never reach this — Odoo's own login -->
+    <!-- wall (auth='user' on the route) redirects them to /web/login -->
+    <!-- before this template is ever rendered.                       -->
+    <!-- ============================================================ -->
+    <template id="kitchen_access_denied" name="Kitchen Access Denied">
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <title>Kitchen Access — Timur</title>
+                <link rel="stylesheet" href="/rms_website_menu/static/src/css/rms_kitchen.css"/>
+            </head>
+            <body class="kds-pin-body">
+                <div class="kds-pin-wrap">
+                    <div class="kds-pin-logo">
+                        <span class="kds-pin-icon">🔒</span>
+                        <h1 class="kds-pin-title">Access Restricted</h1>
+                        <p class="kds-pin-sub">
+                            Your account doesn't have Kitchen Display access.<br/>
+                            Ask an administrator to add you to the
+                            <strong>Kitchen Staff</strong> group
+                            (Settings → Users).
+                        </p>
+                    </div>
+                    <a href="/web/login?redirect=/rms/kitchen" class="btn btn-primary mt-3">
+                        Switch Account
+                    </a>
+                </div>
+            </body>
+        </html>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- KITCHEN DASHBOARD                                            -->
+    <!-- ============================================================ -->
+    <template id="kitchen_dashboard" name="Kitchen Dashboard">
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+                <title>Kitchen — Timur</title>
+                <link rel="stylesheet" href="/rms_website_menu/static/src/css/rms_kitchen.css?v=31"/>
+            </head>
+            <body class="kds-body">
+
+                <!-- Top bar -->
+                <header class="kds-header">
+                    <div class="kds-header-left">
+                        <span class="kds-header-icon">🍽</span>
+                        <span class="kds-header-title">Kitchen Display</span>
+                    </div>
+                    <div class="kds-header-center">
+                        <span id="kds-clock" class="kds-clock"/>
+                    </div>
+                    <div class="kds-header-right">
+                        <span class="kds-connection-status" id="kds-odoo-status" title="Checking Odoo connection">
+                            <span class="kds-connection-dot warn" id="kds-odoo-status-dot"></span>
+                            <span id="kds-odoo-status-text">Odoo checking...</span>
+                        </span>
+                        <button class="kds-tab-btn active" data-tab="live">Live Orders</button>
+                        <button class="kds-tab-btn" data-tab="scheduled">🕐 Scheduled <span id="kds-scheduled-count" class="kds-tab-badge">0</span></button>
+                        <button class="kds-tab-btn" data-tab="catering">🍽 Catering <span id="kds-catering-count" class="kds-tab-badge">0</span></button>
+                        <button class="kds-tab-btn" data-tab="reservations">Reservations <span id="kds-reservations-count" class="kds-tab-badge">0</span></button>
+                        <button class="kds-tab-btn" data-tab="history">7-Day History</button>
+                        <span class="kds-sound-toggle" id="kds-sound-toggle" title="Toggle sound">🔔</span>
+                        <button class="kds-tab-btn" id="kds-print-queue-btn" title="Print queue and relay status">Print Queue</button>
+                        <t t-if="can_manage_hours">
+                            <button class="kds-tab-btn" id="kds-hours-btn" title="Edit restaurant hours">Hours</button>
+                        </t>
+                        <t t-if="can_manage_stock">
+                            <a href="/rms/admin/stock" class="kds-lock-btn">Stock</a>
+                        </t>
+                        <t t-if="can_view_reports">
+                            <a href="/rms/admin/reports" class="kds-lock-btn">Reports</a>
+                        </t>
+                        <a href="/rms/kitchen/logout" class="kds-lock-btn">🔒 Lock</a>
+                    </div>
+                </header>
+
+                <!-- Live board -->
+                <div class="kds-live" id="kds-live">
+                    <div class="kds-stats" id="kds-stats">
+                        <div class="kds-stat kds-stat-primary">
+                            <span class="kds-stat-icon">🔥</span>
+                            <span class="kds-stat-value" id="kds-stat-active">0</span>
+                            <span class="kds-stat-label">Active orders</span>
+                        </div>
+                        <div class="kds-stat">
+                            <span class="kds-stat-icon">🧾</span>
+                            <span class="kds-stat-value" id="kds-stat-today">0</span>
+                            <span class="kds-stat-label">Orders today</span>
+                        </div>
+                        <div class="kds-stat">
+                            <span class="kds-stat-icon">⏱</span>
+                            <span class="kds-stat-value" id="kds-stat-wait">0m</span>
+                            <span class="kds-stat-label">Avg wait</span>
+                        </div>
+                        <div class="kds-stat">
+                            <span class="kds-stat-icon">✅</span>
+                            <span class="kds-stat-value" id="kds-stat-ready">0</span>
+                            <span class="kds-stat-label">Ready now</span>
+                        </div>
+                    </div>
+
+                    <!-- 3-column sections -->
+                    <div class="kds-cols" id="kds-cols">
+                        <div class="kds-col" id="kds-col-queue">
+                            <div class="kds-col-header kds-col-header-new">
+                                <span class="kds-col-title">🔥 In Queue</span>
+                                <span class="kds-col-count" id="kds-count-queue">0</span>
+                            </div>
+                            <div class="kds-col-cards" id="kds-col-queue-cards"/>
+                        </div>
+                        <div class="kds-col" id="kds-col-preparing">
+                            <div class="kds-col-header kds-col-header-preparing">
+                                <span class="kds-col-title">👨‍🍳 Preparing</span>
+                                <span class="kds-col-count" id="kds-count-preparing">0</span>
+                            </div>
+                            <div class="kds-col-cards" id="kds-col-preparing-cards"/>
+                        </div>
+                        <div class="kds-col" id="kds-col-ready">
+                            <div class="kds-col-header kds-col-header-ready">
+                                <span class="kds-col-title">✅ Ready</span>
+                                <span class="kds-col-count" id="kds-count-ready">0</span>
+                            </div>
+                            <div class="kds-col-cards" id="kds-col-ready-cards"/>
+                        </div>
+                        <div class="kds-col kds-col-empty" id="kds-col-empty" style="display:none">
+                            <div class="kds-empty" id="kds-empty">
+                                <span style="font-size:3rem">✅</span>
+                                <p>All caught up! No active orders.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scheduled board -->
+                <div class="kds-scheduled-panel" id="kds-scheduled" style="display:none">
+                    <div class="kds-scheduled-header">
+                        <span>Upcoming Scheduled Orders</span>
+                    </div>
+                    <div class="kds-grid" id="kds-scheduled-grid"/>
+                </div>
+
+                <!-- Catering board -->
+                <div class="kds-catering-panel" id="kds-catering-panel" style="display:none">
+                    <div class="kds-scheduled-header">
+                        <span>🍽 Active Catering Orders</span>
+                    </div>
+                    <div class="kds-catering-grid" id="kds-catering-grid"/>
+                </div>
+
+                <!-- Reservations board -->
+                <div class="kds-reservations-panel" id="kds-reservations-panel" style="display:none">
+                    <div class="kds-scheduled-header">
+                        <span>Upcoming Reservation Requests</span>
+                    </div>
+                    <div class="kds-reservations-grid" id="kds-reservations-grid"/>
+                </div>
+
+                <!-- History board -->
+                <div class="kds-history" id="kds-history" style="display:none">
+                    <div class="kds-history-header">
+                        <span>Orders from the last 7 days</span>
+                        <span id="kds-history-count" class="kds-col-count">0</span>
+                    </div>
+                    <div class="kds-history-list" id="kds-history-list"/>
+                </div>
+
+                <!-- New order alert modal -->
+                <div class="kds-alert-overlay" id="kds-alert-overlay" style="display:none">
+                    <div class="kds-alert-box">
+                        <div class="kds-alert-pulse"/>
+                        <div class="kds-alert-top">
+                            <span class="kds-alert-icon">🔔</span>
+                            <span class="kds-alert-title">New Order</span>
+                            <span class="kds-alert-num" id="kds-alert-num"/>
+                        </div>
+                        <div class="kds-alert-type" id="kds-alert-type"/>
+                        <div class="kds-alert-addr" id="kds-alert-addr" style="display:none"/>
+                        <div class="kds-alert-items" id="kds-alert-items"/>
+                        <div class="kds-alert-timer">
+                            <div class="kds-alert-progress" id="kds-alert-progress"/>
+                        </div>
+                        <div class="kds-alert-actions">
+                            <button class="kds-alert-btn-accept" id="kds-alert-accept">✅ Accept Order</button>
+                            <button class="kds-alert-btn-dismiss" id="kds-alert-dismiss">Later</button>
+                        </div>
+                    </div>
+                </div>
+
+                <t t-if="can_manage_hours">
+                    <div class="kds-hours-modal" id="kds-hours-modal" style="display:none">
+                        <div class="kds-hours-dialog">
+                            <div class="kds-hours-header">
+                                <div>
+                                    <h2>Restaurant Hours</h2>
+                                    <p id="kds-hours-timezone">Loading hours...</p>
+                                </div>
+                                <button type="button" class="kds-hours-close" id="kds-hours-close" title="Close">&#x2715;</button>
+                            </div>
+                            <div class="kds-hours-days" id="kds-hours-days"/>
+                            <p class="kds-hours-note">These hours control ordering availability and scheduled-order time slots.</p>
+                            <p class="kds-hours-status" id="kds-hours-status"/>
+                            <div class="kds-hours-actions">
+                                <button type="button" class="kds-hours-cancel" id="kds-hours-cancel">Cancel</button>
+                                <button type="button" class="kds-hours-save" id="kds-hours-save">Save Hours</button>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+
+                <div class="kds-print-queue-modal" id="kds-print-queue-modal" style="display:none">
+                    <div class="kds-print-queue-dialog">
+                        <div class="kds-hours-header">
+                            <div>
+                                <h2>Print Queue</h2>
+                                <p>Odoo stores jobs until a paired relay sends them to the printer.</p>
+                            </div>
+                            <button type="button" class="kds-hours-close" id="kds-print-queue-close" title="Close">&#x2715;</button>
+                        </div>
+                        <div class="kds-print-counts" id="kds-print-counts">
+                            <div><strong>0</strong><span>Pending</span></div>
+                            <div><strong>0</strong><span>Sending</span></div>
+                            <div><strong>0</strong><span>Sent</span></div>
+                            <div><strong>0</strong><span>Failed</span></div>
+                        </div>
+                        <t t-if="can_manage_print_agents">
+                            <div class="kds-pairing-panel">
+                                <h3>Pair a Relay</h3>
+                                <div class="kds-pairing-form">
+                                    <input id="kds-pairing-name" type="text" value="Kitchen Printer" maxlength="80"/>
+                                    <button type="button" id="kds-generate-pairing">Generate Code</button>
+                                </div>
+                                <div class="kds-pairing-code" id="kds-pairing-code" style="display:none">
+                                    <strong id="kds-pairing-code-value"/>
+                                    <span>Enter this code in the relay app within 10 minutes.</span>
+                                </div>
+                            </div>
+                        </t>
+                        <div class="kds-print-section">
+                            <h3>Relays</h3>
+                            <div id="kds-print-devices" class="kds-print-list"><p>Loading...</p></div>
+                        </div>
+                        <div class="kds-print-section">
+                            <h3>Recent Jobs</h3>
+                            <div id="kds-print-jobs" class="kds-print-list"><p>Loading...</p></div>
+                        </div>
+                        <p class="kds-hours-status" id="kds-print-queue-status"/>
+                    </div>
+                </div>
+
+                <script src="/rms_website_menu/static/src/js/epson_epos.js?v=30"/>
+                <script src="/rms_website_menu/static/src/js/rms_kitchen.js?v=31"/>
+
+            </body>
+        </html>
+    </template>
+
+</odoo>

@@ -1,0 +1,1839 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- SMALL PLATES — solo items                                    -->
+    <!-- ============================================================ -->
+
+    <record id="product_samosa" model="product.template">
+      <field name="name">Samosa</field>
+      <field name="list_price">7.00</field>
+      <field name="description_sale">Golden, flaky pastries with spiced potatoes &amp; fresh garden peas</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_tiger_shrimp_chopsticks" model="product.template">
+      <field name="name">Tiger Shrimp Chopsticks</field>
+      <field name="list_price">12.00</field>
+      <field name="description_sale">Crispy fried tiger shrimp with a tangy house-made mayo</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_tandoori_sample" model="product.template">
+      <field name="name">Tandoori Sample</field>
+      <field name="list_price">12.00</field>
+      <field name="description_sale">Chicken breast cubes &amp; lamb leg cubes, oven-roasted &amp; cooked to perfection</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_chicken_wings" model="product.template">
+      <field name="name">Chicken Wings</field>
+      <field name="list_price">11.00</field>
+      <field name="description_sale">Chicken wings marinated in spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_samosa_chat" model="product.template">
+      <field name="name">Samosa Chat</field>
+      <field name="list_price">11.00</field>
+      <field name="description_sale">Samosa, garbanzo beans, yogurt mint tamarind, onions, tomatoes</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_timur_chat" model="product.template">
+      <field name="name">Timur Chat</field>
+      <field name="list_price">11.00</field>
+      <field name="description_sale">Crispy fried kale with yogurt, mint, tamarind, tomato, onion</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_french_fries" model="product.template">
+      <field name="name">Classic French Fries</field>
+      <field name="list_price">8.00</field>
+      <field name="description_sale">Crispy &amp; long potato fries</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">none</field>
+    </record>
+
+    <record id="product_gobi_manchurian" model="product.template">
+      <field name="name">Gobi Manchurian</field>
+      <field name="list_price">12.00</field>
+      <field name="description_sale">Cauliflower, bell peppers, onions &amp; scallions in ketchup based sauce</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <!-- Grouped: Paneer Chili / Chicken Chili -->
+    <record id="product_chili_paneer" model="product.template">
+      <field name="name">Chili - Paneer</field>
+      <field name="list_price">13.00</field>
+      <field name="description_sale">Protein with peppers, onions, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">hot</field>
+      <field name="rms_group_key">chili</field>
+      <field name="rms_protein_label">Paneer</field>
+      <field name="rms_group_sort">1</field>
+    </record>
+
+    <record id="product_chili_chicken" model="product.template">
+      <field name="name">Chili - Chicken</field>
+      <field name="list_price">13.00</field>
+      <field name="description_sale">Protein with peppers, onions, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_spice_level">hot</field>
+      <field name="rms_group_key">chili</field>
+      <field name="rms_protein_label">Chicken</field>
+      <field name="rms_group_sort">2</field>
+    </record>
+
+    <!-- Grouped: Paneer 65 / Chicken 65 -->
+    <record id="product_65_paneer" model="product.template">
+      <field name="name">65 - Paneer</field>
+      <field name="list_price">11.00</field>
+      <field name="description_sale">Protein with peppers, curry leaves, tangy chili, ginger-garlic paste</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">hot</field>
+      <field name="rms_group_key">65</field>
+      <field name="rms_protein_label">Paneer</field>
+      <field name="rms_group_sort">1</field>
+    </record>
+
+    <record id="product_65_chicken" model="product.template">
+      <field name="name">65 - Chicken</field>
+      <field name="list_price">11.00</field>
+      <field name="description_sale">Protein with peppers, curry leaves, tangy chili, ginger-garlic paste</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_spice_level">hot</field>
+      <field name="rms_group_key">65</field>
+      <field name="rms_protein_label">Chicken</field>
+      <field name="rms_group_sort">2</field>
+    </record>
+
+    <!-- Grouped: Kathi Roll -->
+    <record id="product_kathi_roll_chicken" model="product.template">
+      <field name="name">Kathi Roll - Chicken</field>
+      <field name="list_price">12.00</field>
+      <field name="description_sale">Wrap with onions, mint sauce, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kathi_roll</field>
+      <field name="rms_protein_label">Chicken</field>
+      <field name="rms_group_sort">1</field>
+    </record>
+
+    <record id="product_kathi_roll_paneer" model="product.template">
+      <field name="name">Kathi Roll - Paneer</field>
+      <field name="list_price">12.00</field>
+      <field name="description_sale">Wrap with onions, mint sauce, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kathi_roll</field>
+      <field name="rms_protein_label">Paneer</field>
+      <field name="rms_group_sort">2</field>
+    </record>
+
+    <!-- Grouped: Pakora -->
+    <record id="product_pakora_veg" model="product.template">
+      <field name="name">Pakora - Vegetable/Eggplant/Spinach</field>
+      <field name="list_price">7.00</field>
+      <field name="description_sale">Crispy fried nuggets in chickpea batter</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">pakora</field>
+      <field name="rms_protein_label">Veg/Eggplant/Spinach</field>
+      <field name="rms_group_sort">1</field>
+    </record>
+
+    <record id="product_pakora_paneer" model="product.template">
+      <field name="name">Pakora - Paneer</field>
+      <field name="list_price">9.00</field>
+      <field name="description_sale">Crispy fried nuggets in chickpea batter</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">pakora</field>
+      <field name="rms_protein_label">Paneer</field>
+      <field name="rms_group_sort">2</field>
+    </record>
+
+    <record id="product_pakora_chicken" model="product.template">
+      <field name="name">Pakora - Chicken</field>
+      <field name="list_price">10.00</field>
+      <field name="description_sale">Crispy fried nuggets in chickpea batter</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">pakora</field>
+      <field name="rms_protein_label">Chicken</field>
+      <field name="rms_group_sort">3</field>
+    </record>
+
+    <record id="product_pakora_calamari" model="product.template">
+      <field name="name">Pakora - Calamari</field>
+      <field name="list_price">11.00</field>
+      <field name="description_sale">Crispy fried nuggets in chickpea batter</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">small_plates</field>
+      <field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">pakora</field>
+      <field name="rms_protein_label">Calamari</field>
+      <field name="rms_group_sort">4</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SOUPS AND GREENS                                             -->
+    <!-- ============================================================ -->
+
+    <record id="product_caesar_salad" model="product.template">
+      <field name="name">Caesar Salad</field>
+      <field name="list_price">11.00</field>
+      <field name="description_sale">Romaine lettuce, olive oil &amp; lemon juice with croutons</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">soups_greens</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">none</field>
+    </record>
+
+    <record id="product_classic_salad" model="product.template">
+      <field name="name">Classic Salad</field>
+      <field name="list_price">6.00</field>
+      <field name="description_sale">Tomato and cucumber salad with chat masala</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">soups_greens</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_mix_green_salad" model="product.template">
+      <field name="name">Mix Green Salad</field>
+      <field name="list_price">11.00</field>
+      <field name="description_sale">Vegetables tossed in olive oil &amp; lemon dressing</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">soups_greens</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">none</field>
+    </record>
+
+    <record id="product_greek_salad" model="product.template">
+      <field name="name">Greek Salad</field>
+      <field name="list_price">11.00</field>
+      <field name="description_sale">Tomatoes, onions, cucumber, olives, paneer, olive oil dressing</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">soups_greens</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">none</field>
+    </record>
+
+    <record id="product_lentil_soup" model="product.template">
+      <field name="name">Lentil Soup</field>
+      <field name="list_price">7.00</field>
+      <field name="description_sale">Yellow lentil (dal) soup, with spices, herbs</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">soups_greens</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_chicken_hot_sour_soup" model="product.template">
+      <field name="name">Chicken Hot-Sour Soup</field>
+      <field name="list_price">10.00</field>
+      <field name="description_sale">Aromatic chicken broth with diced chicken, herbs, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">soups_greens</field>
+      <field name="rms_spice_level">hot</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- FROM KATHMANDU                                               -->
+    <!-- ============================================================ -->
+
+    <!-- Grouped: Steamed Momo -->
+    <record id="product_momo_steamed_veg" model="product.template">
+      <field name="name">Momo (Steamed) - Vegetable</field>
+      <field name="list_price">11.00</field>
+      <field name="description_sale">Steamed dumplings with spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">momo_steamed</field>
+      <field name="rms_protein_label">Vegetable</field>
+      <field name="rms_group_sort">1</field>
+    </record>
+
+    <record id="product_momo_steamed_chicken" model="product.template">
+      <field name="name">Momo (Steamed) - Chicken</field>
+      <field name="list_price">13.00</field>
+      <field name="description_sale">Steamed dumplings with spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">momo_steamed</field>
+      <field name="rms_protein_label">Chicken</field>
+      <field name="rms_group_sort">2</field>
+    </record>
+
+    <!-- Grouped: Chili Momo -->
+    <record id="product_momo_chili_veg" model="product.template">
+      <field name="name">Chili Momo - Vegetable</field>
+      <field name="list_price">13.00</field>
+      <field name="description_sale">Fried dumplings in tomato ketchup based sauce</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">hot</field>
+      <field name="rms_group_key">momo_chili</field>
+      <field name="rms_protein_label">Vegetable</field>
+      <field name="rms_group_sort">1</field>
+    </record>
+
+    <record id="product_momo_chili_chicken" model="product.template">
+      <field name="name">Chili Momo - Chicken</field>
+      <field name="list_price">15.00</field>
+      <field name="description_sale">Fried dumplings in tomato ketchup based sauce</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">hot</field>
+      <field name="rms_group_key">momo_chili</field>
+      <field name="rms_protein_label">Chicken</field>
+      <field name="rms_group_sort">2</field>
+    </record>
+
+    <!-- Grouped: Jhol Momo -->
+    <record id="product_momo_jhol_veg" model="product.template">
+      <field name="name">Jhol Momo - Vegetable</field>
+      <field name="list_price">15.00</field>
+      <field name="description_sale">Steamed momos in veg broth, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">momo_jhol</field>
+      <field name="rms_protein_label">Vegetable</field>
+      <field name="rms_group_sort">1</field>
+    </record>
+
+    <record id="product_momo_jhol_chicken" model="product.template">
+      <field name="name">Jhol Momo - Chicken</field>
+      <field name="list_price">17.00</field>
+      <field name="description_sale">Steamed momos in chicken broth, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">momo_jhol</field>
+      <field name="rms_protein_label">Chicken</field>
+      <field name="rms_group_sort">2</field>
+    </record>
+
+    <!-- Grouped: Hakka Noodles -->
+    <record id="product_noodles_veg" model="product.template">
+      <field name="name">Hakka Noodles - Vegetable</field>
+      <field name="list_price">12.00</field>
+      <field name="description_sale">Classic wok-tossed noodles</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">hakka_noodles</field>
+      <field name="rms_protein_label">Vegetable</field>
+      <field name="rms_group_sort">1</field>
+    </record>
+
+    <record id="product_noodles_paneer" model="product.template">
+      <field name="name">Hakka Noodles - Paneer</field>
+      <field name="list_price">13.00</field>
+      <field name="description_sale">Classic wok-tossed noodles</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">hakka_noodles</field>
+      <field name="rms_protein_label">Paneer</field>
+      <field name="rms_group_sort">2</field>
+    </record>
+
+    <record id="product_noodles_chicken" model="product.template">
+      <field name="name">Hakka Noodles - Chicken</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Classic wok-tossed noodles</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">hakka_noodles</field>
+      <field name="rms_protein_label">Chicken</field>
+      <field name="rms_group_sort">3</field>
+    </record>
+
+    <!-- Grouped: Sekuwa -->
+    <record id="product_sekuwa_mutton" model="product.template">
+      <field name="name">Sekuwa - Mutton</field>
+      <field name="list_price">16.00</field>
+      <field name="description_sale">Traditional wood-roasted spiced mutton skewers</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">sekuwa</field>
+      <field name="rms_protein_label">Mutton</field>
+      <field name="rms_group_sort">1</field>
+    </record>
+
+    <record id="product_sekuwa_pork" model="product.template">
+      <field name="name">Sekuwa - Pork</field>
+      <field name="list_price">15.00</field>
+      <field name="description_sale">Pork skewers grilled over an open wood fire</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">sekuwa</field>
+      <field name="rms_protein_label">Pork</field>
+      <field name="rms_group_sort">2</field>
+    </record>
+
+    <!-- Grouped: Sekuwa Set -->
+    <record id="product_sekuwa_set_mutton" model="product.template">
+      <field name="name">Sekuwa Set - Mutton</field>
+      <field name="list_price">22.00</field>
+      <field name="description_sale">Char-roasted mutton skewers with beaten rice</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">sekuwa_set</field>
+      <field name="rms_protein_label">Mutton</field>
+      <field name="rms_group_sort">1</field>
+    </record>
+
+    <record id="product_sekuwa_set_pork" model="product.template">
+      <field name="name">Sekuwa Set - Pork</field>
+      <field name="list_price">23.00</field>
+      <field name="description_sale">Wood-fired pork skewers paired with beaten rice</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">sekuwa_set</field>
+      <field name="rms_protein_label">Pork</field>
+      <field name="rms_group_sort">2</field>
+    </record>
+
+    <!-- Solo items from Kathmandu -->
+    <record id="product_buff_sukuti" model="product.template">
+      <field name="name">Buff Sukuti</field>
+      <field name="list_price">15.00</field>
+      <field name="description_sale">Spiced, sun-dried buffalo meat, pan-tossed</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">hot</field>
+    </record>
+
+    <record id="product_buff_sukuti_set" model="product.template">
+      <field name="name">Buff Sukuti Set</field>
+      <field name="list_price">22.00</field>
+      <field name="description_sale">Spiced buffalo jerky served with beaten rice</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">hot</field>
+    </record>
+
+    <record id="product_pork_chops" model="product.template">
+      <field name="name">Pork Chops</field>
+      <field name="list_price">25.00</field>
+      <field name="description_sale">Tender, bone-in pork chops cooked with spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_pork_chilli" model="product.template">
+      <field name="name">Pork Chilli</field>
+      <field name="list_price">17.00</field>
+      <field name="description_sale">Crispy pork tossed with bell peppers, onions</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_spice_level">hot</field>
+    </record>
+
+    <record id="product_baby_corn_chilli" model="product.template">
+      <field name="name">Baby Corn Chilli</field>
+      <field name="list_price">16.00</field>
+      <field name="description_sale">Crisp baby corn stir-fried in a sweet &amp; fiery sauce</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_kathmandu</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">hot</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- FROM SOUTH OF INDIA                                          -->
+    <!-- ============================================================ -->
+
+    <record id="product_plain_dosa" model="product.template">
+      <field name="name">Plain Dosa</field>
+      <field name="list_price">13.00</field>
+      <field name="description_sale">Rice crepe served with sambar, coconut chutney</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_south_india</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_masala_dosa" model="product.template">
+      <field name="name">Masala Dosa</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Rice crepe filled with spiced savory potatoes, served with sambar, coconut chutney</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_south_india</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_paneer_dosa" model="product.template">
+      <field name="name">Paneer Dosa</field>
+      <field name="list_price">15.00</field>
+      <field name="description_sale">Rice crepe filled with spiced cottage cheese, served with sambar, coconut chutney</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_south_india</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_cheese_dosa" model="product.template">
+      <field name="name">Cheese Dosa</field>
+      <field name="list_price">15.00</field>
+      <field name="description_sale">Rice crepe filled with mozzarella cheese, butter, served with sambar, coconut chutney</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_south_india</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_idli_sambar" model="product.template">
+      <field name="name">Idli Sambar</field>
+      <field name="list_price">13.00</field>
+      <field name="description_sale">Steamed fluffy rice cakes with sambar, coconut chutney</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">from_south_india</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- TANDOOR SPECIALS — all solo                                  -->
+    <!-- ============================================================ -->
+
+    <record id="product_malai_broccoli" model="product.template">
+      <field name="name">Malai Broccoli</field>
+      <field name="list_price">15.00</field>
+      <field name="description_sale">Broccoli marinated in yogurt with spices &amp; herbs, with nuts</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_contains_nuts">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_malai_mushroom" model="product.template">
+      <field name="name">Malai Mushroom</field>
+      <field name="list_price">15.00</field>
+      <field name="description_sale">Mushroom in cream, yogurt sauce, spices, with nuts</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_contains_nuts">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_paneer_tikka_kebab" model="product.template">
+      <field name="name">Paneer Tikka Kebab</field>
+      <field name="list_price">16.00</field>
+      <field name="description_sale">Cottage-cheese cubes, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_chicken_tandoori" model="product.template">
+      <field name="name">Chicken Tandoori</field>
+      <field name="list_price">15.00</field>
+      <field name="description_sale">Tender chicken leg marinated in yogurt &amp; spices, herbs</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_chicken_hariyali_kebab" model="product.template">
+      <field name="name">Chicken Hariyali Kebab</field>
+      <field name="list_price">16.00</field>
+      <field name="description_sale">Green herb, mint marinated chicken, grilled to perfection</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_chicken_malai_kebab" model="product.template">
+      <field name="name">Chicken Malai Kebab</field>
+      <field name="list_price">16.00</field>
+      <field name="description_sale">Chicken grilled with cream, cheese, spices, herbs, with nuts</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_contains_nuts">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_chicken_afghani" model="product.template">
+      <field name="name">Chicken Afghani</field>
+      <field name="list_price">16.00</field>
+      <field name="description_sale">Creamy &amp; mildly spiced chicken with spices, herbs, with nuts</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_contains_nuts">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_chicken_tikka_kebab" model="product.template">
+      <field name="name">Chicken Tikka Kebab</field>
+      <field name="list_price">16.00</field>
+      <field name="description_sale">Breast cubes in yogurt, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_lamb_boti_kebab" model="product.template">
+      <field name="name">Lamb Boti Kebab</field>
+      <field name="list_price">18.00</field>
+      <field name="description_sale">Lamb leg cubes with garlic, spices, coriander, herbs</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_lamb_seekh_kebab" model="product.template">
+      <field name="name">Lamb Seekh Kebab</field>
+      <field name="list_price">19.00</field>
+      <field name="description_sale">Minced lamb with herbs, spices, grilled to perfection</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_rack_of_lamb" model="product.template">
+      <field name="name">The Rack of Lamb</field>
+      <field name="list_price">25.00</field>
+      <field name="description_sale">Tender grilled lamb chops, herbs &amp; spices, grilled</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_tandoori_salmon" model="product.template">
+      <field name="name">Tandoori Salmon</field>
+      <field name="list_price">23.00</field>
+      <field name="description_sale">Grilled zesty salmon fillet, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_is_gluten_free">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_black_tiger_shrimp" model="product.template">
+      <field name="name">Black-Tiger Shrimp</field>
+      <field name="list_price">21.00</field>
+      <field name="description_sale">Tiger shrimp with herbs &amp; indian spices, grilled</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_is_gluten_free">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_tandoori_mixed_platter" model="product.template">
+      <field name="name">Tandoori Mixed Platter</field>
+      <field name="list_price">25.00</field>
+      <field name="description_sale">Chicken tikka, lamb and seafood, grilled to perfection</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">tandoor</field>
+      <field name="rms_is_featured">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- VEGAN CURRY SELECTION — all solo                             -->
+    <!-- ============================================================ -->
+
+    <record id="product_coconut_veg_curry" model="product.template">
+      <field name="name">Coconut Vegetable Curry</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Coconut base with spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_mixed_vegetable" model="product.template">
+      <field name="name">Mixed Vegetable</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Ginger-garlic base with spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_baigan_bharta" model="product.template">
+      <field name="name">Baigan Bharta</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Roasted eggplant curry, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_mushroom_matar" model="product.template">
+      <field name="name">Mushroom Matar</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Mushroom, green-peas curry</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_aloo_gobi" model="product.template">
+      <field name="name">Aloo-Gobi</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Cauliflower &amp; spiced potato curry</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_chana_masala" model="product.template">
+      <field name="name">Chana Masala</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Chickpeas, tomatoes &amp; spices, herbs</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_aloo_saag" model="product.template">
+      <field name="name">Aloo-Saag</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Potatoes &amp; creamy spinach curry</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_bhaktapur_bhindi" model="product.template">
+      <field name="name">Bhaktapur Bhindi</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Crispy rich okra curry, spices</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_aloo_matar" model="product.template">
+      <field name="name">Aloo-Matar</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Spiced potatoes &amp; peas curry</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <record id="product_jeera_aloo" model="product.template">
+      <field name="name">Jeera Aloo</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Potato with cumin, bell peppers</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_tadka_dal" model="product.template">
+      <field name="name">Tadka Dal</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Dal (yellow lentils), spices, herbs</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_daman_bhindi" model="product.template">
+      <field name="name">Daman Bhindi</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Rich okra in coconut milk</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <record id="product_coconut_tofu" model="product.template">
+      <field name="name">Coconut Tofu</field>
+      <field name="list_price">14.00</field>
+      <field name="description_sale">Tofu with coconut milk, veggies</field>
+      <field name="type">consu</field>
+      <field name="rms_is_menu_item">True</field>
+      <field name="rms_is_available">True</field>
+      <field name="rms_menu_category">vegan_curry</field>
+      <field name="rms_is_vegan">True</field>
+      <field name="rms_is_vegetarian">True</field>
+      <field name="rms_spice_level">mild</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- MAIN ENTREES                                                  -->
+    <!-- ============================================================ -->
+
+    <!-- Korma -->
+    <record id="product_korma_veg" model="product.template">
+      <field name="name">Korma - Vegetable</field><field name="list_price">14.00</field>
+      <field name="description_sale">Cashews, raisins, spices, cream &amp; house-made onion sauce</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">korma</field>
+      <field name="rms_is_vegetarian">True</field><field name="rms_contains_nuts">True</field><field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">korma</field><field name="rms_protein_label">Vegetable</field><field name="rms_group_sort">1</field>
+    </record>
+    <record id="product_korma_paneer" model="product.template">
+      <field name="name">Korma - Paneer</field><field name="list_price">15.00</field>
+      <field name="description_sale">Cashews, raisins, spices, cream &amp; house-made onion sauce</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">korma</field>
+      <field name="rms_is_vegetarian">True</field><field name="rms_contains_nuts">True</field><field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">korma</field><field name="rms_protein_label">Paneer</field><field name="rms_group_sort">2</field>
+    </record>
+    <record id="product_korma_chicken" model="product.template">
+      <field name="name">Korma - Chicken</field><field name="list_price">17.00</field>
+      <field name="description_sale">Cashews, raisins, spices, cream &amp; house-made onion sauce</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">korma</field>
+      <field name="rms_contains_nuts">True</field><field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">korma</field><field name="rms_protein_label">Chicken</field><field name="rms_group_sort">3</field>
+    </record>
+    <record id="product_korma_lamb" model="product.template">
+      <field name="name">Korma - Lamb</field><field name="list_price">18.00</field>
+      <field name="description_sale">Cashews, raisins, spices, cream &amp; house-made onion sauce</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">korma</field>
+      <field name="rms_contains_nuts">True</field><field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">korma</field><field name="rms_protein_label">Lamb</field><field name="rms_group_sort">4</field>
+    </record>
+    <record id="product_korma_salmon" model="product.template">
+      <field name="name">Korma - Salmon</field><field name="list_price">19.00</field>
+      <field name="description_sale">Cashews, raisins, spices, cream &amp; house-made onion sauce</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">korma</field>
+      <field name="rms_contains_nuts">True</field><field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">korma</field><field name="rms_protein_label">Salmon</field><field name="rms_group_sort">5</field>
+    </record>
+    <record id="product_korma_shrimp" model="product.template">
+      <field name="name">Korma - Shrimp</field><field name="list_price">19.00</field>
+      <field name="description_sale">Cashews, raisins, spices, cream &amp; house-made onion sauce</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">korma</field>
+      <field name="rms_contains_nuts">True</field><field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">korma</field><field name="rms_protein_label">Shrimp</field><field name="rms_group_sort">6</field>
+    </record>
+
+    <!-- Kerala Coconut -->
+    <record id="product_kerala_chicken" model="product.template">
+      <field name="name">Kerala Coconut - Chicken</field><field name="list_price">16.00</field>
+      <field name="description_sale">Fresh coconut milk based curry, mixed with onion sauce</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kerala</field><field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">kerala</field><field name="rms_protein_label">Chicken</field><field name="rms_group_sort">1</field>
+    </record>
+    <record id="product_kerala_lamb" model="product.template">
+      <field name="name">Kerala Coconut - Lamb</field><field name="list_price">18.00</field>
+      <field name="description_sale">Fresh coconut milk based curry, mixed with onion sauce</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kerala</field><field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">kerala</field><field name="rms_protein_label">Lamb</field><field name="rms_group_sort">2</field>
+    </record>
+    <record id="product_kerala_salmon" model="product.template">
+      <field name="name">Kerala Coconut - Salmon</field><field name="list_price">19.00</field>
+      <field name="description_sale">Fresh coconut milk based curry, mixed with onion sauce</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kerala</field><field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">kerala</field><field name="rms_protein_label">Salmon</field><field name="rms_group_sort">3</field>
+    </record>
+    <record id="product_kerala_shrimp" model="product.template">
+      <field name="name">Kerala Coconut - Shrimp</field><field name="list_price">19.00</field>
+      <field name="description_sale">Fresh coconut milk based curry, mixed with onion sauce</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kerala</field><field name="rms_spice_level">mild</field>
+      <field name="rms_group_key">kerala</field><field name="rms_protein_label">Shrimp</field><field name="rms_group_sort">4</field>
+    </record>
+
+    <!-- Ginger Garlic -->
+    <record id="product_gg_chicken" model="product.template">
+      <field name="name">Ginger Garlic - Chicken</field><field name="list_price">15.00</field>
+      <field name="description_sale">Ginger &amp; garlic based curry pots with classic indian spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">ginger_garlic</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">ginger_garlic</field><field name="rms_protein_label">Chicken</field><field name="rms_group_sort">1</field>
+    </record>
+    <record id="product_gg_lamb" model="product.template">
+      <field name="name">Ginger Garlic - Lamb</field><field name="list_price">17.00</field>
+      <field name="description_sale">Ginger &amp; garlic based curry pots with classic indian spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">ginger_garlic</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">ginger_garlic</field><field name="rms_protein_label">Lamb</field><field name="rms_group_sort">2</field>
+    </record>
+    <record id="product_gg_salmon" model="product.template">
+      <field name="name">Ginger Garlic - Salmon</field><field name="list_price">18.00</field>
+      <field name="description_sale">Ginger &amp; garlic based curry pots with classic indian spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">ginger_garlic</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">ginger_garlic</field><field name="rms_protein_label">Salmon</field><field name="rms_group_sort">3</field>
+    </record>
+    <record id="product_gg_shrimp" model="product.template">
+      <field name="name">Ginger Garlic - Shrimp</field><field name="list_price">18.00</field>
+      <field name="description_sale">Ginger &amp; garlic based curry pots with classic indian spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">ginger_garlic</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">ginger_garlic</field><field name="rms_protein_label">Shrimp</field><field name="rms_group_sort">4</field>
+    </record>
+    <record id="product_gg_seafood" model="product.template">
+      <field name="name">Ginger Garlic - Seafood</field><field name="list_price">19.00</field>
+      <field name="description_sale">Ginger &amp; garlic based curry pots with classic indian spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">ginger_garlic</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">ginger_garlic</field><field name="rms_protein_label">Seafood</field><field name="rms_group_sort">5</field>
+    </record>
+    <record id="product_gg_goat" model="product.template">
+      <field name="name">Ginger Garlic - Goat</field><field name="list_price">19.00</field>
+      <field name="description_sale">Ginger &amp; garlic based curry pots with classic indian spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">ginger_garlic</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">ginger_garlic</field><field name="rms_protein_label">Goat</field><field name="rms_group_sort">6</field>
+    </record>
+
+    <!-- Tikka Masala -->
+    <record id="product_tikka_veg" model="product.template">
+      <field name="name">Tikka Masala - Vegetable</field><field name="list_price">14.00</field>
+      <field name="description_sale">House tikka sauce with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">tikka_masala</field>
+      <field name="rms_is_vegetarian">True</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">tikka_masala</field><field name="rms_protein_label">Vegetable</field><field name="rms_group_sort">1</field>
+    </record>
+    <record id="product_tikka_paneer" model="product.template">
+      <field name="name">Tikka Masala - Paneer</field><field name="list_price">15.00</field>
+      <field name="description_sale">House tikka sauce with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">tikka_masala</field>
+      <field name="rms_is_vegetarian">True</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">tikka_masala</field><field name="rms_protein_label">Paneer</field><field name="rms_group_sort">2</field>
+    </record>
+    <record id="product_tikka_chicken" model="product.template">
+      <field name="name">Tikka Masala - Chicken</field><field name="list_price">16.00</field>
+      <field name="description_sale">House tikka sauce with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">tikka_masala</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">tikka_masala</field><field name="rms_protein_label">Chicken</field><field name="rms_group_sort">3</field>
+    </record>
+    <record id="product_tikka_lamb" model="product.template">
+      <field name="name">Tikka Masala - Lamb</field><field name="list_price">17.00</field>
+      <field name="description_sale">House tikka sauce with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">tikka_masala</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">tikka_masala</field><field name="rms_protein_label">Lamb</field><field name="rms_group_sort">4</field>
+    </record>
+    <record id="product_tikka_salmon" model="product.template">
+      <field name="name">Tikka Masala - Salmon</field><field name="list_price">19.00</field>
+      <field name="description_sale">House tikka sauce with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">tikka_masala</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">tikka_masala</field><field name="rms_protein_label">Salmon</field><field name="rms_group_sort">5</field>
+    </record>
+    <record id="product_tikka_shrimp" model="product.template">
+      <field name="name">Tikka Masala - Shrimp</field><field name="list_price">19.00</field>
+      <field name="description_sale">House tikka sauce with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">tikka_masala</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">tikka_masala</field><field name="rms_protein_label">Shrimp</field><field name="rms_group_sort">6</field>
+    </record>
+
+    <!-- Kashmiri -->
+    <record id="product_kashmiri_paneer" model="product.template">
+      <field name="name">Kashmiri - Paneer</field><field name="list_price">16.00</field>
+      <field name="description_sale">Creamy tikka sauce, spinach sauce, pungent spices, herbs</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kashmiri</field>
+      <field name="rms_is_vegetarian">True</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kashmiri</field><field name="rms_protein_label">Paneer</field><field name="rms_group_sort">1</field>
+    </record>
+    <record id="product_kashmiri_chicken" model="product.template">
+      <field name="name">Kashmiri - Chicken</field><field name="list_price">17.00</field>
+      <field name="description_sale">Creamy tikka sauce, spinach sauce, pungent spices, herbs</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kashmiri</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kashmiri</field><field name="rms_protein_label">Chicken</field><field name="rms_group_sort">2</field>
+    </record>
+    <record id="product_kashmiri_lamb" model="product.template">
+      <field name="name">Kashmiri - Lamb</field><field name="list_price">18.00</field>
+      <field name="description_sale">Creamy tikka sauce, spinach sauce, pungent spices, herbs</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kashmiri</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kashmiri</field><field name="rms_protein_label">Lamb</field><field name="rms_group_sort">3</field>
+    </record>
+    <record id="product_kashmiri_shrimp" model="product.template">
+      <field name="name">Kashmiri - Shrimp</field><field name="list_price">20.00</field>
+      <field name="description_sale">Creamy tikka sauce, spinach sauce, pungent spices, herbs</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kashmiri</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kashmiri</field><field name="rms_protein_label">Shrimp</field><field name="rms_group_sort">4</field>
+    </record>
+    <record id="product_kashmiri_salmon" model="product.template">
+      <field name="name">Kashmiri - Salmon</field><field name="list_price">20.00</field>
+      <field name="description_sale">Creamy tikka sauce, spinach sauce, pungent spices, herbs</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kashmiri</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kashmiri</field><field name="rms_protein_label">Salmon</field><field name="rms_group_sort">5</field>
+    </record>
+
+    <!-- Vindaloo -->
+    <record id="product_vindaloo_chicken" model="product.template">
+      <field name="name">Vindaloo - Chicken</field><field name="list_price">16.00</field>
+      <field name="description_sale">Classic Goan curry with a tangy touch, house spices, herbs</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">vindaloo</field><field name="rms_spice_level">extra_hot</field>
+      <field name="rms_group_key">vindaloo</field><field name="rms_protein_label">Chicken</field><field name="rms_group_sort">1</field>
+    </record>
+    <record id="product_vindaloo_lamb" model="product.template">
+      <field name="name">Vindaloo - Lamb</field><field name="list_price">17.00</field>
+      <field name="description_sale">Classic Goan curry with a tangy touch, house spices, herbs</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">vindaloo</field><field name="rms_spice_level">extra_hot</field>
+      <field name="rms_group_key">vindaloo</field><field name="rms_protein_label">Lamb</field><field name="rms_group_sort">2</field>
+    </record>
+    <record id="product_vindaloo_salmon" model="product.template">
+      <field name="name">Vindaloo - Salmon</field><field name="list_price">19.00</field>
+      <field name="description_sale">Classic Goan curry with a tangy touch, house spices, herbs</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">vindaloo</field><field name="rms_spice_level">extra_hot</field>
+      <field name="rms_group_key">vindaloo</field><field name="rms_protein_label">Salmon</field><field name="rms_group_sort">3</field>
+    </record>
+    <record id="product_vindaloo_shrimp" model="product.template">
+      <field name="name">Vindaloo - Shrimp</field><field name="list_price">19.00</field>
+      <field name="description_sale">Classic Goan curry with a tangy touch, house spices, herbs</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">vindaloo</field><field name="rms_spice_level">extra_hot</field>
+      <field name="rms_group_key">vindaloo</field><field name="rms_protein_label">Shrimp</field><field name="rms_group_sort">4</field>
+    </record>
+
+    <!-- Saag -->
+    <record id="product_saag_paneer" model="product.template">
+      <field name="name">Saag - Paneer</field><field name="list_price">15.00</field>
+      <field name="description_sale">Traditional spinach &amp; spices based creamy curry</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">saag</field>
+      <field name="rms_is_vegetarian">True</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">saag</field><field name="rms_protein_label">Paneer</field><field name="rms_group_sort">1</field>
+    </record>
+    <record id="product_saag_chicken" model="product.template">
+      <field name="name">Saag - Chicken</field><field name="list_price">16.00</field>
+      <field name="description_sale">Traditional spinach &amp; spices based creamy curry</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">saag</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">saag</field><field name="rms_protein_label">Chicken</field><field name="rms_group_sort">2</field>
+    </record>
+    <record id="product_saag_lamb" model="product.template">
+      <field name="name">Saag - Lamb</field><field name="list_price">17.00</field>
+      <field name="description_sale">Traditional spinach &amp; spices based creamy curry</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">saag</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">saag</field><field name="rms_protein_label">Lamb</field><field name="rms_group_sort">3</field>
+    </record>
+    <record id="product_saag_shrimp" model="product.template">
+      <field name="name">Saag - Shrimp</field><field name="list_price">19.00</field>
+      <field name="description_sale">Traditional spinach &amp; spices based creamy curry</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">saag</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">saag</field><field name="rms_protein_label">Shrimp</field><field name="rms_group_sort">4</field>
+    </record>
+    <record id="product_saag_salmon" model="product.template">
+      <field name="name">Saag - Salmon</field><field name="list_price">19.00</field>
+      <field name="description_sale">Traditional spinach &amp; spices based creamy curry</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">saag</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">saag</field><field name="rms_protein_label">Salmon</field><field name="rms_group_sort">5</field>
+    </record>
+
+    <!-- Kadai -->
+    <record id="product_kadai_paneer" model="product.template">
+      <field name="name">Kadai - Paneer</field><field name="list_price">15.00</field>
+      <field name="description_sale">Tikka sauce, onion sauce, bell-peppers, onions, with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kadai</field>
+      <field name="rms_is_vegetarian">True</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kadai</field><field name="rms_protein_label">Paneer</field><field name="rms_group_sort">1</field>
+    </record>
+    <record id="product_kadai_chicken" model="product.template">
+      <field name="name">Kadai - Chicken</field><field name="list_price">16.00</field>
+      <field name="description_sale">Tikka sauce, onion sauce, bell-peppers, onions, with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kadai</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kadai</field><field name="rms_protein_label">Chicken</field><field name="rms_group_sort">2</field>
+    </record>
+    <record id="product_kadai_lamb" model="product.template">
+      <field name="name">Kadai - Lamb</field><field name="list_price">17.00</field>
+      <field name="description_sale">Tikka sauce, onion sauce, bell-peppers, onions, with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kadai</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kadai</field><field name="rms_protein_label">Lamb</field><field name="rms_group_sort">3</field>
+    </record>
+    <record id="product_kadai_salmon" model="product.template">
+      <field name="name">Kadai - Salmon</field><field name="list_price">19.00</field>
+      <field name="description_sale">Tikka sauce, onion sauce, bell-peppers, onions, with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kadai</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kadai</field><field name="rms_protein_label">Salmon</field><field name="rms_group_sort">4</field>
+    </record>
+    <record id="product_kadai_shrimp" model="product.template">
+      <field name="name">Kadai - Shrimp</field><field name="list_price">19.00</field>
+      <field name="description_sale">Tikka sauce, onion sauce, bell-peppers, onions, with spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">kadai</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">kadai</field><field name="rms_protein_label">Shrimp</field><field name="rms_group_sort">5</field>
+    </record>
+
+    <!-- Signature solos -->
+    <record id="product_butter_chicken" model="product.template">
+      <field name="name">Butter Chicken</field><field name="list_price">16.00</field>
+      <field name="description_sale">Tandoori chicken cubes inside tikka sauce, spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">signature</field>
+      <field name="rms_is_featured">True</field><field name="rms_spice_level">mild</field>
+    </record>
+    <record id="product_dal_makhani" model="product.template">
+      <field name="name">Dal Makhani</field><field name="list_price">15.00</field>
+      <field name="description_sale">Slowly cooked black lentils with cream, butter, spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">signature</field>
+      <field name="rms_is_vegetarian">True</field><field name="rms_spice_level">mild</field>
+    </record>
+    <record id="product_lamb_shank" model="product.template">
+      <field name="name">Lamb Shank</field><field name="list_price">25.00</field>
+      <field name="description_sale">Lamb cooked slowly with spices, herbs</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">main_entrees</field><field name="rms_curry_type">signature</field>
+      <field name="rms_spice_level">medium</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- BREAD SELECTION                                              -->
+    <!-- ============================================================ -->
+
+    <record id="product_timur_signature_naan" model="product.template">
+      <field name="name">Timur Signature Naan</field><field name="list_price">5.00</field>
+      <field name="description_sale">Extra soft, flaky flatbread</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_onion_kulcha" model="product.template">
+      <field name="name">Onion Kulcha</field><field name="list_price">5.00</field>
+      <field name="description_sale">Stuffed bread with onions, grilled</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_laccha_parathas" model="product.template">
+      <field name="name">Laccha Parathas</field><field name="list_price">5.00</field>
+      <field name="description_sale">Layered whole wheat bread</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegan">True</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_aloo_parathas" model="product.template">
+      <field name="name">Aloo Parathas</field><field name="list_price">5.00</field>
+      <field name="description_sale">Potato filled whole wheat bread</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">mild</field>
+    </record>
+    <record id="product_pudina_parathas" model="product.template">
+      <field name="name">Pudina Parathas</field><field name="list_price">5.00</field>
+      <field name="description_sale">Flaky mint whole wheat bread</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegan">True</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_whole_wheat_roti" model="product.template">
+      <field name="name">Whole Wheat Roti</field><field name="list_price">3.00</field>
+      <field name="description_sale">Vegan bread, optional butter</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegan">True</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_butter_naan" model="product.template">
+      <field name="name">Butter Naan</field><field name="list_price">4.00</field>
+      <field name="description_sale">Traditional Indian flatbread</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_garlic_naan" model="product.template">
+      <field name="name">Garlic Naan</field><field name="list_price">4.00</field>
+      <field name="description_sale">Traditional flatbread with garlic</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_coconut_cherry_naan" model="product.template">
+      <field name="name">Coconut &amp; Cherry Naan</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_bullet_naan" model="product.template">
+      <field name="name">Bullet Naan</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">hot</field>
+    </record>
+    <record id="product_paneer_naan" model="product.template">
+      <field name="name">Paneer Naan</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">mild</field>
+    </record>
+    <record id="product_cheese_naan" model="product.template">
+      <field name="name">Cheese Naan</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_pesto_butter_naan" model="product.template">
+      <field name="name">Pesto Butter Naan</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_pesto_garlic_naan" model="product.template">
+      <field name="name">Pesto Garlic Naan</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_chicken_naan" model="product.template">
+      <field name="name">Chicken Naan</field><field name="list_price">6.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_spice_level">mild</field>
+    </record>
+    <record id="product_lamb_keema_naan" model="product.template">
+      <field name="name">Lamb Keema Naan</field><field name="list_price">6.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">bread</field><field name="rms_spice_level">medium</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- GLUTEN-FREE BREADS                                           -->
+    <!-- ============================================================ -->
+
+    <record id="product_gf_naan" model="product.template">
+      <field name="name">Gluten-Free Naan</field><field name="list_price">6.00</field>
+      <field name="description_sale">Traditional flat bread made with oats flour</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">gluten_free_bread</field><field name="rms_is_gluten_free">True</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_gf_garlic_naan" model="product.template">
+      <field name="name">G/F Garlic Naan</field><field name="list_price">7.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">gluten_free_bread</field><field name="rms_is_gluten_free">True</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_gf_pesto_naan" model="product.template">
+      <field name="name">G/F Pesto Naan</field><field name="list_price">8.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">gluten_free_bread</field><field name="rms_is_gluten_free">True</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_gf_garlic_pesto_naan" model="product.template">
+      <field name="name">G/F Garlic Pesto Naan</field><field name="list_price">8.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">gluten_free_bread</field><field name="rms_is_gluten_free">True</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- RICE SELECTION                                               -->
+    <!-- ============================================================ -->
+
+    <record id="product_basmati_rice" model="product.template">
+      <field name="name">Basmati Rice</field><field name="list_price">4.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">rice</field><field name="rms_is_vegan">True</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_jeera_rice" model="product.template">
+      <field name="name">Cumin / Jeera Rice</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">rice</field><field name="rms_is_vegan">True</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_coconut_rice" model="product.template">
+      <field name="name">Coconut Rice</field><field name="list_price">8.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">rice</field><field name="rms_is_vegan">True</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_veg_fried_rice" model="product.template">
+      <field name="name">Veg Fried Rice</field><field name="list_price">8.00</field>
+      <field name="description_sale">Rice tossed onions, ginger and garlic, spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">rice</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">mild</field>
+    </record>
+    <record id="product_egg_fried_rice" model="product.template">
+      <field name="name">Egg Fried Rice</field><field name="list_price">9.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">rice</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">mild</field>
+    </record>
+    <record id="product_chicken_fried_rice" model="product.template">
+      <field name="name">Chicken Fried Rice</field><field name="list_price">10.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">rice</field><field name="rms_spice_level">mild</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- BIRYANI                                                      -->
+    <!-- ============================================================ -->
+
+    <record id="product_biryani_veg" model="product.template">
+      <field name="name">Biryani - Vegetable</field><field name="list_price">14.00</field>
+      <field name="description_sale">Saffron rice with veggies &amp; aromatic Indian spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">biryani</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">biryani</field><field name="rms_protein_label">Vegetable</field><field name="rms_group_sort">1</field>
+    </record>
+    <record id="product_biryani_chicken" model="product.template">
+      <field name="name">Biryani - Chicken</field><field name="list_price">16.00</field>
+      <field name="description_sale">Saffron rice with chicken, herbs, aromatic spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">biryani</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">biryani</field><field name="rms_protein_label">Chicken</field><field name="rms_group_sort">2</field>
+    </record>
+    <record id="product_biryani_lamb" model="product.template">
+      <field name="name">Biryani - Lamb</field><field name="list_price">17.00</field>
+      <field name="description_sale">Saffron rice with lamb, spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">biryani</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">biryani</field><field name="rms_protein_label">Lamb</field><field name="rms_group_sort">3</field>
+    </record>
+    <record id="product_biryani_goat" model="product.template">
+      <field name="name">Biryani - Goat</field><field name="list_price">18.00</field>
+      <field name="description_sale">Saffron rice with goat &amp; aromatic spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">biryani</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">biryani</field><field name="rms_protein_label">Goat</field><field name="rms_group_sort">4</field>
+    </record>
+    <record id="product_biryani_salmon" model="product.template">
+      <field name="name">Biryani - Salmon</field><field name="list_price">19.00</field>
+      <field name="description_sale">Saffron rice with salmon fish &amp; aromatic spices</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">biryani</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">biryani</field><field name="rms_protein_label">Salmon</field><field name="rms_group_sort">5</field>
+    </record>
+    <record id="product_biryani_shrimp" model="product.template">
+      <field name="name">Biryani - Shrimp</field><field name="list_price">19.00</field>
+      <field name="description_sale">Saffron rice with shrimp</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">biryani</field><field name="rms_spice_level">medium</field>
+      <field name="rms_group_key">biryani</field><field name="rms_protein_label">Shrimp</field><field name="rms_group_sort">6</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- ACCOMPANIMENTS                                               -->
+    <!-- ============================================================ -->
+
+    <record id="product_papadum" model="product.template">
+      <field name="name">Papadum</field><field name="list_price">3.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">accompaniments</field><field name="rms_is_vegan">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_cucumber_raita" model="product.template">
+      <field name="name">Cucumber Raita</field><field name="list_price">3.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">accompaniments</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_mixed_pickle" model="product.template">
+      <field name="name">Mixed Pickle</field><field name="list_price">3.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">accompaniments</field><field name="rms_is_vegan">True</field><field name="rms_spice_level">medium</field>
+    </record>
+    <record id="product_mango_chutney" model="product.template">
+      <field name="name">Mango Chutney</field><field name="list_price">3.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">accompaniments</field><field name="rms_is_vegan">True</field><field name="rms_spice_level">none</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SWEET TOOTH                                                  -->
+    <!-- ============================================================ -->
+
+    <record id="product_gajar_ka_halwa" model="product.template">
+      <field name="name">Gajar ka Halwa</field><field name="list_price">7.00</field>
+      <field name="description_sale">Traditional warm carrot pudding with milk, nuts</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">sweet_tooth</field><field name="rms_is_vegetarian">True</field><field name="rms_contains_nuts">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_mango_kulfi" model="product.template">
+      <field name="name">Mango Kulfi Ice Cream</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">sweet_tooth</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_pistachio_kulfi" model="product.template">
+      <field name="name">Pistachio Kulfi Ice Cream</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">sweet_tooth</field><field name="rms_is_vegetarian">True</field><field name="rms_contains_nuts">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_kheer" model="product.template">
+      <field name="name">Kheer</field><field name="list_price">5.00</field>
+      <field name="description_sale">Creamy rice pudding spiced with cardamom</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">sweet_tooth</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_rasmalai" model="product.template">
+      <field name="name">Rasmalai</field><field name="list_price">7.00</field>
+      <field name="description_sale">Soft paneer dumplings dipped in sugar with saffron, cardamom, clove</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">sweet_tooth</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_gulab_jamun" model="product.template">
+      <field name="name">Gulab Jamun</field><field name="list_price">6.00</field>
+      <field name="description_sale">Golden milk dough ball in warm cardamom sugar syrup</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">sweet_tooth</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- BEVERAGES AND MOCKTAILS                                      -->
+    <!-- ============================================================ -->
+
+    <record id="product_shirley_temple" model="product.template">
+      <field name="name">Shirley Temple</field><field name="list_price">5.00</field>
+      <field name="description_sale">Ginger ale, grenadine, fresh lime</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beverages</field><field name="rms_is_vegan">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_watermelon_punch" model="product.template">
+      <field name="name">Watermelon Punch</field><field name="list_price">5.00</field>
+      <field name="description_sale">Watermelon juice, vanilla syrup</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beverages</field><field name="rms_is_vegan">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_green_tea" model="product.template">
+      <field name="name">Green Tea</field><field name="list_price">5.00</field>
+      <field name="description_sale">Fresh herbal, vegetal tea</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beverages</field><field name="rms_is_vegan">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_masala_chai" model="product.template">
+      <field name="name">Masala Chai</field><field name="list_price">4.00</field>
+      <field name="description_sale">Spiced Indian tea with milk</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beverages</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">mild</field>
+    </record>
+    <record id="product_indian_summer" model="product.template">
+      <field name="name">Indian Summer</field><field name="list_price">5.00</field>
+      <field name="description_sale">Sparkling lemonade, mint, lime</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beverages</field><field name="rms_is_vegan">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_pina_colada" model="product.template">
+      <field name="name">Pina Colada</field><field name="list_price">6.00</field>
+      <field name="description_sale">Pineapple juice with coconut</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beverages</field><field name="rms_is_vegan">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_mangi_lassi" model="product.template">
+      <field name="name">Mangi Lassi</field><field name="list_price">5.00</field>
+      <field name="description_sale">Thick yogurt based smoothie</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beverages</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_sweet_lassi" model="product.template">
+      <field name="name">Sweet Lassi</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beverages</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_salt_lassi" model="product.template">
+      <field name="name">Salt Lassi</field><field name="list_price">5.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beverages</field><field name="rms_is_vegetarian">True</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_non_alcoholic_beer" model="product.template">
+      <field name="name">Non-Alcoholic Beer</field><field name="list_price">6.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beverages</field><field name="rms_is_vegan">True</field><field name="rms_spice_level">none</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- BEER SELECTION                                               -->
+    <!-- ============================================================ -->
+
+    <record id="product_taj_22" model="product.template">
+      <field name="name">Taj (22oz)</field><field name="list_price">11.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beer</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_taj_12" model="product.template">
+      <field name="name">Taj (12oz)</field><field name="list_price">7.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beer</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_nepal_ice" model="product.template">
+      <field name="name">Nepal Ice (12oz)</field><field name="list_price">7.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beer</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_flying_horse" model="product.template">
+      <field name="name">Flying Horse (22oz)</field><field name="list_price">11.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beer</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_stella" model="product.template">
+      <field name="name">Stella</field><field name="list_price">7.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beer</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_ksa_kolsch" model="product.template">
+      <field name="name">KSA Kolsch</field><field name="list_price">7.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beer</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_animal" model="product.template">
+      <field name="name">Animal</field><field name="list_price">7.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beer</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_ipa_space_dust" model="product.template">
+      <field name="name">IPA Space Dust</field><field name="list_price">7.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">beer</field><field name="rms_spice_level">none</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- WHITE WINE &amp; CHAMPAGNE                                   -->
+    <!-- ============================================================ -->
+
+    <record id="product_house_white_wine" model="product.template">
+      <field name="name">House White Wine</field><field name="list_price">8.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">white_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_sauvignon_blanc" model="product.template">
+      <field name="name">Sauvignon Blanc</field><field name="list_price">9.00</field>
+      <field name="description_sale">From New Zealand</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">white_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_reisling" model="product.template">
+      <field name="name">Reisling</field><field name="list_price">9.00</field>
+      <field name="description_sale">From Santa Barbara</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">white_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_chardonnay" model="product.template">
+      <field name="name">Chardonnay</field><field name="list_price">11.00</field>
+      <field name="description_sale">From Unoaked</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">white_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_pinot_grigio" model="product.template">
+      <field name="name">Pinot Grigio</field><field name="list_price">9.00</field>
+      <field name="description_sale">From Pasqua, Italy</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">white_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_sparkling_brut" model="product.template">
+      <field name="name">Sparkling Brut</field><field name="list_price">10.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">white_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_lillies_sauv_blanc" model="product.template">
+      <field name="name">Lillie's Sauvignon Blanc</field><field name="list_price">15.00</field>
+      <field name="description_sale">Notes of lemon, orange</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">white_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_langtrys_chardonnay" model="product.template">
+      <field name="name">Langtry's Chardonnay</field><field name="list_price">19.00</field>
+      <field name="description_sale">Notes of apple, rose</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">white_wine</field><field name="rms_spice_level">none</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- RED WINE                                                     -->
+    <!-- ============================================================ -->
+
+    <record id="product_house_red_wine" model="product.template">
+      <field name="name">House Red Wine</field><field name="list_price">8.00</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">red_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_temperlino" model="product.template">
+      <field name="name">Temperlino</field><field name="list_price">10.00</field>
+      <field name="description_sale">From Spain, vanilla notes</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">red_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_cotes_de_rhone" model="product.template">
+      <field name="name">Cotes-De-Rhone</field><field name="list_price">9.00</field>
+      <field name="description_sale">From France, fruity notes</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">red_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_bordeaux" model="product.template">
+      <field name="name">Bordeaux</field><field name="list_price">10.00</field>
+      <field name="description_sale">From France, fruity notes</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">red_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_pinot_noir" model="product.template">
+      <field name="name">Pinot Noir</field><field name="list_price">9.00</field>
+      <field name="description_sale">From Chile</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">red_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_cabernet_sauvignon" model="product.template">
+      <field name="name">Cabernet Sauvignon</field><field name="list_price">8.00</field>
+      <field name="description_sale">From California</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">red_wine</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_malbec" model="product.template">
+      <field name="name">Malbec</field><field name="list_price">9.00</field>
+      <field name="description_sale">From Argentina</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">red_wine</field><field name="rms_spice_level">none</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- LOCAL SAKE                                                   -->
+    <!-- ============================================================ -->
+
+    <record id="product_nigori_cream" model="product.template">
+      <field name="name">Nigori Cream</field><field name="list_price">8.00</field>
+      <field name="description_sale">Lychee, yogurt drink, 15% alcohol</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">sake</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_genshu_rich" model="product.template">
+      <field name="name">Genshu Rich</field><field name="list_price">8.00</field>
+      <field name="description_sale">Rich flavoured drink, 18% alcohol</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">sake</field><field name="rms_spice_level">none</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- CLASSIC COCKTAILS                                            -->
+    <!-- ============================================================ -->
+
+    <record id="product_apple_sangria" model="product.template">
+      <field name="name">Apple Sangria</field><field name="list_price">11.00</field>
+      <field name="description_sale">A red or white wine-based drink, apples, mint</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">cocktails</field><field name="rms_spice_level">none</field>
+    </record>
+    <record id="product_mimosa" model="product.template">
+      <field name="name">Mimosa</field><field name="list_price">11.00</field>
+      <field name="description_sale">Cocktail of orange juice, sparkling wine</field>
+      <field name="type">consu</field><field name="rms_is_menu_item">True</field><field name="rms_is_available">True</field>
+      <field name="rms_menu_category">cocktails</field><field name="rms_spice_level">none</field>
+    </record>
+
+  </data>
+</odoo>

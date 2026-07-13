@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="product_template_tip" model="product.template">
+        <field name="name">Tip</field>
+        <field name="default_code">RMS_TIP</field>
+        <field name="type">service</field>
+        <field name="list_price">0.00</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+        <field name="is_published">False</field>
+        <field name="taxes_id" eval="[(5, 0, 0)]"/>
+    </record>
+</odoo>

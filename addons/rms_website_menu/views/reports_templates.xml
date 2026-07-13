@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="reports_access_denied" name="Reports Access Denied">
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <title>Reports Access Restricted</title>
+                <link rel="stylesheet" href="/rms_website_menu/static/src/css/rms_reports.css?v=1"/>
+            </head>
+            <body class="reports-access-body">
+                <main class="reports-access-panel">
+                    <div class="reports-access-mark">R</div>
+                    <h1>Reports access restricted</h1>
+                    <p>Your account needs the Restaurant Reporting Manager permission.</p>
+                    <a href="/web/login?redirect=/rms/admin/reports">Switch account</a>
+                </main>
+            </body>
+        </html>
+    </template>
+
+    <template id="online_sales_reports" name="Online Sales Reports">
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <title>Online Sales Reports</title>
+                <link rel="stylesheet" href="/rms_website_menu/static/src/css/rms_reports.css?v=1"/>
+            </head>
+            <body class="reports-body">
+                <header class="reports-header">
+                    <div class="reports-header-inner">
+                        <div class="reports-brand">
+                            <span class="reports-brand-mark">R</span>
+                            <div>
+                                <h1>Online Sales Reports</h1>
+                                <p>Website orders only</p>
+                            </div>
+                        </div>
+                        <nav class="reports-nav" aria-label="Reports navigation">
+                            <a href="#overview" class="active">Overview</a>
+                            <a href="#products">Products</a>
+                            <a href="#customers">Customers</a>
+                            <a href="#orders">Orders</a>
+                            <t t-if="can_view_kitchen">
+                                <a href="/rms/kitchen">Kitchen</a>
+                            </t>
+                        </nav>
+                    </div>
+                </header>
+
+                <main class="reports-main">
+                    <section class="reports-toolbar" aria-label="Report filters">
+                        <div class="reports-filter">
+                            <label for="reports-range">Period</label>
+                            <select id="reports-range">
+                                <option value="today">Today</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="7">Last 7 days</option>
+                                <option value="30" selected="selected">Last 30 days</option>
+                                <option value="month">This month</option>
+                                <option value="last-month">Last month</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+                        <div class="reports-filter reports-date-filter">
+                            <label for="reports-start">From</label>
+                            <input id="reports-start" type="date"/>
+                        </div>
+                        <div class="reports-filter reports-date-filter">
+                            <label for="reports-end">To</label>
+                            <input id="reports-end" type="date"/>
+                        </div>
+                        <button type="button" class="reports-primary-btn" id="reports-refresh">Refresh</button>
+                        <a class="reports-export-btn" id="reports-export" href="#">Export CSV</a>
+                        <span class="reports-load-status" id="reports-load-status" role="status">Loading report...</span>
+                    </section>
+
+                    <div class="reports-error" id="reports-error" style="display:none" role="alert"/>
+
+                    <section id="overview" class="reports-section">
+                        <div class="reports-section-heading">
+                            <div>
+                                <p class="reports-eyebrow">Selected period</p>
+                                <h2>Sales overview</h2>
+                            </div>
+                            <span id="reports-period-label" class="reports-period-label"/>
+                        </div>
+
+                        <div class="reports-kpis">
+                            <article class="reports-kpi reports-kpi-primary">
+                                <span>Gross sales</span>
+                                <strong id="kpi-gross">--</strong>
+                                <small id="kpi-gross-change"/>
+                            </article>
+                            <article class="reports-kpi">
+                                <span>Sales before tax</span>
+                                <strong id="kpi-net">--</strong>
+                                <small>Confirmed website orders</small>
+                            </article>
+                            <article class="reports-kpi">
+                                <span>Orders</span>
+                                <strong id="kpi-orders">--</strong>
+                                <small id="kpi-orders-change"/>
+                            </article>
+                            <article class="reports-kpi">
+                                <span>Average order</span>
+                                <strong id="kpi-aov">--</strong>
+                                <small id="kpi-aov-change"/>
+                            </article>
+                            <article class="reports-kpi">
+                                <span>Tax collected</span>
+                                <strong id="kpi-tax">--</strong>
+                                <small>Included in gross sales</small>
+                            </article>
+                            <article class="reports-kpi">
+                                <span>Items per order</span>
+                                <strong id="kpi-items">--</strong>
+                                <small id="kpi-total-items"/>
+                            </article>
+                        </div>
+
+                        <div class="reports-grid reports-grid-wide">
+                            <section class="reports-panel reports-trend-panel">
+                                <div class="reports-panel-heading">
+                                    <div>
+                                        <h3>Sales trend</h3>
+                                        <p>Revenue and order volume by day</p>
+                                    </div>
+                                    <div class="reports-legend">
+                                        <span><i class="legend-sales"/>Sales</span>
+                                        <span><i class="legend-orders"/>Orders</span>
+                                    </div>
+                                </div>
+                                <div class="reports-chart" id="reports-sales-chart"/>
+                            </section>
+                            <section class="reports-panel">
+                                <div class="reports-panel-heading">
+                                    <div>
+                                        <h3>Sales by hour</h3>
+                                        <p>Restaurant local time</p>
+                                    </div>
+                                </div>
+                                <div class="reports-hourly" id="reports-hourly"/>
+                            </section>
+                        </div>
+
+                        <div class="reports-grid reports-grid-thirds">
+                            <section class="reports-panel">
+                                <div class="reports-panel-heading"><h3>Fulfillment mix</h3></div>
+                                <div class="reports-bars" id="reports-fulfillment"/>
+                            </section>
+                            <section class="reports-panel">
+                                <div class="reports-panel-heading"><h3>Order mix</h3></div>
+                                <div class="reports-bars" id="reports-order-types"/>
+                            </section>
+                            <section class="reports-panel">
+                                <div class="reports-panel-heading"><h3>Operations</h3></div>
+                                <dl class="reports-metrics" id="reports-operations"/>
+                            </section>
+                        </div>
+                    </section>
+
+                    <section id="products" class="reports-section">
+                        <div class="reports-section-heading">
+                            <div>
+                                <p class="reports-eyebrow">Menu performance</p>
+                                <h2>Products</h2>
+                            </div>
+                        </div>
+                        <div class="reports-grid reports-grid-thirds">
+                            <section class="reports-panel">
+                                <div class="reports-panel-heading"><h3>Top products</h3></div>
+                                <div class="reports-ranking" id="reports-top-products"/>
+                            </section>
+                            <section class="reports-panel">
+                                <div class="reports-panel-heading"><h3>Lowest-selling products</h3></div>
+                                <div class="reports-ranking" id="reports-low-products"/>
+                            </section>
+                            <section class="reports-panel">
+                                <div class="reports-panel-heading"><h3>Category contribution</h3></div>
+                                <div class="reports-bars" id="reports-categories"/>
+                            </section>
+                        </div>
+                    </section>
+
+                    <section id="customers" class="reports-section">
+                        <div class="reports-section-heading">
+                            <div>
+                                <p class="reports-eyebrow">Customer behavior</p>
+                                <h2>Customers</h2>
+                            </div>
+                        </div>
+                        <div class="reports-customer-layout">
+                            <div class="reports-customer-kpis">
+                                <article><span>Unique customers</span><strong id="customer-unique">--</strong></article>
+                                <article><span>New customers</span><strong id="customer-new">--</strong></article>
+                                <article><span>Repeat customers</span><strong id="customer-repeat">--</strong></article>
+                                <article><span>Repeat rate</span><strong id="customer-repeat-rate">--</strong></article>
+                            </div>
+                            <section class="reports-panel">
+                                <div class="reports-panel-heading"><h3>Top customers</h3></div>
+                                <div class="reports-ranking" id="reports-top-customers"/>
+                            </section>
+                        </div>
+                    </section>
+
+                    <section id="orders" class="reports-section">
+                        <div class="reports-section-heading">
+                            <div>
+                                <p class="reports-eyebrow">Order detail</p>
+                                <h2>Orders</h2>
+                            </div>
+                        </div>
+                        <div class="reports-table-tools">
+                            <input id="orders-search" type="search" placeholder="Search order or customer"/>
+                            <select id="orders-fulfillment" aria-label="Filter by fulfillment">
+                                <option value="">All fulfillment</option>
+                                <option value="pickup">Pickup</option>
+                                <option value="delivery">Delivery</option>
+                            </select>
+                            <select id="orders-status" aria-label="Filter by kitchen status">
+                                <option value="">All statuses</option>
+                                <option value="new">New</option>
+                                <option value="preparing">Preparing</option>
+                                <option value="ready">Ready</option>
+                                <option value="done">Done</option>
+                            </select>
+                        </div>
+                        <div class="reports-table-wrap">
+                            <table class="reports-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order</th><th>Date</th><th>Customer</th><th>Type</th>
+                                        <th>Status</th><th class="numeric">Items</th><th class="numeric">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reports-orders-body">
+                                    <tr><td colspan="7" class="reports-empty">Loading orders...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="reports-pagination">
+                            <span id="orders-page-label"/>
+                            <div>
+                                <button type="button" id="orders-prev">Previous</button>
+                                <button type="button" id="orders-next">Next</button>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+
+                <script src="/rms_website_menu/static/src/js/rms_reports.js?v=1"/>
+            </body>
+        </html>
+    </template>
+</odoo>
