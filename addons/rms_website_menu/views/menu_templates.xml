@@ -2522,18 +2522,16 @@
     </template>
 
     <!-- Hide only the "Address" step from the Order > Address > Payment
-         breadcrumb, and hide the "Back to address" sidebar link.
-         Injected via address_on_checkout which is only on the payment page. -->
+         breadcrumb, and hide the "Back to address" sidebar link. -->
     <template id="rms_payment_hide_wizard"
               inherit_id="website_sale.address_on_checkout"
               name="RMS: Hide address step and back button">
         <xpath expr="//div[@id='delivery_and_billing']" position="before">
             <style>
-                /* Hide only the "Address" middle step in Order > Address > Payment */
+                /* Hide the Address middle step — keep Order and Payment */
                 .o_wsale_breadcrumb .breadcrumb-item:nth-child(2) {
                     display: none !important;
                 }
-                /* Hide separator after Order step */
                 .o_wsale_breadcrumb .breadcrumb-item:nth-child(1)::after {
                     display: none !important;
                 }
@@ -2541,8 +2539,6 @@
             <script>
             (function() {
                 function rmsHideBackBtn() {
-                    /* Hide any link whose href contains /shop/address — this is the
-                       "Back to address" previous-step link rendered by Odoo */
                     document.querySelectorAll('a').forEach(function(a) {
                         var href = a.getAttribute('href') || '';
                         if (href.indexOf('/shop/address') !== -1) {
