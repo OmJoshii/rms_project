@@ -637,6 +637,21 @@ class RmsMenuController(WebsiteSale):
     # Checkout                                                             #
     # ------------------------------------------------------------------ #
 
+    @http.route('/shop/address', type='http', auth='public', website=True, sitemap=False)
+    def rms_redirect_shop_address(self, **kwargs):
+        """
+        Override Odoo's native /shop/address page entirely.
+        We never need this page — contact info and delivery address are
+        collected directly on /rms/checkout for both logged-in and guest users.
+
+        If the order already has rms_delivery_type set (checkout was completed),
+        go straight to payment. Otherwise send them to our checkout page.
+        """
+        order = _get_cart()
+        if order and order.id and order.rms_delivery_type:
+            return request.redirect('/shop/payment')
+        return request.redirect('/rms/checkout')
+
     @http.route('/shop/checkout', type='http', auth='public', website=True, sitemap=False)
     def rms_redirect_shop_checkout(self, **kwargs):
         """
@@ -822,6 +837,27 @@ class RmsMenuController(WebsiteSale):
         # Save phone/email on the partner for pickup orders, and set the
         # partner_shipping_id so Odoo never needs to redirect to /shop/address.
         partner = order.partner_id
+
+        # For guest (public) users, create a real partner from the submitted
+        # contact details so we don't write onto the shared public partner.
+        is_public = request.website.is_public_user()
+        if is_public:
+            contact_name  = pickup_name if delivery_type == 'pickup' else addr_name
+            contact_phone = pickup_phone if delivery_type == 'pickup' else addr_phone
+            contact_email = pickup_email if delivery_type == 'pickup' else addr_email
+            ca = request.env['res.country'].sudo().search([('code', '=', 'US')], limit=1)
+            new_partner = request.env['res.partner'].sudo().create({
+                'name':       contact_name or 'Guest',
+                'phone':      contact_phone,
+                'email':      contact_email,
+                'country_id': ca.id if ca else False,
+            })
+            order.sudo().write({
+                'partner_id':          new_partner.id,
+                'partner_invoice_id':  new_partner.id,
+                'partner_shipping_id': new_partner.id,
+            })
+            partner = new_partner
         if delivery_type == 'pickup':
             # Update phone/email on the customer partner
             partner_vals = {}
