@@ -2539,20 +2539,19 @@
         </xpath>
     </template>
 
-    <!-- Override navigation_buttons: replace the entire previous-step
-         block (both t-if and t-else) with a simple Back to cart link.
-         We target the wrapping div that contains both blocks. -->
+    <!-- Override navigation_buttons: hide native back link, add Back to cart -->
     <template id="rms_payment_back_to_cart"
               inherit_id="website_sale.navigation_buttons"
               name="RMS: Back to cart instead of back to address">
-        <xpath expr="//div[hasclass('position-relative')]" position="after">
+        <xpath expr="//div[hasclass('o_cta_navigation_container')]" position="inside">
             <style>
-                /* Hide Odoo's native back button — we add our own below */
-                .o_cta_navigation_container a.mt-2.mt-lg-0.text-center {
+                /* Hide Odoo's native previous-step back link */
+                .o_cta_navigation_container > a.mt-2,
+                .o_cta_navigation_container > t > a.mt-2 {
                     display: none !important;
                 }
             </style>
-            <a href="/shop/cart" class="mt-2 mt-lg-0 text-center">
+            <a href="/shop/cart" class="mt-2 mt-lg-0 text-center d-block rms-back-to-cart">
                 <i class="fa fa-angle-left me-2 fw-light"/>
                 Back to cart
             </a>
