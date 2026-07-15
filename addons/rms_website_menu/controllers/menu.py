@@ -897,14 +897,16 @@ class RmsMenuController(WebsiteSale):
             else:
                 new_shipping = partner.sudo().copy({
                     'type': 'delivery',
+                    'parent_id': partner.id,
                     **pickup_addr_vals,
                 })
                 # res.partner.copy() unconditionally appends " (copy)" to
                 # name, overriding whatever we passed above — fix it back.
-                # We also deliberately do NOT set parent_id here: Odoo's
-                # address display shows "{name}, {parent.name}" whenever a
-                # contact has a parent, so pointing it at the customer's own
-                # record just produces a duplicated "Om, Om"-style name.
+                # parent_id must stay set (Odoo's portal ownership checks
+                # require the shipping partner to be child_of the customer's
+                # commercial partner) — the "Om, Om" duplicated-name display
+                # this used to cause is now fixed via the res.partner
+                # _get_complete_name() override in models/res_partner.py.
                 new_shipping.sudo().write({
                     'name': pickup_name or partner.name,
                     'company_name': False,
@@ -970,9 +972,12 @@ class RmsMenuController(WebsiteSale):
                 else:
                     # No dedicated shipping partner yet — create one so we
                     # don't overwrite the customer's main/billing address.
-                    # Deliberately no parent_id — see note above.
+                    # parent_id must stay set (Odoo's portal ownership checks
+                    # require child_of the customer's commercial partner) —
+                    # the display fix lives in models/res_partner.py instead.
                     new_shipping = partner.sudo().copy({
                         'type': 'delivery',
+                        'parent_id': partner.id,
                         **addr_vals,
                     })
                     # res.partner.copy() unconditionally appends " (copy)" to
@@ -1104,11 +1109,12 @@ class RmsMenuController(WebsiteSale):
                 else:
                     new_shipping = partner.sudo().copy({
                         'type': 'delivery',
+                        'parent_id': partner.id,
                         **addr_vals,
                     })
                     # res.partner.copy() unconditionally appends " (copy)" to
                     # name, overriding whatever we passed above — fix it back.
-                    # Deliberately no parent_id — see note above.
+                    # parent_id must stay set — see note above.
                     new_shipping.sudo().write({
                         'name': addr_vals['name'],
                         'company_name': False,
