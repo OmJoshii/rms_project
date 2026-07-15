@@ -883,6 +883,10 @@ class RmsMenuController(WebsiteSale):
                 'zip': '94122',
                 'state_id': ca_state.id if ca_state else False,
                 'country_id': ca.id if ca else False,
+                # Clear any stale job-title/role that may have been left on
+                # an existing shipping contact by the old copy()-based code.
+                'function': False,
+                'title': False,
             }
             shipping_partner = order.partner_shipping_id
             update_vals = {}
@@ -902,9 +906,14 @@ class RmsMenuController(WebsiteSale):
                     **pickup_addr_vals,
                 })
                 update_vals['partner_shipping_id'] = new_shipping.id
-            # Billing — set to main partner (ensure it has a street too)
+            # Billing — set to main partner (ensure it has a street too).
+            # Use a copy without function/title: those should only be
+            # cleared on the delivery *child* contact, never on the real
+            # customer's own partner record.
             if not partner.street:
-                partner.sudo().write(pickup_addr_vals)
+                billing_addr_vals = {k: v for k, v in pickup_addr_vals.items()
+                                     if k not in ('function', 'title')}
+                partner.sudo().write(billing_addr_vals)
             update_vals['partner_invoice_id'] = partner.id
             if update_vals:
                 order.sudo().write(update_vals)
@@ -950,6 +959,10 @@ class RmsMenuController(WebsiteSale):
                     'zip':      addr_zip,
                     'state_id': state.id if state else False,
                     'country_id': country.id if country else False,
+                    # Clear any stale job-title/role left behind by the old
+                    # copy()-based code on a pre-existing shipping contact.
+                    'function': False,
+                    'title': False,
                 }
 
                 if shipping_partner and shipping_partner != partner.commercial_partner_id:
@@ -1076,6 +1089,10 @@ class RmsMenuController(WebsiteSale):
                     'zip':        addr_zip,
                     'state_id':   state.id if state else False,
                     'country_id': country.id if country else False,
+                    # Clear any stale job-title/role left behind by the old
+                    # copy()-based code on a pre-existing shipping contact.
+                    'function': False,
+                    'title': False,
                 }
                 shipping = order.partner_shipping_id
                 if shipping and shipping != partner.commercial_partner_id:
