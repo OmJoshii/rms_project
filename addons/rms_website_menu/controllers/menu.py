@@ -891,8 +891,6 @@ class RmsMenuController(WebsiteSale):
                 # Also fix the name if it somehow has "(copy)" in it
                 if '(copy)' in (shipping_partner.name or '').lower():
                     fix_vals['name'] = pickup_name or partner.name
-                fix_vals['company_name'] = False
-                fix_vals['function'] = False
                 shipping_partner.sudo().write(fix_vals)
             else:
                 new_shipping = partner.sudo().copy({
@@ -902,11 +900,6 @@ class RmsMenuController(WebsiteSale):
                 })
                 # res.partner.copy() unconditionally appends " (copy)" to
                 # name, overriding whatever we passed above — fix it back.
-                # parent_id must stay set (Odoo's portal ownership checks
-                # require the shipping partner to be child_of the customer's
-                # commercial partner) — the "Om, Om" duplicated-name display
-                # this used to cause is now fixed via the res.partner
-                # _get_complete_name() override in models/res_partner.py.
                 new_shipping.sudo().write({
                     'name': pickup_name or partner.name,
                     'company_name': False,
@@ -964,17 +957,10 @@ class RmsMenuController(WebsiteSale):
                 }
 
                 if shipping_partner and shipping_partner != partner.commercial_partner_id:
-                    shipping_partner.sudo().write({
-                        **addr_vals,
-                        'company_name': False,
-                        'function': False,
-                    })
+                    shipping_partner.sudo().write(addr_vals)
                 else:
                     # No dedicated shipping partner yet — create one so we
-                    # don't overwrite the customer's main/billing address.
-                    # parent_id must stay set (Odoo's portal ownership checks
-                    # require child_of the customer's commercial partner) —
-                    # the display fix lives in models/res_partner.py instead.
+                    # don't overwrite the customer's main/billing address
                     new_shipping = partner.sudo().copy({
                         'type': 'delivery',
                         'parent_id': partner.id,
@@ -1101,11 +1087,7 @@ class RmsMenuController(WebsiteSale):
                 }
                 shipping = order.partner_shipping_id
                 if shipping and shipping != partner.commercial_partner_id:
-                    shipping.sudo().write({
-                        **addr_vals,
-                        'company_name': False,
-                        'function': False,
-                    })
+                    shipping.sudo().write(addr_vals)
                 else:
                     new_shipping = partner.sudo().copy({
                         'type': 'delivery',
@@ -1114,7 +1096,6 @@ class RmsMenuController(WebsiteSale):
                     })
                     # res.partner.copy() unconditionally appends " (copy)" to
                     # name, overriding whatever we passed above — fix it back.
-                    # parent_id must stay set — see note above.
                     new_shipping.sudo().write({
                         'name': addr_vals['name'],
                         'company_name': False,
