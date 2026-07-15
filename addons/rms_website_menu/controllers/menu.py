@@ -894,6 +894,12 @@ class RmsMenuController(WebsiteSale):
                     'parent_id': partner.id,
                     **pickup_addr_vals,
                 })
+                # res.partner.copy() unconditionally appends " (copy)" to
+                # name, overriding whatever we passed above — fix it back.
+                new_shipping.sudo().write({
+                    'name': pickup_name or partner.name,
+                    'company_name': False,
+                })
                 update_vals['partner_shipping_id'] = new_shipping.id
             # Billing — set to main partner (ensure it has a street too)
             if not partner.street:
@@ -954,6 +960,12 @@ class RmsMenuController(WebsiteSale):
                         'type': 'delivery',
                         'parent_id': partner.id,
                         **addr_vals,
+                    })
+                    # res.partner.copy() unconditionally appends " (copy)" to
+                    # name, overriding whatever we passed above — fix it back.
+                    new_shipping.sudo().write({
+                        'name': addr_vals['name'],
+                        'company_name': False,
                     })
                     order.sudo().write({'partner_shipping_id': new_shipping.id})
                 # Always set billing to the main partner so Odoo's payment
@@ -1075,6 +1087,12 @@ class RmsMenuController(WebsiteSale):
                         'type': 'delivery',
                         'parent_id': partner.id,
                         **addr_vals,
+                    })
+                    # res.partner.copy() unconditionally appends " (copy)" to
+                    # name, overriding whatever we passed above — fix it back.
+                    new_shipping.sudo().write({
+                        'name': addr_vals['name'],
+                        'company_name': False,
                     })
                     order.sudo().write({'partner_shipping_id': new_shipping.id})
 
