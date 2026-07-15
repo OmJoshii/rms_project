@@ -887,7 +887,11 @@ class RmsMenuController(WebsiteSale):
             shipping_partner = order.partner_shipping_id
             update_vals = {}
             if shipping_partner and shipping_partner != partner.commercial_partner_id:
-                shipping_partner.sudo().write(pickup_addr_vals)
+                fix_vals = dict(pickup_addr_vals)
+                # Also fix the name if it somehow has "(copy)" in it
+                if '(copy)' in (shipping_partner.name or '').lower():
+                    fix_vals['name'] = pickup_name or partner.name
+                shipping_partner.sudo().write(fix_vals)
             else:
                 new_shipping = partner.sudo().copy({
                     'type': 'delivery',
