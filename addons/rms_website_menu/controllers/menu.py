@@ -891,15 +891,20 @@ class RmsMenuController(WebsiteSale):
                 # Also fix the name if it somehow has "(copy)" in it
                 if '(copy)' in (shipping_partner.name or '').lower():
                     fix_vals['name'] = pickup_name or partner.name
+                fix_vals['company_name'] = False
+                fix_vals['function'] = False
                 shipping_partner.sudo().write(fix_vals)
             else:
                 new_shipping = partner.sudo().copy({
                     'type': 'delivery',
-                    'parent_id': partner.id,
                     **pickup_addr_vals,
                 })
                 # res.partner.copy() unconditionally appends " (copy)" to
                 # name, overriding whatever we passed above — fix it back.
+                # We also deliberately do NOT set parent_id here: Odoo's
+                # address display shows "{name}, {parent.name}" whenever a
+                # contact has a parent, so pointing it at the customer's own
+                # record just produces a duplicated "Om, Om"-style name.
                 new_shipping.sudo().write({
                     'name': pickup_name or partner.name,
                     'company_name': False,
@@ -957,13 +962,17 @@ class RmsMenuController(WebsiteSale):
                 }
 
                 if shipping_partner and shipping_partner != partner.commercial_partner_id:
-                    shipping_partner.sudo().write(addr_vals)
+                    shipping_partner.sudo().write({
+                        **addr_vals,
+                        'company_name': False,
+                        'function': False,
+                    })
                 else:
                     # No dedicated shipping partner yet — create one so we
-                    # don't overwrite the customer's main/billing address
+                    # don't overwrite the customer's main/billing address.
+                    # Deliberately no parent_id — see note above.
                     new_shipping = partner.sudo().copy({
                         'type': 'delivery',
-                        'parent_id': partner.id,
                         **addr_vals,
                     })
                     # res.partner.copy() unconditionally appends " (copy)" to
@@ -1087,15 +1096,19 @@ class RmsMenuController(WebsiteSale):
                 }
                 shipping = order.partner_shipping_id
                 if shipping and shipping != partner.commercial_partner_id:
-                    shipping.sudo().write(addr_vals)
+                    shipping.sudo().write({
+                        **addr_vals,
+                        'company_name': False,
+                        'function': False,
+                    })
                 else:
                     new_shipping = partner.sudo().copy({
                         'type': 'delivery',
-                        'parent_id': partner.id,
                         **addr_vals,
                     })
                     # res.partner.copy() unconditionally appends " (copy)" to
                     # name, overriding whatever we passed above — fix it back.
+                    # Deliberately no parent_id — see note above.
                     new_shipping.sudo().write({
                         'name': addr_vals['name'],
                         'company_name': False,
