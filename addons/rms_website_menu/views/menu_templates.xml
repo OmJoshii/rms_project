@@ -2536,25 +2536,26 @@
                     display: none !important;
                 }
             </style>
-            <script>
-            (function() {
-                function rmsHideBackBtn() {
-                    document.querySelectorAll('a').forEach(function(a) {
-                        var href = a.getAttribute('href') || '';
-                        if (href.indexOf('/shop/address') !== -1) {
-                            var parent = a.parentElement;
-                            if (parent) parent.style.display = 'none';
-                            a.style.display = 'none';
-                        }
-                    });
+        </xpath>
+    </template>
+
+    <!-- Override navigation_buttons: replace the entire previous-step
+         block (both t-if and t-else) with a simple Back to cart link.
+         We target the wrapping div that contains both blocks. -->
+    <template id="rms_payment_back_to_cart"
+              inherit_id="website_sale.navigation_buttons"
+              name="RMS: Back to cart instead of back to address">
+        <xpath expr="//div[hasclass('position-relative')]" position="after">
+            <style>
+                /* Hide Odoo's native back button — we add our own below */
+                .o_cta_navigation_container a.mt-2.mt-lg-0.text-center {
+                    display: none !important;
                 }
-                if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', rmsHideBackBtn);
-                } else {
-                    rmsHideBackBtn();
-                }
-            })();
-            </script>
+            </style>
+            <a href="/shop/cart" class="mt-2 mt-lg-0 text-center">
+                <i class="fa fa-angle-left me-2 fw-light"/>
+                Back to cart
+            </a>
         </xpath>
     </template>
 
