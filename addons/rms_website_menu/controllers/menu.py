@@ -888,22 +888,15 @@ class RmsMenuController(WebsiteSale):
             update_vals = {}
             if shipping_partner and shipping_partner != partner.commercial_partner_id:
                 fix_vals = dict(pickup_addr_vals)
-                # Also fix the name if it somehow has "(copy)" in it
-                if '(copy)' in (shipping_partner.name or '').lower():
-                    fix_vals['name'] = pickup_name or partner.name
+                fix_vals['name'] = pickup_name or partner.name
                 shipping_partner.sudo().write(fix_vals)
             else:
-                new_shipping = partner.sudo().copy({
-                    'type': 'delivery',
-                    'parent_id': partner.id,
+                new_shipping = request.env['res.partner'].sudo().create({
+                    'name':    pickup_name or partner.name,
+                    'phone':   pickup_phone or partner.phone,
+                    'email':   pickup_email or partner.email,
+                    'type':    'delivery',
                     **pickup_addr_vals,
-                })
-                # res.partner.copy() unconditionally appends " (copy)" to
-                # name, overriding whatever we passed above — fix it back.
-                new_shipping.sudo().write({
-                    'name': pickup_name or partner.name,
-                    'company_name': False,
-                    'function': False,
                 })
                 update_vals['partner_shipping_id'] = new_shipping.id
             # Billing — set to main partner (ensure it has a street too)
@@ -957,22 +950,16 @@ class RmsMenuController(WebsiteSale):
                 }
 
                 if shipping_partner and shipping_partner != partner.commercial_partner_id:
+                    # Also fix name if it was previously duplicated
+                    if shipping_partner.name and ',' in shipping_partner.name:
+                        addr_vals['name'] = addr_name or partner.name
                     shipping_partner.sudo().write(addr_vals)
                 else:
-                    # No dedicated shipping partner yet — create one so we
-                    # don't overwrite the customer's main/billing address
-                    new_shipping = partner.sudo().copy({
+                    new_shipping = request.env['res.partner'].sudo().create({
                         'type': 'delivery',
-                        'parent_id': partner.id,
                         **addr_vals,
                     })
-                    # res.partner.copy() unconditionally appends " (copy)" to
-                    # name, overriding whatever we passed above — fix it back.
-                    new_shipping.sudo().write({
-                        'name': addr_vals['name'],
-                        'company_name': False,
-                        'function': False,
-                    })
+                    order.sudo().write({'partner_shipping_id': new_shipping.id})
                     order.sudo().write({'partner_shipping_id': new_shipping.id})
                 # Always set billing to the main partner so Odoo's payment
                 # page never redirects to /shop/address?address_type=billing
@@ -1089,17 +1076,9 @@ class RmsMenuController(WebsiteSale):
                 if shipping and shipping != partner.commercial_partner_id:
                     shipping.sudo().write(addr_vals)
                 else:
-                    new_shipping = partner.sudo().copy({
+                    new_shipping = request.env['res.partner'].sudo().create({
                         'type': 'delivery',
-                        'parent_id': partner.id,
                         **addr_vals,
-                    })
-                    # res.partner.copy() unconditionally appends " (copy)" to
-                    # name, overriding whatever we passed above — fix it back.
-                    new_shipping.sudo().write({
-                        'name': addr_vals['name'],
-                        'company_name': False,
-                        'function': False,
                     })
                     order.sudo().write({'partner_shipping_id': new_shipping.id})
 
