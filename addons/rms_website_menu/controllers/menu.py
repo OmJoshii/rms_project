@@ -883,36 +883,21 @@ class RmsMenuController(WebsiteSale):
                 'zip': '94122',
                 'state_id': ca_state.id if ca_state else False,
                 'country_id': ca.id if ca else False,
-                # Clear any stale job-title/role that may have been left on
-                # an existing shipping contact by the old copy()-based code.
-                'function': False,
             }
             shipping_partner = order.partner_shipping_id
             update_vals = {}
             if shipping_partner and shipping_partner != partner.commercial_partner_id:
                 shipping_partner.sudo().write(pickup_addr_vals)
             else:
-                # Use create() instead of copy() — copy() inherits unrelated
-                # fields from the main partner (job title/function, etc.) and
-                # appends "(copy)" to the name when it matches the parent's,
-                # which is exactly what happens here since no distinct name
-                # is collected for pickup. A delivery/pickup sub-address only
-                # ever needs the name + address fields.
-                new_shipping = request.env['res.partner'].sudo().create({
-                    'name': partner.name,
+                new_shipping = partner.sudo().copy({
                     'type': 'delivery',
                     'parent_id': partner.id,
                     **pickup_addr_vals,
                 })
                 update_vals['partner_shipping_id'] = new_shipping.id
-            # Billing — set to main partner (ensure it has a street too).
-            # Use a copy without function/title: those should only be
-            # cleared on the delivery *child* contact, never on the real
-            # customer's own partner record.
+            # Billing — set to main partner (ensure it has a street too)
             if not partner.street:
-                billing_addr_vals = {k: v for k, v in pickup_addr_vals.items()
-                                     if k != 'function'}
-                partner.sudo().write(billing_addr_vals)
+                partner.sudo().write(pickup_addr_vals)
             update_vals['partner_invoice_id'] = partner.id
             if update_vals:
                 order.sudo().write(update_vals)
@@ -958,20 +943,14 @@ class RmsMenuController(WebsiteSale):
                     'zip':      addr_zip,
                     'state_id': state.id if state else False,
                     'country_id': country.id if country else False,
-                    # Clear any stale job-title/role left behind by the old
-                    # copy()-based code on a pre-existing shipping contact.
-                    'function': False,
                 }
 
                 if shipping_partner and shipping_partner != partner.commercial_partner_id:
                     shipping_partner.sudo().write(addr_vals)
                 else:
                     # No dedicated shipping partner yet — create one so we
-                    # don't overwrite the customer's main/billing address.
-                    # create() (not copy()) so we don't inherit unrelated
-                    # fields (job title/function, etc.) or get "(copy)"
-                    # appended to the name when it matches the parent's.
-                    new_shipping = request.env['res.partner'].sudo().create({
+                    # don't overwrite the customer's main/billing address
+                    new_shipping = partner.sudo().copy({
                         'type': 'delivery',
                         'parent_id': partner.id,
                         **addr_vals,
@@ -1087,18 +1066,12 @@ class RmsMenuController(WebsiteSale):
                     'zip':        addr_zip,
                     'state_id':   state.id if state else False,
                     'country_id': country.id if country else False,
-                    # Clear any stale job-title/role left behind by the old
-                    # copy()-based code on a pre-existing shipping contact.
-                    'function': False,
                 }
                 shipping = order.partner_shipping_id
                 if shipping and shipping != partner.commercial_partner_id:
                     shipping.sudo().write(addr_vals)
                 else:
-                    # create() (not copy()) — see rms_checkout for why: copy()
-                    # inherits fields like function/title and appends "(copy)"
-                    # to the name when it matches the parent's.
-                    new_shipping = request.env['res.partner'].sudo().create({
+                    new_shipping = partner.sudo().copy({
                         'type': 'delivery',
                         'parent_id': partner.id,
                         **addr_vals,
