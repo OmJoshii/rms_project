@@ -886,7 +886,6 @@ class RmsMenuController(WebsiteSale):
                 # Clear any stale job-title/role that may have been left on
                 # an existing shipping contact by the old copy()-based code.
                 'function': False,
-                'title': False,
             }
             shipping_partner = order.partner_shipping_id
             update_vals = {}
@@ -912,7 +911,7 @@ class RmsMenuController(WebsiteSale):
             # customer's own partner record.
             if not partner.street:
                 billing_addr_vals = {k: v for k, v in pickup_addr_vals.items()
-                                     if k not in ('function', 'title')}
+                                     if k != 'function'}
                 partner.sudo().write(billing_addr_vals)
             update_vals['partner_invoice_id'] = partner.id
             if update_vals:
@@ -962,7 +961,6 @@ class RmsMenuController(WebsiteSale):
                     # Clear any stale job-title/role left behind by the old
                     # copy()-based code on a pre-existing shipping contact.
                     'function': False,
-                    'title': False,
                 }
 
                 if shipping_partner and shipping_partner != partner.commercial_partner_id:
@@ -1092,7 +1090,6 @@ class RmsMenuController(WebsiteSale):
                     # Clear any stale job-title/role left behind by the old
                     # copy()-based code on a pre-existing shipping contact.
                     'function': False,
-                    'title': False,
                 }
                 shipping = order.partner_shipping_id
                 if shipping and shipping != partner.commercial_partner_id:
