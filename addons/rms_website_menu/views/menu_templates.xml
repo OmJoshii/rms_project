@@ -2543,15 +2543,14 @@
     <template id="rms_payment_back_to_cart"
               inherit_id="website_sale.navigation_buttons"
               name="RMS: Back to cart instead of back to address">
-        <xpath expr="//div[hasclass('o_cta_navigation_container')]" position="inside">
+        <xpath expr="//div[contains(@t-attf-class, 'd-flex flex-column gap-2')]" position="inside">
             <style>
-                /* Hide Odoo's native previous-step back link */
-                .o_cta_navigation_container > a.mt-2,
-                .o_cta_navigation_container > t > a.mt-2 {
+                /* Hide Odoo's native previous-step / continue-shopping links */
+                .o_cta_navigation_container a.mt-2 {
                     display: none !important;
                 }
             </style>
-            <a href="/shop/cart" class="mt-2 mt-lg-0 text-center d-block rms-back-to-cart">
+            <a href="/shop/cart" class="mt-2 mt-lg-0 text-center d-block">
                 <i class="fa fa-angle-left me-2 fw-light"/>
                 Back to cart
             </a>
