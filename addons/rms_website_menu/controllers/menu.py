@@ -899,6 +899,7 @@ class RmsMenuController(WebsiteSale):
                 new_shipping.sudo().write({
                     'name': pickup_name or partner.name,
                     'company_name': False,
+                    'function': False,
                 })
                 update_vals['partner_shipping_id'] = new_shipping.id
             # Billing — set to main partner (ensure it has a street too)
@@ -966,6 +967,7 @@ class RmsMenuController(WebsiteSale):
                     new_shipping.sudo().write({
                         'name': addr_vals['name'],
                         'company_name': False,
+                        'function': False,
                     })
                     order.sudo().write({'partner_shipping_id': new_shipping.id})
                 # Always set billing to the main partner so Odoo's payment
@@ -1093,6 +1095,7 @@ class RmsMenuController(WebsiteSale):
                     new_shipping.sudo().write({
                         'name': addr_vals['name'],
                         'company_name': False,
+                        'function': False,
                     })
                     order.sudo().write({'partner_shipping_id': new_shipping.id})
 
