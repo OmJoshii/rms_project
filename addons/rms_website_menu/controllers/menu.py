@@ -889,6 +889,7 @@ class RmsMenuController(WebsiteSale):
             if shipping_partner and shipping_partner != partner.commercial_partner_id:
                 fix_vals = dict(pickup_addr_vals)
                 fix_vals['name'] = pickup_name or partner.name
+                fix_vals['parent_id'] = False
                 shipping_partner.sudo().write(fix_vals)
             else:
                 new_shipping = request.env['res.partner'].sudo().create({
@@ -953,6 +954,7 @@ class RmsMenuController(WebsiteSale):
                     # Also fix name if it was previously duplicated
                     if shipping_partner.name and ',' in shipping_partner.name:
                         addr_vals['name'] = addr_name or partner.name
+                    addr_vals['parent_id'] = False
                     shipping_partner.sudo().write(addr_vals)
                 else:
                     new_shipping = request.env['res.partner'].sudo().create({
@@ -1074,6 +1076,7 @@ class RmsMenuController(WebsiteSale):
                 }
                 shipping = order.partner_shipping_id
                 if shipping and shipping != partner.commercial_partner_id:
+                    addr_vals['parent_id'] = False
                     shipping.sudo().write(addr_vals)
                 else:
                     new_shipping = request.env['res.partner'].sudo().create({
