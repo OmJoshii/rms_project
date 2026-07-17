@@ -1811,7 +1811,9 @@ class RmsMenuController(WebsiteSale):
             'is_catering':      is_catering,
             'items':            items,
             'special_request':  o.rms_special_request or '',
-            'customer_name':    partner.name or '',
+            # Use shipping partner name so it reflects what the customer
+            # typed in the checkout name field, not their account name.
+            'customer_name':    (o.partner_shipping_id.name or partner.name or ''),
             'customer_phone':   partner.phone or '',
             'customer_email':   partner.email or '',
         }
