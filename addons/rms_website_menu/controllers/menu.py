@@ -859,9 +859,11 @@ class RmsMenuController(WebsiteSale):
             })
             partner = new_partner
         if delivery_type == 'pickup':
-            # Update phone/email on the customer partner
+            # Update phone/email on the customer partner.
+            # For logged-in users, do NOT overwrite their account name —
+            # the name field is only used for guest partner creation.
             partner_vals = {}
-            if pickup_name:
+            if pickup_name and is_public:
                 partner_vals['name'] = pickup_name
             if pickup_phone:
                 partner_vals['phone'] = pickup_phone
@@ -911,9 +913,11 @@ class RmsMenuController(WebsiteSale):
         # shipping address. This makes /shop/address a no-op step, so
         # the customer never has to fill in their address twice.
         if delivery_type == 'delivery':
-            # Save name/phone/email on the main partner record
+            # Save phone/email on the main partner record.
+            # For logged-in users, do NOT overwrite their account name —
+            # the name field is only used for guest partner creation.
             delivery_partner_vals = {}
-            if addr_name:
+            if addr_name and is_public:
                 delivery_partner_vals['name'] = addr_name
             if addr_phone:
                 delivery_partner_vals['phone'] = addr_phone
@@ -1034,14 +1038,16 @@ class RmsMenuController(WebsiteSale):
 
         partner = order.partner_id
         delivery_type = order.rms_delivery_type
+        is_public_user = request.website.is_public_user()
 
         name  = kwargs.get('name', '').strip()
         phone = kwargs.get('phone', '').strip()
         email = kwargs.get('email', '').strip()
 
-        # Update name/phone/email on the main partner
+        # Update phone/email on the main partner.
+        # For logged-in users, do NOT overwrite their account name.
         partner_vals = {}
-        if name:
+        if name and is_public_user:
             partner_vals['name'] = name
         if phone:
             partner_vals['phone'] = phone
