@@ -646,11 +646,30 @@ class RmsMenuController(WebsiteSale):
 
         If the order already has rms_delivery_type set (checkout was completed),
         go straight to payment. Otherwise send them to our checkout page.
+
+        The address_type param is used by Odoo's payment page internally to
+        validate billing/shipping. We detect this and short-circuit to avoid
+        redirect loops on production.
         """
         order = _get_cart()
+        address_type = kwargs.get('address_type', '')
+
+        # Odoo's payment page calls /shop/address?address_type=billing or
+        # address_type=delivery internally to validate addresses. If we
+        # blindly redirect here it causes ERR_TOO_MANY_REDIRECTS on production.
+        # When called with address_type param, always go to payment if order
+        # exists and has items, to break the loop.
+        if address_type and order and order.id and order.order_line:
+            return request.redirect('/shop/payment')
+
         if order and order.id and order.rms_delivery_type:
             return request.redirect('/shop/payment')
-        return request.redirect('/rms/checkout')
+
+        # No active cart or checkout not started — send to our checkout page
+        if order and order.id and order.order_line:
+            return request.redirect('/rms/checkout')
+
+        return request.redirect('/menu')
 
     @http.route('/shop/checkout', type='http', auth='public', website=True, sitemap=False)
     def rms_redirect_shop_checkout(self, **kwargs):
