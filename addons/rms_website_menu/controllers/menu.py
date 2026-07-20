@@ -675,29 +675,28 @@ class RmsMenuController(WebsiteSale):
     def rms_redirect_shop_checkout(self, **kwargs):
         """
         Odoo's native flow goes /shop/cart -> /shop/address -> /shop/checkout
-        (delivery method) -> /shop/payment. We don't use Odoo's native
-        delivery-method step — pickup/delivery and scheduling are chosen
-        on /rms/checkout instead. So whenever this route is hit, send the
-        customer there. If they already completed /rms/checkout
-        (rms_delivery_type is set on the order), skip straight to payment
-        instead of bouncing them back.
+        (delivery method) -> /shop/payment. We replace this entire flow with
+        /rms/checkout where the customer picks pickup/delivery and schedules.
+        Always send the customer to /rms/checkout — never skip to payment
+        directly from the cart, because the customer must always choose
+        pickup/delivery before payment.
         """
         order = _get_cart()
-        if order and order.id and order.rms_delivery_type:
-            response = request.redirect('/shop/payment')
-            # Remember the order id in a cookie — Odoo's own payment flow
-            # clears sale_order_id from the session on success, which
-            # would otherwise leave us with no way to find the order
-            # again once the customer lands back on /shop or
-            # /shop/confirmation after paying.
-            response.set_cookie('rms_last_order_id', str(order.id), max_age=3600)
-            return response
+        if not order or not order.id or not order.order_line:
+            return request.redirect('/menu')
         return request.redirect('/rms/checkout')
 
     @http.route('/rms/checkout', type='http', auth='public', website=True, sitemap=False)
     def rms_checkout_page(self, **kwargs):
         is_open, closed_msg = _is_open_now()
         order = _get_cart()
+        if not order or not order.id or not order.order_line:
+            return request.redirect('/menu')
+        # Clear any previous delivery type so the customer always
+        # starts fresh on the checkout page — they must actively
+        # choose pickup or delivery for each new order session.
+        if order.rms_delivery_type:
+            order.sudo().write({'rms_delivery_type': False})
         return request.render('rms_website_menu.order_summary', {
             'order':          order,
             'error':          kwargs.get('error', ''),
