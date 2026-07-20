@@ -966,7 +966,6 @@ class RmsMenuController(WebsiteSale):
                         **addr_vals,
                     })
                     order.sudo().write({'partner_shipping_id': new_shipping.id})
-                    order.sudo().write({'partner_shipping_id': new_shipping.id})
                 # Always set billing to the main partner so Odoo's payment
                 # page never redirects to /shop/address?address_type=billing
                 if order.partner_invoice_id != partner:
@@ -1025,7 +1024,7 @@ class RmsMenuController(WebsiteSale):
         })
 
     @http.route('/rms/checkout/save-address', type='http', auth='public', website=True,
-                methods=['POST'], csrf=False, sitemap=False)
+                methods=['POST'], csrf=True, sitemap=False)
     def rms_save_address(self, **kwargs):
         """
         Saves the edited contact/address info and redirects back to payment.
@@ -1055,6 +1054,21 @@ class RmsMenuController(WebsiteSale):
             partner_vals['email'] = email
         if partner_vals:
             partner.sudo().write(partner_vals)
+
+        # Keep the order-specific shipping partner in sync (used for
+        # receipts/kitchen display which reads partner_shipping_id.name).
+        shipping_partner = order.partner_shipping_id
+        if shipping_partner and shipping_partner != partner.commercial_partner_id:
+            shipping_vals = {}
+            if name:
+                shipping_vals['name'] = name
+            if phone:
+                shipping_vals['phone'] = phone
+            if email:
+                shipping_vals['email'] = email
+            if shipping_vals:
+                shipping_vals['parent_id'] = False
+                shipping_partner.sudo().write(shipping_vals)
 
         if delivery_type == 'delivery':
             addr_street  = kwargs.get('addr_street', '').strip()

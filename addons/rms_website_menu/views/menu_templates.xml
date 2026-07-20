@@ -1321,6 +1321,14 @@
                                         });
                                     });
 
+                                    // If a delivery type is already pre-selected on page load
+                                    // (e.g. prefill_pickup after out-of-range delivery), trigger
+                                    // the change handler immediately so fields show correctly.
+                                    var preSelected = document.querySelector('input[name="delivery_type"]:checked');
+                                    if (preSelected) {
+                                        preSelected.dispatchEvent(new Event('change'));
+                                    }
+
                                     // Show date+time pickers when Schedule is chosen
                                     function applyScheduleState(isSched) {
                                         schedWrap.style.display = isSched ? 'block' : 'none';
@@ -2596,17 +2604,17 @@
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Name <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control" required="required"
-                                       t-att-value="partner.name or ''"/>
+                                       t-att-value="shipping.name or partner.name or ''"/>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Phone <span class="text-danger">*</span></label>
                                 <input type="tel" name="phone" class="form-control" required="required"
-                                       t-att-value="partner.phone or ''"/>
+                                       t-att-value="shipping.phone or partner.phone or ''"/>
                             </div>
                             <div class="mb-1">
                                 <label class="form-label fw-semibold">Email <span class="text-muted fw-normal small">(optional)</span></label>
                                 <input type="email" name="email" class="form-control"
-                                       t-att-value="partner.email or ''"/>
+                                       t-att-value="shipping.email or partner.email or ''"/>
                             </div>
                         </div>
                     </div>
@@ -2619,11 +2627,12 @@
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Street Address <span class="text-danger">*</span></label>
                                     <input type="text" name="addr_street" class="form-control" required="required"
-                                           t-att-value="shipping.street or ''"/>
+                                           t-att-value="(shipping.street or '').split(', ', 1)[0]"/>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Apartment, Suite, etc. <span class="text-muted fw-normal small">(optional)</span></label>
-                                    <input type="text" name="addr_apt" class="form-control" placeholder="Apt, suite, unit, floor"/>
+                                    <input type="text" name="addr_apt" class="form-control" placeholder="Apt, suite, unit, floor"
+                                           t-att-value="(shipping.street or '').split(', ', 1)[1] if ', ' in (shipping.street or '') else ''"/>
                                 </div>
                                 <div class="row g-2 mb-3">
                                     <div class="col-7">
