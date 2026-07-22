@@ -864,11 +864,23 @@ class RmsMenuController(WebsiteSale):
             contact_phone = pickup_phone if delivery_type == 'pickup' else addr_phone
             contact_email = pickup_email if delivery_type == 'pickup' else addr_email
             ca = request.env['res.country'].sudo().search([('code', '=', 'US')], limit=1)
+            ca_state = request.env['res.country.state'].sudo().search(
+                [('code', '=', 'CA'), ('country_id', '=', ca.id)], limit=1
+            ) if ca else False
+            # Guest partner must have a street+city so Odoo's payment page
+            # billing validation passes without redirecting to /shop/address.
+            # We use the restaurant address as a placeholder for pickup;
+            # delivery orders will overwrite this with the real address below.
             new_partner = request.env['res.partner'].sudo().create({
                 'name':       contact_name or 'Guest',
                 'phone':      contact_phone,
                 'email':      contact_email,
+                'street':     '1386 9th Ave',
+                'city':       'San Francisco',
+                'zip':        '94122',
+                'state_id':   ca_state.id if ca_state else False,
                 'country_id': ca.id if ca else False,
+                'customer_rank': 1,
             })
             order.sudo().write({
                 'partner_id':          new_partner.id,
