@@ -874,7 +874,7 @@ class RmsMenuController(WebsiteSale):
             new_partner = request.env['res.partner'].sudo().create({
                 'name':       contact_name or 'Guest',
                 'phone':      contact_phone,
-                'email':      contact_email,
+                'email':      contact_email or f"guest_{order.id}@noemail.timur.local",
                 'street':     '1386 9th Ave',
                 'city':       'San Francisco',
                 'zip':        '94122',
