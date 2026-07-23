@@ -440,16 +440,38 @@ def _group_products(products):
 
 def _is_valid_us_phone(phone):
     """
-    Accept US phone numbers in common formats.
-    10 digits bare or formatted, or +1 followed by 10 digits.
-    Examples: 4155551234  (415) 555-1234  415-555-1234  +14155551234
+    Accept valid US phone numbers only.
+    Strips formatting (+1, spaces, dashes, parens) then validates:
+      - Exactly 10 digits after stripping country code
+      - Area code (first 3 digits): starts with 2-9, second digit 0-8
+      - Exchange (next 3 digits): starts with 2-9
+      - Rejects non-US country codes like +977, +44 etc.
+    Examples accepted:  (415) 555-0100  415-555-0100  +14155550100
+    Examples rejected:  9800000000  +9779800000000  0001234567
     """
+    # Strip only valid US formatting characters
     digits = re.sub(r'[\s().\-]', '', phone)
-    if digits.startswith('+1'):
+    # Only allow +1 as country code prefix — reject +977, +44 etc.
+    if digits.startswith('+'):
+        if not digits.startswith('+1') or len(digits) != 12:
+            return False
         digits = digits[2:]
     elif digits.startswith('1') and len(digits) == 11:
         digits = digits[1:]
-    return bool(re.fullmatch(r'[2-9]\d{9}', digits))
+    # Must be exactly 10 digits
+    if len(digits) != 10 or not digits.isdigit():
+        return False
+    area_code = digits[:3]
+    exchange  = digits[3:6]
+    # Area code: first digit 2-9, second digit 0-8 (N11 codes excluded)
+    if area_code[0] not in '23456789':
+        return False
+    if area_code[1] == '9':
+        return False
+    # Exchange: first digit must be 2-9
+    if exchange[0] not in '23456789':
+        return False
+    return True
 
 
 def _is_valid_email(email):
