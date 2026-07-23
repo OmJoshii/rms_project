@@ -654,12 +654,45 @@ class RmsMenuController(WebsiteSale):
         order = _get_cart()
         address_type = kwargs.get('address_type', '')
 
+        _logger.warning(
+            'RMS /shop/address ENTRY | address_type=%s | order=%s | kwargs=%s',
+            address_type, order.id if order else None, list(kwargs.keys())
+        )
+
         # Odoo's payment page calls /shop/address?address_type=billing or
-        # address_type=delivery internally to validate addresses. If we
-        # blindly redirect here it causes ERR_TOO_MANY_REDIRECTS on production.
-        # When called with address_type param, always go to payment if order
-        # exists and has items, to break the loop.
+        # address_type=delivery to validate that the partner has a country_id.
+        # If the billing partner is missing country_id, Odoo keeps redirecting
+        # here → /shop/payment → here, causing ERR_TOO_MANY_REDIRECTS.
+        # Fix: patch country_id onto the billing partner right here so that
+        # Odoo's next validation pass succeeds and the loop stops.
         if address_type and order and order.id and order.order_line:
+            # Log partner state so we can diagnose the redirect loop
+            inv = order.partner_invoice_id
+            shp = order.partner_shipping_id
+            _logger.warning(
+                'RMS /shop/address debug | address_type=%s | '
+                'invoice partner: id=%s name=%s street=%s city=%s zip=%s country=%s email=%s | '
+                'shipping partner: id=%s name=%s street=%s city=%s zip=%s country=%s email=%s',
+                address_type,
+                inv.id, inv.name, inv.street, inv.city, inv.zip,
+                inv.country_id.code, inv.email,
+                shp.id, shp.name, shp.street, shp.city, shp.zip,
+                shp.country_id.code, shp.email,
+            )
+            # Patch any missing fields on both partners
+            us = request.env['res.country'].sudo().search([('code', '=', 'US')], limit=1)
+            for p in [inv, shp]:
+                patch = {}
+                if not p.country_id and us:
+                    patch['country_id'] = us.id
+                if not p.street:
+                    patch['street'] = '1386 9th Ave'
+                if not p.city:
+                    patch['city'] = 'San Francisco'
+                if not p.zip:
+                    patch['zip'] = '94122'
+                if patch:
+                    p.sudo().write(patch)
             return request.redirect('/shop/payment')
 
         if order and order.id and order.rms_delivery_type:
@@ -717,10 +750,10 @@ class RmsMenuController(WebsiteSale):
         delivery_address = kwargs.get('delivery_address', '').strip()
         pickup_name      = kwargs.get('pickup_name', '').strip()
         pickup_phone     = kwargs.get('pickup_phone', '').strip()
-        pickup_email     = kwargs.get('pickup_email', '').strip()   # optional
+        pickup_email     = kwargs.get('pickup_email', '').strip()
         addr_name        = kwargs.get('addr_name', '').strip()
         addr_phone       = kwargs.get('addr_phone', '').strip()
-        addr_email       = kwargs.get('addr_email', '').strip()     # optional
+        addr_email       = kwargs.get('addr_email', '').strip()
 
         def _render_checkout_error(msg):
             return request.render('rms_website_menu.order_summary', {
@@ -736,10 +769,14 @@ class RmsMenuController(WebsiteSale):
             return _render_checkout_error('Please enter your name for pickup.')
         if delivery_type == 'pickup' and not pickup_phone:
             return _render_checkout_error('Please enter your phone number for pickup.')
+        if delivery_type == 'pickup' and not pickup_email:
+            return _render_checkout_error('Please enter your email address for pickup.')
         if delivery_type == 'delivery' and not addr_name:
             return _render_checkout_error('Please enter your name.')
         if delivery_type == 'delivery' and not addr_phone:
             return _render_checkout_error('Please enter your phone number.')
+        if delivery_type == 'delivery' and not addr_email:
+            return _render_checkout_error('Please enter your email address.')
         if delivery_type == 'delivery' and not delivery_address:
             return _render_checkout_error('Please enter your delivery address.')
 
@@ -874,7 +911,7 @@ class RmsMenuController(WebsiteSale):
             new_partner = request.env['res.partner'].sudo().create({
                 'name':       contact_name or 'Guest',
                 'phone':      contact_phone,
-                'email':      contact_email or f"guest_{order.id}@noemail.timur.local",
+                'email':      contact_email or False,
                 'street':     '1386 9th Ave',
                 'city':       'San Francisco',
                 'zip':        '94122',
@@ -1025,6 +1062,11 @@ class RmsMenuController(WebsiteSale):
                 order.sudo().set_delivery_line(carrier, carrier.rate_shipment(order)['price'])
             except Exception as e:
                 _logger.warning("RMS: failed to set delivery carrier %s: %s", carrier.name, e)
+
+        # Tell Odoo's session which order we're paying so request.cart
+        # in shop_payment() returns this order (not a stale public-user cart).
+        request.session['sale_last_order_id'] = order.id
+        request.session['sale_order_id'] = order.id
 
         # Go straight to payment — skips /shop/cart so the off-hours
         # cart override doesn't bounce the user back to /rms/checkout
@@ -2463,6 +2505,8 @@ class RmsMenuController(WebsiteSale):
                     line('1386 9th Ave SF') + DOUBLE_OFF + BOLD_OFF)
 
         buf += restaurant_header()
+        buf += line('COUNTER')
+        buf += line('COPY')
 
         now_str = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(RESTAURANT_TZ).strftime('%b %d, %I:%M %p')
         buf += line(now_str)
@@ -2485,6 +2529,17 @@ class RmsMenuController(WebsiteSale):
         buf += line('-' * 32)
         buf += ALIGN_LEFT
         buf += BOLD_ON
+        buf += line('CUSTOMER')
+        buf += BOLD_OFF
+        if order.get('customer_name'):
+            buf += line(f"Name:  {order['customer_name']}")
+        if order.get('customer_phone'):
+            buf += line(f"Phone: {order['customer_phone']}")
+        if is_delivery and order.get('delivery_address'):
+            buf += line(f"Addr:  {order['delivery_address']}")
+
+        buf += line('-' * 32)
+        buf += BOLD_ON
         buf += line('ORDER ITEMS')
         buf += BOLD_OFF
 
@@ -2499,59 +2554,6 @@ class RmsMenuController(WebsiteSale):
                 for row in wrap(f"*** {item['note']}"):
                     buf += line(row)
                 buf += BOLD_OFF
-            buf += line()
-
-        buf += line('-' * 32)
-        buf += BOLD_ON
-        buf += line('CUSTOMER')
-        buf += BOLD_OFF
-        if order.get('customer_name'):
-            buf += line(f"Name:  {order['customer_name']}")
-        if order.get('customer_phone'):
-            buf += line(f"Phone: {order['customer_phone']}")
-        if is_delivery and order.get('delivery_address'):
-            buf += line(f"Addr:  {order['delivery_address']}")
-        if order.get('special_request'):
-            buf += line('-' * 32)
-            buf += BOLD_ON
-            buf += line('SPECIAL REQUEST')
-            buf += BOLD_OFF
-            buf += line(order['special_request'])
-
-        buf += line('-' * 32)
-        buf += ALIGN_CENTER
-        buf += BOLD_ON
-        buf += line('KITCHEN COPY')
-        buf += BOLD_OFF
-        buf += line(('DELIVERY' if is_delivery else 'PICKUP') + ' | ' +
-                     ('CATERING' if order.get('is_catering') else 'REGULAR'))
-        buf += FEED_3
-        buf += CUT
-
-        # Print a separately cut counter bill from the same queued job.
-        # The preparation copy above intentionally contains no prices.
-        buf += INIT
-        buf += restaurant_header()
-        buf += line('-' * 32)
-        buf += DOUBLE_ON + BOLD_ON
-        buf += line('COUNTER')
-        buf += line('COPY')
-        buf += DOUBLE_OFF + BOLD_OFF
-        buf += line(now_str)
-        buf += line('-' * 32)
-        buf += DOUBLE_ON + BOLD_ON
-        buf += line(order.get('name', ''))
-        buf += DOUBLE_OFF + BOLD_OFF
-        buf += line('DELIVERY' if is_delivery else 'PICKUP')
-        buf += line('-' * 32)
-        buf += ALIGN_LEFT
-
-        for item in order.get('items', []):
-            qty = str(item.get('qty', 1))
-            buf += DOUBLE_ON + BOLD_ON
-            for row in wrap(f"{qty}x {item.get('name', '')}", 16):
-                buf += line(row)
-            buf += DOUBLE_OFF + BOLD_OFF
             item_total = money(item.get('subtotal'))
             if item_total:
                 unit_price = money(item.get('unit_price'))
@@ -2559,28 +2561,36 @@ class RmsMenuController(WebsiteSale):
                 buf += line(f"{detail:<24}{item_total:>8}")
             buf += line()
 
+        if order.get('special_request'):
+            buf += line('-' * 32)
+            buf += BOLD_ON
+            buf += line('SPECIAL REQUEST')
+            buf += BOLD_OFF
+            buf += line(order['special_request'])
+
         total = money(order.get('amount_total'))
         if total:
             buf += line('-' * 32)
             subtotal = money(order.get('amount_untaxed'))
             tax = money(order.get('amount_tax'))
+            tip_val = order.get('tip_amount') or 0
+            tip = money(tip_val) if tip_val > 0 else None
             if subtotal:
                 buf += line(f"{'SUBTOTAL':<24}{subtotal:>8}")
             if tax:
                 buf += line(f"{'TAX':<24}{tax:>8}")
+            if tip:
+                buf += line(f"{'TIP':<24}{tip:>8}")
             buf += DOUBLE_ON + BOLD_ON
             buf += line(f"TOTAL {total}")
             buf += DOUBLE_OFF + BOLD_OFF
         else:
+            buf += line('-' * 32)
             buf += BOLD_ON
             buf += line('PRICE NOT AVAILABLE')
             buf += BOLD_OFF
 
         buf += line('-' * 32)
-        if order.get('customer_name'):
-            buf += line(f"Name:  {order['customer_name']}")
-        if order.get('customer_phone'):
-            buf += line(f"Phone: {order['customer_phone']}")
         buf += ALIGN_CENTER + BOLD_ON
         buf += line('COUNTER COPY')
         buf += BOLD_OFF + FEED_3 + CUT
