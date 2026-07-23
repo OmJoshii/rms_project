@@ -438,6 +438,26 @@ def _group_products(products):
     return cards
 
 
+def _is_valid_us_phone(phone):
+    """
+    Accept US phone numbers in common formats.
+    10 digits bare or formatted, or +1 followed by 10 digits.
+    Examples: 4155551234  (415) 555-1234  415-555-1234  +14155551234
+    """
+    digits = re.sub(r'[\s().\-]', '', phone)
+    if digits.startswith('+1'):
+        digits = digits[2:]
+    elif digits.startswith('1') and len(digits) == 11:
+        digits = digits[1:]
+    return bool(re.fullmatch(r'[2-9]\d{9}', digits))
+
+
+def _is_valid_email(email):
+    """Basic email check — rejects obvious fakes like a@b or test@test."""
+    pattern = r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$'
+    return bool(re.match(pattern, email))
+
+
 class RmsMenuController(WebsiteSale):
 
     @http.route('/menu', type='http', auth='public', website=True, sitemap=True)
@@ -779,6 +799,20 @@ class RmsMenuController(WebsiteSale):
             return _render_checkout_error('Please enter your email address.')
         if delivery_type == 'delivery' and not delivery_address:
             return _render_checkout_error('Please enter your delivery address.')
+
+        # US phone validation
+        check_phone = pickup_phone if delivery_type == 'pickup' else addr_phone
+        if not _is_valid_us_phone(check_phone):
+            return _render_checkout_error(
+                'Please enter a valid US phone number (e.g. (415) 555-0100).'
+            )
+
+        # Email format validation
+        check_email = pickup_email if delivery_type == 'pickup' else addr_email
+        if not _is_valid_email(check_email):
+            return _render_checkout_error(
+                'Please enter a valid email address (e.g. name@example.com).'
+            )
 
         # Distance check for delivery orders
         if delivery_type == 'delivery' and delivery_address:

@@ -1033,7 +1033,7 @@
                                                 </label>
                                                 <input type="text" name="pickup_name" id="co-pickup-name"
                                                        class="form-control" placeholder="Your full name"
-                                                       t-att-value="order.partner_id.name or ''"/>
+                                                       t-att-value="'' if request.env.user._is_public() else (order.partner_id.name or '')"/>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label fw-semibold" for="co-pickup-phone">
@@ -1045,10 +1045,11 @@
                                             </div>
                                             <div class="mb-2">
                                                 <label class="form-label fw-semibold" for="co-pickup-email">
-                                                    Email
+                                                    Email <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="email" name="pickup_email" id="co-pickup-email"
                                                        class="form-control" placeholder="you@example.com"
+                                                       required="required"
                                                        t-att-value="order.partner_id.email or ''"/>
                                             </div>
                                         </div>
@@ -1059,7 +1060,7 @@
                                                 </label>
                                                 <input type="text" name="addr_name" id="co-addr-name"
                                                        class="form-control" placeholder="Your full name"
-                                                       t-att-value="order.partner_id.name or ''"/>
+                                                       t-att-value="'' if request.env.user._is_public() else (order.partner_id.name or '')"/>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label fw-semibold" for="co-addr-phone">
@@ -1071,10 +1072,11 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label fw-semibold" for="co-addr-email">
-                                                    Email <span class="text-muted fw-normal small">(optional)</span>
+                                                    Email <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="email" name="addr_email" id="co-addr-email"
                                                        class="form-control" placeholder="you@example.com"
+                                                       required="required"
                                                        t-att-value="order.partner_id.email or ''"/>
                                             </div>
                                             <label class="form-label fw-semibold">Delivery Address
