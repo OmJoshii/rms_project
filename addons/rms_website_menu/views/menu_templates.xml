@@ -1045,7 +1045,7 @@
                                             </div>
                                             <div class="mb-2">
                                                 <label class="form-label fw-semibold" for="co-pickup-email">
-                                                    Email <span class="text-muted fw-normal small">(optional)</span>
+                                                    Email
                                                 </label>
                                                 <input type="email" name="pickup_email" id="co-pickup-email"
                                                        class="form-control" placeholder="you@example.com"
